@@ -9,26 +9,21 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, Messa
 import firebase_admin
 from firebase_admin import credentials, db
 
-# Ссылка на Excel с игрой
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 
-# Получаем JSON из переменной окружения Render
 firebase_json_str = os.getenv('FIREBASE_CREDENTIALS_JSON')
 if not firebase_json_str:
     raise RuntimeError("Переменная окружения FIREBASE_CREDENTIALS_JSON не установлена")
 
-# Создаем временный файл с ключом Firebase
 with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.json') as temp_file:
     temp_file.write(firebase_json_str)
     temp_filename = temp_file.name
 
-# Инициализация Firebase
 firebase_cred = credentials.Certificate(temp_filename)
 firebase_admin.initialize_app(firebase_cred, {
-    'databaseURL': 'https://agsgm-search-default-rtdb.firebaseio.com/'  # Замените на ваш URL Realtime DB
+    'databaseURL': 'https://agsgm-search-default-rtdb.firebaseio.com/'  # Замените на свой URL Realtime DB
 })
 
-# Загружаем Excel в DataFrame
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
 def log_search(user_id, username, query):
@@ -37,7 +32,7 @@ def log_search(user_id, username, query):
         'user_id': user_id,
         'username': username,
         'query': query,
-        'timestamp': db.SERVER_TIMESTAMP
+        'timestamp': db.ServerValue.TIMESTAMP
     })
 
     users_ref = db.reference('unique_users')
@@ -53,7 +48,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username
 
-    # Логируем запрос в Firebase
     log_search(user_id, username, query)
 
     results = df[df['Title'].str.lower().str.contains(query, na=False)]
