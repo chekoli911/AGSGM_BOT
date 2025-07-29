@@ -22,6 +22,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(f"Получено сообщение: {update.message.text} от пользователя {update.effective_user.id} (@{update.effective_user.username})")
+    
     query = update.message.text.lower().strip()
 
     # Логируем запрос в терминал
@@ -30,7 +32,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     results = df[df['Title'].str.lower().str.contains(query, na=False)]
 
     if results.empty:
-        await update.message.reply_text("Игра не найдена, попробуй другое название, как в PS Store.")
+        await update.message.reply_text("Игра не найдена, попробуй другое название.")
     else:
         response_lines = []
         for _, row in results.head(25).iterrows():
