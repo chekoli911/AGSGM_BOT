@@ -1,3 +1,4 @@
+import os
 import pandas as pd
 import requests
 from io import BytesIO
@@ -22,10 +23,14 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.message.text.lower().strip()
+
+    # Логируем запрос в терминал
+    print(f"[Поиск] Пользователь {update.effective_user.id} (@{update.effective_user.username}) ищет: {query}")
+
     results = df[df['Title'].str.lower().str.contains(query, na=False)]
 
     if results.empty:
-        await update.message.reply_text("Игра не найдена, попробуй другое название как в PS Store.")
+        await update.message.reply_text("Игра не найдена, попробуй другое название, как в PS Store.")
     else:
         response_lines = []
         for _, row in results.head(25).iterrows():
@@ -34,7 +39,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(response)
 
 if __name__ == '__main__':
-    TOKEN = '8290437066:AAGYKWHxME_gdlhfC8dh9Pn3LxRMG1E5LXI'
+    TOKEN = os.getenv('BOT_TOKEN')
 
     app = ApplicationBuilder().token(TOKEN).build()
 
