@@ -10,6 +10,7 @@ GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    print(f"Команда /start от пользователя {update.effective_user.id}")
     await update.message.reply_text(
         "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
     )
@@ -17,6 +18,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
+    print(f"Получено сообщение: {update.message.text} от пользователя {user_id} (@{username})")
+
     query = update.message.text.lower().strip()
 
     # Логируем в консоль информацию о запросе
