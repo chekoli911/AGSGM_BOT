@@ -6,14 +6,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, Messa
 
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 
-def load_excel_from_github(url):
-    response = requests.get(url)
-    response.raise_for_status()
-    file_data = BytesIO(response.content)
-    df = pd.read_excel(file_data, usecols=['Title', 'Url'])
-    return df
-
-df = load_excel_from_github(GITHUB_RAW_URL)
+df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(
@@ -21,15 +14,19 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    username = update.effective_user.username or "no_username"
     query = update.message.text.lower().strip()
+
+    # Логируем в консоль информацию о запросе
+    print(f"[Поиск] Пользователь {user_id} (@{username}) ищет: {query}")
+
     results = df[df['Title'].str.lower().str.contains(query, na=False)]
 
     if results.empty:
-        await update.message.reply_text("Игра не найдена, попробуй другое название как в PS Store.")
+        await update.message.reply_text("Игра не найдена, попробуй другое название.")
     else:
-        response_lines = []
-        for _, row in results.head(25).iterrows():
-            response_lines.append(f"{row['Title']}\n{row['Url']}")
+        response_lines = [f"{row['Title']}\n{row['Url']}" for _, row in results.head(25).iterrows()]
         response = '\n\n'.join(response_lines)
         await update.message.reply_text(response)
 
