@@ -59,7 +59,7 @@ played_triggers = ['уже играл', 'сыграл', 'played']
 not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
 
 ASKING_IF_WANT_NEW = 1
-CHOOSING_GAME = 2  # новое состояние выбора игры из списка
+CHOOSING_GAME = 2  # Определяем состояние выбора игры из списка
 
 def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
@@ -163,7 +163,7 @@ async def mark_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mark_typ
                 await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{trigger}'.")
                 return ConversationHandler.END
 
-            # Ищем по частичному совпадению (без точного совпадения)
+            # Поиск игр с частичным совпадением (без точного совпадения)
             matches = df[df['Title'].str.lower().str.contains(game_query)]
             if matches.empty:
                 await update.message.reply_text(f"Игра, содержащая '{game_query}', не найдена в базе.")
@@ -329,7 +329,7 @@ if __name__ == '__main__':
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         states={
             ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
-            CHOOSING_GAME: [MessageHandler(filters.TEXT & (~filters.COMMAND), coose_game)],
+            CHOOSING_GAME: [MessageHandler(filters.TEXT & (~filters.COMMAND), choose_game)],
         },
         fallbacks=[]
     )
