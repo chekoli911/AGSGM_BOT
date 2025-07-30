@@ -48,9 +48,10 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
     else:
-        response_lines = [f"{row['Title']}\n{row['Url']}" for _, row in results.head(25).iterrows()]
-        response = '\n\n'.join(response_lines)
-        await update.message.reply_text(response)
+        # Отправляем каждую игру отдельным сообщением
+        for _, row in results.head(25).iterrows():
+            text = f"{row['Title']}\n{row['Url']}"
+            await update.message.reply_text(text)
 
 if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
