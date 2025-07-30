@@ -2,14 +2,18 @@ import os
 import logging
 import random
 import re
+import tempfile
 import pandas as pd
 import requests
 from io import BytesIO
+from datetime import datetime
 from telegram import Update
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
     MessageHandler, filters, ConversationHandler
 )
+import firebase_admin
+from firebase_admin import credentials, db
 
 logging.basicConfig(
     level=logging.INFO,
@@ -47,7 +51,6 @@ advice_texts = [
     "Эта игра стоит твоего внимания:"
 ]
 
-# Триггеры для распознавания запросов на совет
 advice_triggers = [
     "совет",
     "во что поиграть",
@@ -73,12 +76,39 @@ def pick_random_game():
     row = df.sample(n=1).iloc[0]
     return row['Title'], row['Url']
 
+# --- Firebase инициализация ---
+firebase_json_str = os.getenv('FIREBASE_CREDENTIALS_JSON')
+if not firebase_json_str:
+    raise RuntimeError("Переменная окружения FIREBASE_CREDENTIALS_JSON не установлена")
+
+with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.json') as temp_file:
+    temp_file.write(firebase_json_str)
+    temp_filename = temp_file.name
+
+cred = credentials.Certificate(temp_filename)
+firebase_admin.initialize_app(cred, {
+    'databaseURL': 'https://agsgm-search-default-rtdb.firebaseio.com/'  # замени на свой URL Realtime DB
+})
+
+def log_user_visit(user_id):
+    ref = db.reference(f'users/{user_id}')
+    now_iso = datetime.utcnow().isoformat()
+    user_data = ref.get()
+    if not user_data:
+        ref.set({'first_visit': now_iso, 'last_visit': now_iso, 'visits_count': 1})
+    else:
+        visits = user_data.get('visits_count', 1) + 1
+        ref.update({'last_visit': now_iso, 'visits_count': visits})
+
 async def notify_admin(app, text: str):
     admin_chat_id = -1002773793511  # chat_id твоего канала
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    logging.info(f"Команда /start от пользователя {update.effective_user.id}")
+    user_id = update.effective_user.id
+    log_user_visit(user_id)
+
+    logging.info(f"Команда /start от пользователя {user_id}")
     await update.message.reply_text(
         "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
     )
@@ -94,6 +124,8 @@ async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
+    log_user_visit(user_id)
+
     logging.info(f"Пользователь {user_id} (@{username}) запросил совет")
 
     advice = random.choice(advice_texts)
@@ -113,6 +145,7 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     text = update.message.text.lower().strip()
+    log_user_visit(user_id)
 
     if text in ['да', 'конечно', 'давай'] or text in ['уже играл', 'уже прошел', 'неинтересно']:
         title, url = pick_random_game()
@@ -149,7 +182,10 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     username = update.effective_user.username or "no_username"
     raw_text = update.message.text
     text = normalize_text(raw_text)
+    log_user_visit(user_id)
     logging.info(f"Получено сообщение: {raw_text} от пользователя {user_id} (@{username})")
+
+    await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
     if text == "привет":
         await greet(update, context)
@@ -159,7 +195,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await send_advice(update, context)
 
     logging.info(f"[Поиск] Пользователь {user_id} (@{username}) ищет: {text}")
-    await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
 
