@@ -94,7 +94,6 @@ async def notify_admin(app, text: str):
     admin_chat_id = -1002773793511
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
-# Новая функция приветствия
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
@@ -138,6 +137,15 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Получено сообщение: {raw_text} от пользователя {user_id} (@{username})")
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
+
+    # Обработка слова "пока"
+    if text == 'пока':
+        await update.message.reply_text(
+            "До встречи! У нас можно не только арендовать игры, но и купить их навсегда по выгодным ценам.\n"
+            "Сайт - https://arenapsgm.ru/P2P3\n"
+            "Группа - @StorePSGM"
+        )
+        return ConversationHandler.END
 
     # Обработка запроса "еще"
     if text == 'еще':
@@ -226,7 +234,7 @@ if __name__ == '__main__':
 
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('start', start))
-    app.add_handler(CommandHandler('greet', greet))  # команда /greet для приветствия
+    app.add_handler(CommandHandler('greet', greet))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
