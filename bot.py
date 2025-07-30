@@ -59,10 +59,15 @@ played_triggers = ['уже играл', 'сыграл', 'played']
 not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
 
 ASKING_IF_WANT_NEW = 1
+CHOOSING_GAME = 2  # Новый статус для выбора из списка
 
 def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
     ref.update({game_title: True})
+
+def check_game_mark(user_id: int, game_title: str, mark_type: str):
+    ref = db.reference(f'users/{user_id}/{mark_type}/{game_title}')
+    return ref.get() is not None
 
 def get_marked_games(user_id: int, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
@@ -98,8 +103,8 @@ async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
         "Привет! Я искусственный интеллект. Для поиска игр на PlayStation. "
-        "Напиши название игры и я найду её в нашей базе аренды. А если не знаешь во что поиграть, напиши 'Совет' или 'Во что поиграть?', "
-        "я подумаю и пришлю случайную рекомендацию. Ещё я могу показать некоторые команды, если напишешь вот такую палочку - /"
+        "Напиши название игры и я найду ее в нашей базе аренды. А если не знаешь во что поиграть напиши 'Совет', или 'Во что поиграть?', "
+        "я подумаю и пришлю случайную рекомендацию. Еще я могу показать некоторые команды если напишешь вот такую палочку - /"
     )
 
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -116,40 +121,64 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
+           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
            'Если хочешь получить ещё рекомендацию — напиши "Еще".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
-async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+async def mark_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mark_type: str, triggers: list):
     user_id = update.effective_user.id
-    completed = get_marked_games(user_id, 'completed_games')
-    if completed:
-        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
-    else:
-        response = "Вы пока не отметили ни одной пройденной игры."
-    await update.message.reply_text(response)
+    username = update.effective_user.username or "no_username"
+    raw_text = update.message.text.lower().strip()
 
-async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Проверяем, начинается ли сообщение с триггерного слова
+    for trigger in triggers:
+        if raw_text.startswith(trigger):
+            game_query = raw_text[len(trigger):].strip()
+            if not game_query:
+                await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{trigger}'.")
+                return ConversationHandler.END
+
+            matches = df[df['Title'].str.lower().str.contains(game_query)]
+            if matches.empty:
+                await update.message.reply_text(f"Игра, содержащая '{game_query}', не найдена в базе.")
+                return ConversationHandler.END
+
+            if len(matches) == 1:
+                game_title = matches.iloc[0]['Title']
+                add_game_mark(user_id, game_title, mark_type)
+                await update.message.reply_text(f"Игра '{game_title}' добавлена в список {mark_type.replace('_', ' ')}.")
+                return ConversationHandler.END
+
+            # Несколько вариантов — показываем список
+            games_list = [f"{idx + 1}. {row['Title']}" for idx, row in enumerate(matches.itertuples())]
+            await update.message.reply_text(
+                "Найдено несколько игр. Пожалуйста, напиши номер игры, чтобы добавить:\n" + "\n".join(games_list)
+            )
+            context.user_data['mark_type'] = mark_type
+            context.user_data['matches'] = matches.reset_index(drop=True)
+            return CHOOSING_GAME
+    return None
+
+async def choose_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
-    played = get_marked_games(user_id, 'played_games')
-    if played:
-        response = "Вот список игр, в которые вы уже играли:\n" + "\n".join(played)
-    else:
-        response = "Вы пока не отметили ни одной игры как сыгранной."
-    await update.message.reply_text(response)
+    choice_text = update.message.text.strip()
+    if not choice_text.isdigit():
+        await update.message.reply_text("Пожалуйста, напиши номер из списка.")
+        return CHOOSING_GAME
 
-async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    not_interested = get_marked_games(user_id, 'not_interested_games')
-    if not_interested:
-        response = "Вот список игр, которые вы отметили как неинтересные:\n" + "\n".join(not_interested)
-    else:
-        response = "Вы пока не отметили ни одной игры как неинтересную."
-    await update.message.reply_text(response)
+    index = int(choice_text) - 1
+    matches = context.user_data.get('matches')
+    mark_type = context.user_data.get('mark_type')
 
-async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    return await send_advice(update, context)
+    if not matches or index < 0 or index >= len(matches):
+        await update.message.reply_text("Неверный номер. Попробуй еще раз.")
+        return CHOOSING_GAME
+
+    game_title = matches.iloc[index]['Title']
+    add_game_mark(user_id, game_title, mark_type)
+    await update.message.reply_text(f"Игра '{game_title}' добавлена в список {mark_type.replace('_', ' ')}.")
+    return ConversationHandler.END
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -159,6 +188,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    # Сначала проверяем, не хочет ли пользователь пометить игру
+    mark_result = await mark_game(update, context, 'completed_games', ['пройден', 'пройдено', 'пройденные', 'пройденные игры'])
+    if mark_result:
+        return mark_result
+    mark_result = await mark_game(update, context, 'played_games', ['сыграл', 'уже играл', 'played'])
+    if mark_result:
+        return mark_result
+    mark_result = await mark_game(update, context, 'not_interested_games', ['неинтересно', 'не интересно', 'неинтересные игры'])
+    if mark_result:
+        return mark_result
+
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
     raw_text = update.message.text
@@ -218,34 +258,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Обработка пометки игр из текста без слэша
-    # Например: "пройдено Horizon Forbidden West"
-    mark_patterns = {
-        'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
-        'played_games': ['сыграл', 'уже играл', 'играл'],
-        'not_interested_games': ['неинтересно', 'не интересно', 'не интересна', 'не интересные']
-    }
-
-    for mark_type, keywords in mark_patterns.items():
-        for keyword in keywords:
-            if text.startswith(keyword):
-                game_title = text[len(keyword):].strip()
-                if not game_title:
-                    await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
-                    return ConversationHandler.END
-
-                # Проверяем, есть ли игра в базе
-                results = df[df['Title'].str.lower() == game_title]
-                if results.empty:
-                    await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
-                    return ConversationHandler.END
-
-                # Записываем пометку в базу
-                add_game_mark(user_id, results.iloc[0]['Title'], mark_type)
-                await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
-                return ConversationHandler.END
-
-    # Ответы на рекомендации
+    # Ответы на рекомендации (встроенные ответы)
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -290,6 +303,7 @@ if __name__ == '__main__':
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         states={
             ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
+            CHOOSING_GAME: [MessageHandler(filters.TEXT & (~filters.COMMAND), choose_game)],
         },
         fallbacks=[]
     )
