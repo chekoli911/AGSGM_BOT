@@ -151,11 +151,14 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
 
-async def new_releases_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    last_25 = df.tail(25).iloc[::-1]
-    messages = [f"{row['Title']}\n{row['Url']}" for _, row in last_25.iterrows()]
-    for msg in messages:
-        await update.message.reply_text(msg)
+async def contest_handler(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    contest_image_url = "https://optim.tildacdn.com/stor3930-6666-4337-a363-333035613536/-/format/webp/25164285.png"
+    contest_text = (
+        "Сейчас мы разыгрываем игру Clair Obscur: Expedition 33 на PS5 в формате П3 и ты уже начал принимать участие, "
+        "победителя выберем из тех кто подписан на @StorePSGMresale, @StorePSGM и @ArenaPSGMrent . "
+        "Итоги узнаем 14 августа в 20:00."
+    )
+    await update.message.reply_photo(photo=contest_image_url, caption=contest_text)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -173,6 +176,10 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Получено сообщение: {raw_text} от пользователя {user_id} (@{username})")
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
+
+    # Обработка слова "конкурс"
+    if 'конкурс' in text:
+        return await contest_handler(update, context)
 
     # Обработка слова "пока"
     if text == 'пока':
@@ -224,12 +231,8 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка новинок
-    if text == 'новинки':
-        await new_releases_command(update, context)
-        return ConversationHandler.END
-
     # Обработка пометки игр из текста без слэша
+    # Например: "пройдено Horizon Forbidden West"
     mark_patterns = {
         'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
         'played_games': ['сыграл', 'уже играл', 'играл'],
@@ -244,12 +247,13 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
-                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
-                results = df[df['Title'].str.lower().str.startswith(game_title)]
+                # Проверяем неполное совпадение названия (contains)
+                results = df[df['Title'].str.lower().str.contains(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
                     return ConversationHandler.END
 
+                # Записываем пометку в базу
                 add_game_mark(user_id, results.iloc[0]['Title'], mark_type)
                 await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
@@ -281,7 +285,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию
+    # Поиск игр по названию (необязательное полное совпадение)
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
@@ -291,7 +295,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"{row['Title']}\n{row['Url']}")
 
     return ConversationHandler.END
-
 
 if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
@@ -311,7 +314,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('played', played_command))
     app.add_handler(CommandHandler('notinterested', not_interested_command))
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
-    app.add_handler(CommandHandler('newreleases', new_releases_command))
+    app.add_handler(CommandHandler('конкурс', contest_handler))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
