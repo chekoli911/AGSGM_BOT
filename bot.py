@@ -125,13 +125,6 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    logging.info(f"Команда /start от пользователя {user_id}")
-    await update.message.reply_text(
-        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
-    )
-
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     completed = get_marked_games(user_id, 'completed_games')
@@ -221,6 +214,34 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text in not_interested_triggers:
         await not_interested_command(update, context)
         return ConversationHandler.END
+
+    # Обработка пометки игр из текста без слэша
+    # Например: "пройдено Horizon Forbidden West"
+    mark_patterns = {
+        'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
+        'played_games': ['сыграл', 'уже играл', 'играл'],
+        'not_interested_games': ['неинтересно', 'не интересно', 'неинтересные игры', 'не интересные']
+    }
+
+    for mark_type, patterns in mark_patterns.items():
+        for pattern in patterns:
+            if text.startswith(pattern):
+                # Извлечь название игры, удалив ключевое слово
+                game_title = text[len(pattern):].strip()
+                # Проверяем, что игра есть в базе
+                if game_title:
+                    # Опционально: проверить точное совпадение с названием из df
+                    matched_rows = df[df['Title'].str.lower() == game_title]
+                    if not matched_rows.empty:
+                        add_game_mark(user_id, game_title, mark_type)
+                        await update.message.reply_text(f"Игра '{game_title}' добавлена в ваш список {mark_type.replace('_', ' ')}.")
+                        return ConversationHandler.END
+                    else:
+                        await update.message.reply_text(f"Игра '{game_title}' не найдена в базе. Проверьте правильность написания.")
+                        return ConversationHandler.END
+                else:
+                    await update.message.reply_text("Пожалуйста, укажите название игры после команды.")
+                    return ConversationHandler.END
 
     # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
