@@ -97,7 +97,7 @@ async def notify_admin(app, text: str):
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
-        "Здравствуйте! Я бот для поиска игр на PlayStation. "
+        "Здравствуйте! Я Искусственный Интеллект для поиска игр на PlayStation. "
         "Напишите название игры для поиска или напишите 'совет', '?' или 'во что поиграть', "
         "чтобы получить случайную рекомендацию."
     )
@@ -121,6 +121,15 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
+async def completed_games_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    completed = get_marked_games(user_id, 'completed_games')
+    if completed:
+        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
+    else:
+        response = "Вы пока не отметили ни одной пройденной игры."
+    await update.message.reply_text(response)
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     logging.info(f"Команда /start от пользователя {user_id}")
@@ -138,7 +147,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
-    # Обработка слова "пока"
     if text == 'пока':
         await update.message.reply_text(
             "До встречи! У нас можно не только арендовать игры, но и купить их навсегда по выгодным ценам.\n"
@@ -147,11 +155,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Обработка запроса "еще"
     if text == 'еще':
         return await send_advice(update, context)
 
-    # Вопросы про вход в аккаунт
     account_phrases = [
         "как войти в аккаунт",
         "как войти в акаунт",
@@ -165,15 +171,12 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Приветствия
     if text in ['привет', 'здравствуй', 'добрый день', 'доброе утро', 'добрый вечер']:
         return await greet(update, context)
 
-    # Запрос совета — вызываем отдельную функцию
     if text in advice_triggers:
         return await send_advice(update, context)
 
-    # Запрос списка пройденных игр
     if text == 'пройденные':
         completed = get_marked_games(user_id, 'completed_games')
         if completed:
@@ -183,7 +186,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(response)
         return ConversationHandler.END
 
-    # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -210,7 +212,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
@@ -235,7 +236,8 @@ if __name__ == '__main__':
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('greet', greet))
+    app.add_handler(CommandHandler('Пройденные', completed_games_command))
     app.add_handler(conv_handler)
 
-    logging.info("Бот запущен...")
+    logging.info("Искусственный Интеллект запущен...")
     app.run_polling()
