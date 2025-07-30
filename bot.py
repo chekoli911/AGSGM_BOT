@@ -64,10 +64,6 @@ def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
     ref.update({game_title: True})
 
-def check_game_mark(user_id: int, game_title: str, mark_type: str):
-    ref = db.reference(f'users/{user_id}/{mark_type}/{game_title}')
-    return ref.get() is not None
-
 def get_marked_games(user_id: int, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
     data = ref.get()
@@ -102,8 +98,8 @@ async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
         "Привет! Я искусственный интеллект. Для поиска игр на PlayStation. "
-        "Напиши название игры и я найду ее в нашей базе аренды. А если не знаешь во что поиграть напиши 'Совет', или 'Во что поиграть?', "
-        "я подумаю и пришлю случайную рекомендацию. Еще я могу показать некоторые команды если напишешь вот такую палочку - /"
+        "Напиши название игры и я найду её в нашей базе аренды. А если не знаешь во что поиграть, напиши 'Совет' или 'Во что поиграть?', "
+        "я подумаю и пришлю случайную рекомендацию. Ещё я могу показать некоторые команды, если напишешь вот такую палочку - /"
     )
 
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -120,7 +116,7 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
+           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
            'Если хочешь получить ещё рекомендацию — напиши "Еще".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
@@ -220,28 +216,27 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     mark_patterns = {
         'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
         'played_games': ['сыграл', 'уже играл', 'играл'],
-        'not_interested_games': ['неинтересно', 'не интересно', 'неинтересные игры', 'не интересные']
+        'not_interested_games': ['неинтересно', 'не интересно', 'не интересна', 'не интересные']
     }
 
-    for mark_type, patterns in mark_patterns.items():
-        for pattern in patterns:
-            if text.startswith(pattern):
-                # Извлечь название игры, удалив ключевое слово
-                game_title = text[len(pattern):].strip()
-                # Проверяем, что игра есть в базе
-                if game_title:
-                    # Опционально: проверить точное совпадение с названием из df
-                    matched_rows = df[df['Title'].str.lower() == game_title]
-                    if not matched_rows.empty:
-                        add_game_mark(user_id, game_title, mark_type)
-                        await update.message.reply_text(f"Игра '{game_title}' добавлена в ваш список {mark_type.replace('_', ' ')}.")
-                        return ConversationHandler.END
-                    else:
-                        await update.message.reply_text(f"Игра '{game_title}' не найдена в базе. Проверьте правильность написания.")
-                        return ConversationHandler.END
-                else:
-                    await update.message.reply_text("Пожалуйста, укажите название игры после команды.")
+    for mark_type, keywords in mark_patterns.items():
+        for keyword in keywords:
+            if text.startswith(keyword):
+                game_title = text[len(keyword):].strip()
+                if not game_title:
+                    await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
+
+                # Проверяем, есть ли игра в базе
+                results = df[df['Title'].str.lower() == game_title]
+                if results.empty:
+                    await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
+                    return ConversationHandler.END
+
+                # Записываем пометку в базу
+                add_game_mark(user_id, results.iloc[0]['Title'], mark_type)
+                await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
+                return ConversationHandler.END
 
     # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
