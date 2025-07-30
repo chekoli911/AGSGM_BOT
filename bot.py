@@ -311,7 +311,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('played', played_command))
     app.add_handler(CommandHandler('notinterested', not_interested_command))
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
-    app.add_handler(CommandHandler('новинки', new_releases_command))
+    app.add_handler(CommandHandler('newreleases', new_releases_command))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
