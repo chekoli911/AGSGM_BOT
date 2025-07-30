@@ -54,9 +54,7 @@ advice_triggers = [
     'дай совет', 'что поиграть', 'посоветуй', 'игра на сегодня'
 ]
 
-passed_triggers = ['пройденные', 'пройденное', 'пройдено', 'пройденные игры', 'passed']
-played_triggers = ['уже играл', 'сыграл', 'played']
-not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
+passed_triggers = ['пройденные', 'пройденное', 'пройдено', 'пройденные игры']
 
 ASKING_IF_WANT_NEW = 1
 
@@ -132,8 +130,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
     )
 
-# Новые функции для команд
-
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     completed = get_marked_games(user_id, 'completed_games')
@@ -143,23 +139,8 @@ async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной пройденной игры."
     await update.message.reply_text(response)
 
-async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    played = get_marked_games(user_id, 'played_games')
-    if played:
-        response = "Вот список игр, в которые вы уже играли:\n" + "\n".join(played)
-    else:
-        response = "Вы пока не отметили ни одной игры как сыгранной."
-    await update.message.reply_text(response)
-
-async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    not_interested = get_marked_games(user_id, 'not_interested_games')
-    if not_interested:
-        response = "Вот список игр, которые вы отметили как неинтересные:\n" + "\n".join(not_interested)
-    else:
-        response = "Вы пока не отметили ни одной игры как неинтересную."
-    await update.message.reply_text(response)
+async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    return await send_advice(update, context)
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -208,17 +189,12 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Запрос списка пройденных игр (текстовые варианты)
     if text in passed_triggers:
-        await passed_command(update, context)
-        return ConversationHandler.END
-
-    # Запрос списка сыгранных игр
-    if text in played_triggers:
-        await played_command(update, context)
-        return ConversationHandler.END
-
-    # Запрос списка неинтересных игр
-    if text in not_interested_triggers:
-        await not_interested_command(update, context)
+        completed = get_marked_games(user_id, 'completed_games')
+        if completed:
+            response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
+        else:
+            response = "Вы пока не отметили ни одной пройденной игры."
+        await update.message.reply_text(response)
         return ConversationHandler.END
 
     # Ответы на рекомендации
@@ -274,8 +250,6 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('greet', greet))
     app.add_handler(CommandHandler('passed', passed_command))
-    app.add_handler(CommandHandler('played', played_command))
-    app.add_handler(CommandHandler('notinterested', not_interested_command))
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
     app.add_handler(conv_handler)
 
