@@ -55,7 +55,6 @@ advice_triggers = [
 ]
 
 ASKING_IF_WANT_NEW = 1
-user_last_game = {}
 
 def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
@@ -95,6 +94,15 @@ async def notify_admin(app, text: str):
     admin_chat_id = -1002773793511
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
+# Новая функция приветствия
+async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    logging.info(f"Пользователь {update.effective_user.id} поздоровался")
+    await update.message.reply_text(
+        "Здравствуйте! Я бот для поиска игр на PlayStation. "
+        "Напишите название игры для поиска или напишите 'совет', '?' или 'во что поиграть', "
+        "чтобы получить случайную рекомендацию."
+    )
+
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
@@ -109,7 +117,8 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно".')
+           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно".\n'
+           'Если хочешь получить ещё рекомендацию — напиши "Еще".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
@@ -130,6 +139,10 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
+    # Обработка запроса "еще"
+    if text == 'еще':
+        return await send_advice(update, context)
+
     # Вопросы про вход в аккаунт
     account_phrases = [
         "как войти в аккаунт",
@@ -146,12 +159,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Приветствия
     if text in ['привет', 'здравствуй', 'добрый день', 'доброе утро', 'добрый вечер']:
-        greetings = [
-            "Здравствуйте! Я помогу найти игры по названию или дам совет, что поиграть.",
-            "Привет! Можете написать название игры или запросить совет.",
-        ]
-        await update.message.reply_text(random.choice(greetings))
-        return ConversationHandler.END
+        return await greet(update, context)
 
     # Запрос совета — вызываем отдельную функцию
     if text in advice_triggers:
@@ -181,8 +189,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
-        await search_game(update, context)
-        return ConversationHandler.END
+        return await send_advice(update, context)
 
     if text == 'спасибо':
         await update.message.reply_text(
@@ -219,6 +226,7 @@ if __name__ == '__main__':
 
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('start', start))
+    app.add_handler(CommandHandler('greet', greet))  # команда /greet для приветствия
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
