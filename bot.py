@@ -59,7 +59,8 @@ played_triggers = ['уже играл', 'сыграл', 'played']
 not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
 
 ASKING_IF_WANT_NEW = 1
-CHOOSING_GAME = 2  # Определяем состояние выбора игры из списка
+
+TEST_USER_IDS = [6280405854, 291987661, 5381215134]
 
 def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
@@ -122,6 +123,13 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    logging.info(f"Команда /start от пользователя {user_id}")
+    await update.message.reply_text(
+        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
+    )
+
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     completed = get_marked_games(user_id, 'completed_games')
@@ -152,66 +160,22 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
 
-async def mark_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mark_type: str, triggers: list):
-    user_id = update.effective_user.id
-    raw_text = update.message.text.lower().strip()
+async def send_test_image(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    image_url = "https://image.api.playstation.com/pr/bam-art/214/754/fc50c647-5854-443c-886f-37377576c781.png"
+    caption = "Это тестовое сообщение с картинкой от ИИ."
 
-    for trigger in triggers:
-        if raw_text.startswith(trigger):
-            game_query = raw_text[len(trigger):].strip()
-            if not game_query:
-                await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{trigger}'.")
-                return ConversationHandler.END
+    sent_count = 0
+    failed_count = 0
 
-            # Поиск игр с частичным совпадением (без точного совпадения)
-            matches = df[df['Title'].str.lower().str.contains(game_query)]
-            if matches.empty:
-                await update.message.reply_text(f"Игра, содержащая '{game_query}', не найдена в базе.")
-                return ConversationHandler.END
+    for chat_id in TEST_USER_IDS:
+        try:
+            await context.bot.send_photo(chat_id=chat_id, photo=image_url, caption=caption)
+            sent_count += 1
+        except Exception as e:
+            logging.error(f"Ошибка при отправке пользователю {chat_id}: {e}")
+            failed_count += 1
 
-            # Если одна игра — сразу добавляем
-            if len(matches) == 1:
-                game_title = matches.iloc[0]['Title']
-                add_game_mark(user_id, game_title, mark_type)
-                await update.message.reply_text(f"Игра '{game_title}' добавлена в список {mark_type.replace('_', ' ')}.")
-                return ConversationHandler.END
-
-            # Несколько игр — просим выбрать
-            games_list = [f"{idx + 1}. {row['Title']}" for idx, row in enumerate(matches.itertuples())]
-            await update.message.reply_text(
-                "Найдено несколько игр. Пожалуйста, напиши номер игры, чтобы добавить:\n" + "\n".join(games_list)
-            )
-            context.user_data['mark_type'] = mark_type
-            context.user_data['matches'] = matches.reset_index(drop=True)
-            return CHOOSING_GAME
-    return None
-
-async def choose_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    choice_text = update.message.text.strip()
-    if not choice_text.isdigit():
-        await update.message.reply_text("Пожалуйста, напиши номер из списка.")
-        return CHOOSING_GAME
-
-    index = int(choice_text) - 1
-    matches = context.user_data.get('matches')
-    mark_type = context.user_data.get('mark_type')
-
-    if not matches or index < 0 or index >= len(matches):
-        await update.message.reply_text("Неверный номер. Попробуй еще раз.")
-        return CHOOSING_GAME
-
-    game_title = matches.iloc[index]['Title']
-    add_game_mark(user_id, game_title, mark_type)
-    await update.message.reply_text(f"Игра '{game_title}' добавлена в список {mark_type.replace('_', ' ')}.")
-    return ConversationHandler.END
-
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    logging.info(f"Команда /start от пользователя {user_id}")
-    await update.message.reply_text(
-        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
-    )
+    await update.message.reply_text(f"Рассылка завершена.\nУспешно: {sent_count}\nОшибок: {failed_count}")
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -222,17 +186,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Получено сообщение: {raw_text} от пользователя {user_id} (@{username})")
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
-
-    # Проверка попытки пометить игру
-    mark_result = await mark_game(update, context, 'completed_games', ['пройдено', 'пройденные', 'пройденное', 'пройден'])
-    if mark_result:
-        return mark_result
-    mark_result = await mark_game(update, context, 'played_games', ['сыграл', 'уже играл', 'играл'])
-    if mark_result:
-        return mark_result
-    mark_result = await mark_game(update, context, 'not_interested_games', ['неинтересно', 'не интересно', 'не интересна', 'не интересные'])
-    if mark_result:
-        return mark_result
 
     # Обработка слова "пока"
     if text == 'пока':
@@ -329,7 +282,6 @@ if __name__ == '__main__':
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         states={
             ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
-            CHOOSING_GAME: [MessageHandler(filters.TEXT & (~filters.COMMAND), choose_game)],
         },
         fallbacks=[]
     )
@@ -341,6 +293,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('played', played_command))
     app.add_handler(CommandHandler('notinterested', not_interested_command))
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
+    app.add_handler(CommandHandler('sendtestimage', send_test_image))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
