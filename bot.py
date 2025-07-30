@@ -97,8 +97,8 @@ async def notify_admin(app, text: str):
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
-        "Здравствуйте! Я бот для поиска игр на PlayStation. "
-        "Напишите название игры для поиска или напишите 'совет', '?' или 'во что поиграть', "
+        "Здравствуйте! Я искуственный интелллект для поиска игр на PlayStation. "
+        "Напишите название игры для поиска или напишите 'Совет', или 'Во что поиграть?', "
         "чтобы получить случайную рекомендацию."
     )
 
@@ -120,15 +120,6 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
            'Если хочешь получить ещё рекомендацию — напиши "Еще".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
-
-async def completed_games_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    completed = get_marked_games(user_id, 'completed_games')
-    if completed:
-        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
-    else:
-        response = "Вы пока не отметили ни одной пройденной игры."
-    await update.message.reply_text(response)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -182,7 +173,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text in advice_triggers:
         return await send_advice(update, context)
 
-    # Запрос списка пройденных игр через команду /Пройденные
+    # Запрос списка пройденных игр
     if text == 'пройденные':
         completed = get_marked_games(user_id, 'completed_games')
         if completed:
@@ -244,7 +235,6 @@ if __name__ == '__main__':
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('greet', greet))
-    app.add_handler(CommandHandler('Пройденные', completed_games_command))  # <-- Добавлена команда /Пройденные
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
