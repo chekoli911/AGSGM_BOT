@@ -59,15 +59,11 @@ played_triggers = ['уже играл', 'сыграл', 'played']
 not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
 
 ASKING_IF_WANT_NEW = 1
-CHOOSING_GAME = 2  # Новый статус для выбора из списка
+CHOOSING_GAME = 2  # Добавлено состояние для выбора игры
 
 def add_game_mark(user_id: int, game_title: str, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
     ref.update({game_title: True})
-
-def check_game_mark(user_id: int, game_title: str, mark_type: str):
-    ref = db.reference(f'users/{user_id}/{mark_type}/{game_title}')
-    return ref.get() is not None
 
 def get_marked_games(user_id: int, mark_type: str):
     ref = db.reference(f'users/{user_id}/{mark_type}')
@@ -128,10 +124,8 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 async def mark_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mark_type: str, triggers: list):
     user_id = update.effective_user.id
-    username = update.effective_user.username or "no_username"
     raw_text = update.message.text.lower().strip()
 
-    # Проверяем, начинается ли сообщение с триггерного слова
     for trigger in triggers:
         if raw_text.startswith(trigger):
             game_query = raw_text[len(trigger):].strip()
@@ -150,7 +144,6 @@ async def mark_game(update: Update, context: ContextTypes.DEFAULT_TYPE, mark_typ
                 await update.message.reply_text(f"Игра '{game_title}' добавлена в список {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
 
-            # Несколько вариантов — показываем список
             games_list = [f"{idx + 1}. {row['Title']}" for idx, row in enumerate(matches.itertuples())]
             await update.message.reply_text(
                 "Найдено несколько игр. Пожалуйста, напиши номер игры, чтобы добавить:\n" + "\n".join(games_list)
@@ -187,8 +180,35 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
     )
 
+async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    completed = get_marked_games(user_id, 'completed_games')
+    if completed:
+        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
+    else:
+        response = "Вы пока не отметили ни одной пройденной игры."
+    await update.message.reply_text(response)
+
+async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    played = get_marked_games(user_id, 'played_games')
+    if played:
+        response = "Вот список игр, в которые вы уже играли:\n" + "\n".join(played)
+    else:
+        response = "Вы пока не отметили ни одной игры как сыгранной."
+    await update.message.reply_text(response)
+
+async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    not_interested = get_marked_games(user_id, 'not_interested_games')
+    if not_interested:
+        response = "Вот список игр, которые вы отметили как неинтересные:\n" + "\n".join(not_interested)
+    else:
+        response = "Вы пока не отметили ни одной игры как неинтересную."
+    await update.message.reply_text(response)
+
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    # Сначала проверяем, не хочет ли пользователь пометить игру
+    # Проверка попытки пометить игру
     mark_result = await mark_game(update, context, 'completed_games', ['пройден', 'пройдено', 'пройденные', 'пройденные игры'])
     if mark_result:
         return mark_result
@@ -208,7 +228,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
-    # Обработка слова "пока"
     if text == 'пока':
         await update.message.reply_text(
             "До встречи! У нас можно не только арендовать игры, но и купить их навсегда по выгодным ценам.\n"
@@ -217,11 +236,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Обработка запроса "еще"
     if text == 'еще':
         return await send_advice(update, context)
 
-    # Вопросы про вход в аккаунт
     account_phrases = [
         "как войти в аккаунт",
         "как войти в акаунт",
@@ -235,30 +252,24 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Приветствия
     if text in ['привет', 'здравствуй', 'добрый день', 'доброе утро', 'добрый вечер']:
         return await greet(update, context)
 
-    # Запрос совета — вызываем отдельную функцию
     if text in advice_triggers:
         return await send_advice(update, context)
 
-    # Запрос списка пройденных игр (текстовые варианты)
     if text in passed_triggers:
         await passed_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка сыгранных игр
     if text in played_triggers:
         await played_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка неинтересных игр
     if text in not_interested_triggers:
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Ответы на рекомендации (встроенные ответы)
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -285,7 +296,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
