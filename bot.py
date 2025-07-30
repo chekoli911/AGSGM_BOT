@@ -1,6 +1,7 @@
 import os
 import logging
 import random
+import re
 import pandas as pd
 import requests
 from io import BytesIO
@@ -46,15 +47,34 @@ advice_texts = [
     "Эта игра стоит твоего внимания:"
 ]
 
+# Триггеры для распознавания запросов на совет
+advice_triggers = [
+    "совет",
+    "во что поиграть",
+    "?",
+    "??",
+    "порекомендуй",
+    "рекомендация",
+    "дай совет",
+    "что поиграть",
+    "посоветуй",
+    "игра на сегодня",
+]
+
 ASKING_IF_WANT_NEW = 1
 user_last_game = {}
+
+def normalize_text(text):
+    text = text.lower().strip()
+    text = re.sub(r'[?]+', '', text)  # удаляем все знаки вопроса
+    return text
 
 def pick_random_game():
     row = df.sample(n=1).iloc[0]
     return row['Title'], row['Url']
 
 async def notify_admin(app, text: str):
-    admin_chat_id = -1002773793511  # твой chat_id канала
+    admin_chat_id = -1002773793511  # chat_id твоего канала
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -127,18 +147,19 @@ async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
-    text = update.message.text.lower().strip()
-    logging.info(f"Получено сообщение: {text} от пользователя {user_id} (@{username})")
+    raw_text = update.message.text
+    text = normalize_text(raw_text)
+    logging.info(f"Получено сообщение: {raw_text} от пользователя {user_id} (@{username})")
 
     if text == "привет":
         await greet(update, context)
         return ConversationHandler.END
 
-    if text in ["во что поиграть", "?", "совет"]:
+    if text in advice_triggers:
         return await send_advice(update, context)
 
     logging.info(f"[Поиск] Пользователь {user_id} (@{username}) ищет: {text}")
-    await notify_admin(context.application, f"Пользователь {user_id} (@{username}) сделал запрос: {text}")
+    await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
 
