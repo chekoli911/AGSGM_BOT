@@ -81,7 +81,11 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     user_last_game[user_id] = (title, url)
 
-    message = f"{advice}\n{title}\n{url}\n\nЕсли хочешь другой вариант, просто скажи 'Уже играл', 'Уже прошел' или 'Неинтересно'."
+    message = (
+        f"{advice}\n{title}\n{url}\n\n"
+        "Если подходит этот вариант, то напиши в ответе мне \"Спасибо\" — мне будет приятно)\n"
+        "Если хочешь другой вариант, просто скажи 'Уже играл', 'Уже прошел' или 'Неинтересно'."
+    )
     await update.message.reply_text(message)
 
     return ASKING_IF_WANT_NEW
@@ -90,12 +94,15 @@ async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     text = update.message.text.lower().strip()
 
-    # Добавлено условие для «уже играл» и подобных
     if text in ['да', 'конечно', 'давай'] or text in ['уже играл', 'уже прошел', 'неинтересно']:
         title, url = pick_random_game()
         user_last_game[user_id] = (title, url)
         advice = random.choice(advice_texts)
-        message = f"{advice}\n{title}\n{url}\n\nЕсли хочешь другой вариант, скажи 'Уже играл', 'Уже прошел' или 'Неинтересно'."
+        message = (
+            f"{advice}\n{title}\n{url}\n\n"
+            "Если подходит этот вариант, то напиши в ответе мне \"Спасибо\" — мне будет приятно)\n"
+            "Если хочешь другой вариант, скажи 'Уже играл', 'Уже прошел' или 'Неинтересно'."
+        )
         await update.message.reply_text(message)
         return ASKING_IF_WANT_NEW
 
