@@ -23,6 +23,10 @@ GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478
 
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
+async def notify_admin(app, text: str):
+    admin_chat_id = -1002773793511  # chat_id твоего канала
+    await app.bot.send_message(chat_id=admin_chat_id, text=text)
+
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Команда /start от пользователя {update.effective_user.id}")
     await update.message.reply_text(
@@ -36,6 +40,8 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     query = update.message.text.lower().strip()
     logging.info(f"[Поиск] Пользователь {user_id} (@{username}) ищет: {query}")
+
+    await notify_admin(context.application, f"Пользователь {user_id} (@{username}) сделал запрос: {query}")
 
     results = df[df['Title'].str.lower().str.contains(query, na=False)]
 
