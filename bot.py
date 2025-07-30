@@ -10,13 +10,11 @@ from telegram.ext import (
     MessageHandler, filters, ConversationHandler
 )
 
-# Настройка логирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
 )
 
-# Снижение лишних логов
 logging.getLogger("httpx").setLevel(logging.WARNING)
 logging.getLogger("urllib3").setLevel(logging.WARNING)
 logging.getLogger("telegram.client").setLevel(logging.WARNING)
@@ -49,11 +47,14 @@ advice_texts = [
 ]
 
 ASKING_IF_WANT_NEW = 1
-
 user_last_game = {}
 
+def pick_random_game():
+    row = df.sample(n=1).iloc[0]
+    return row['Title'], row['Url']
+
 async def notify_admin(app, text: str):
-    admin_chat_id = -1002773793511  # chat_id твоего канала
+    admin_chat_id = -1002773793511  # твой chat_id канала
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -69,10 +70,6 @@ async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Напишите название игры для поиска или напишите 'совет', '?' или 'во что поиграть', "
         "чтобы получить случайную рекомендацию."
     )
-
-def pick_random_game():
-    row = df.sample(n=1).iloc[0]
-    return row['Title'], row['Url']
 
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -93,7 +90,8 @@ async def handle_response(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     text = update.message.text.lower().strip()
 
-    if text in ['да', 'конечно', 'давай']:
+    # Добавлено условие для «уже играл» и подобных
+    if text in ['да', 'конечно', 'давай'] or text in ['уже играл', 'уже прошел', 'неинтересно']:
         title, url = pick_random_game()
         user_last_game[user_id] = (title, url)
         advice = random.choice(advice_texts)
@@ -125,12 +123,10 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     text = update.message.text.lower().strip()
     logging.info(f"Получено сообщение: {text} от пользователя {user_id} (@{username})")
 
-    # Проверяем приветствие
     if text == "привет":
         await greet(update, context)
         return ConversationHandler.END
 
-    # Проверяем запрос на совет
     if text in ["во что поиграть", "?", "совет"]:
         return await send_advice(update, context)
 
