@@ -51,7 +51,7 @@ advice_texts = [
 
 advice_triggers = [
     'совет', 'во что поиграть', '?', '??', 'порекомендуй', 'рекомендация',
-    'дай совет', 'что поиграть', 'посоветуй', 'игра на сегодня'
+    'дай совет', 'что поиграть', 'посоветуй', 'whattoplay'
 ]
 
 ASKING_IF_WANT_NEW = 1
@@ -174,7 +174,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return await send_advice(update, context)
 
     # Запрос списка пройденных игр
-    if text == 'пройденные':
+    if text == 'пройденные', 'passed' :
         completed = get_marked_games(user_id, 'completed_games')
         if completed:
             response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
