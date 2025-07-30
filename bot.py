@@ -55,7 +55,7 @@ advice_triggers = [
     'дай совет', 'что поиграть', 'посоветуй', '/whattoplay'
 ]
 
-passed_triggers = ['пройденные', 'пройденное', 'пройдено', '/passed']
+passed_triggers = ['пройденные', 'пройденное', 'пройдено', '/passed', 'Мои игры']
 
 ASKING_IF_WANT_NEW = 1
 
