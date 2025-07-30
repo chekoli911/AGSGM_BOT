@@ -87,7 +87,7 @@ with tempfile.NamedTemporaryFile(delete=False, mode='w', suffix='.json') as temp
 
 cred = credentials.Certificate(temp_filename)
 firebase_admin.initialize_app(cred, {
-    'databaseURL': 'https://agsgm-search-default-rtdb.firebaseio.com/'  # замени на свой URL Realtime DB
+    'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'  # замени на свой URL Realtime DB
 })
 
 def log_user_visit(user_id):
