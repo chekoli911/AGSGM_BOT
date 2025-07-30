@@ -49,13 +49,12 @@ advice_texts = [
     "Эта игра стоит твоего внимания:"
 ]
 
-# Добавлены дополнительные ключевые слова для триггеров советов и пройденных игр
 advice_triggers = [
     'совет', 'во что поиграть', '?', '??', 'порекомендуй', 'рекомендация',
-    'дай совет', 'что поиграть', 'посоветуй', '/whattoplay'
+    'дай совет', 'что поиграть', 'посоветуй', 'игра на сегодня'
 ]
 
-passed_triggers = ['пройденные', 'пройденное', 'пройдено', '/passed', 'Мои игры']
+passed_triggers = ['пройденные', 'пройденное', 'пройдено', 'пройденные игры']
 
 ASKING_IF_WANT_NEW = 1
 
@@ -131,6 +130,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
     )
 
+async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    completed = get_marked_games(user_id, 'completed_games')
+    if completed:
+        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
+    else:
+        response = "Вы пока не отметили ни одной пройденной игры."
+    await update.message.reply_text(response)
+
+async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    return await send_advice(update, context)
+
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     username = update.effective_user.username or "no_username"
@@ -176,7 +187,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if text in advice_triggers:
         return await send_advice(update, context)
 
-    # Запрос списка пройденных игр
+    # Запрос списка пройденных игр (текстовые варианты)
     if text in passed_triggers:
         completed = get_marked_games(user_id, 'completed_games')
         if completed:
@@ -238,6 +249,8 @@ if __name__ == '__main__':
     app = ApplicationBuilder().token(TOKEN).build()
     app.add_handler(CommandHandler('start', start))
     app.add_handler(CommandHandler('greet', greet))
+    app.add_handler(CommandHandler('passed', passed_command))
+    app.add_handler(CommandHandler('whattoplay', whattoplay_command))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
