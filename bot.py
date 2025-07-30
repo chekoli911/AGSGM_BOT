@@ -6,11 +6,18 @@ from io import BytesIO
 from telegram import Update
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, MessageHandler, filters
 
-# Настройка логирования
+# Настройка основного логирования
 logging.basicConfig(
     level=logging.INFO,
     format='%(asctime)s %(levelname)s %(message)s'
 )
+
+# Снижает уровень логирования для httpx, urllib3 и telegram клиента
+logging.getLogger("httpx").setLevel(logging.WARNING)
+logging.getLogger("urllib3").setLevel(logging.WARNING)
+logging.getLogger("telegram.client").setLevel(logging.WARNING)
+logging.getLogger("telegram.vendor.ptb_urllib3").setLevel(logging.WARNING)
+logging.getLogger("telegram.ext.updater").setLevel(logging.WARNING)
 
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 
