@@ -97,9 +97,9 @@ async def notify_admin(app, text: str):
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
-        "Привет! Я искусственный интеллект для поиска игр на PlayStation. "
-        "Напиши название игры для поиска в нашей базе аренды или напиши 'Совет', или 'Во что поиграть?', "
-        "чтобы получить случайную рекомендацию."
+        "Привет! Я искусственный интеллект. Для поиска игр на PlayStation. "
+        "Напиши название игры и я найду ее в нашей базе аренды. А если не знаешь во что поиграть напиши 'Совет', или 'Во что поиграть?', "
+        "я подумаю и пришлю случайную рекомендацию."
     )
 
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
