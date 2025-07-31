@@ -163,13 +163,14 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     # Обработка слова "конкурс"
     if 'конкурс' in text:
-        contest_image_url = "https://optim.tildacdn.com/stor3930-6666-4337-a363-333035613536/-/format/webp/25164285.png"
-        contest_text = (
-            "Сейчас мы разыгрываем игру Clair Obscur: Expedition 33 на PS5 в формате П3 и ты уже начал принимать участие, "
-            "победителя выберем из тех кто подписан на @StorePSGMresale, @StorePSGM и @ArenaPSGMrent . "
-            "Итоги узнаем 14 августа в 20:00."
+        await update.message.reply_photo(
+            photo='https://optim.tildacdn.com/stor3930-6666-4337-a363-333035613536/-/format/webp/25164285.png',
+            caption=(
+                "Сейчас мы разыгрываем игру Clair Obscur: Expedition 33 на PS5 в формате П3 и ты уже начал принимать участие, "
+                "победителя выберем из тех кто подписан на @StorePSGMresale, @StorePSGM и @ArenaPSGMrent . "
+                "Итоги узнаем 14 августа в 20:00."
+            )
         )
-        await update.message.reply_photo(photo=contest_image_url, caption=contest_text)
         return ConversationHandler.END
 
     # Обработка слова "пока"
@@ -222,7 +223,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Ответы на рекомендации
+    # Ответы на рекомендации (пометки)
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -234,6 +235,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
         return ASKING_IF_WANT_NEW
 
+    # Продолжение работы с рекомендациями
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
         return await send_advice(update, context)
@@ -249,7 +251,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию (с частичным совпадением)
+    # Поиск игр по названию (частичный поиск)
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
