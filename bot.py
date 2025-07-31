@@ -3,16 +3,17 @@ import logging
 import pandas as pd
 import requests
 from io import BytesIO
-from telegram import Update
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
-    MessageHandler, filters, ConversationHandler
+    MessageHandler, filters, ConversationHandler, CallbackQueryHandler
 )
 import firebase_admin
 from firebase_admin import credentials, db
 from datetime import datetime, timezone
 import random
 import re
+import json
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
@@ -20,7 +21,7 @@ firebase_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
 if not firebase_json:
     raise RuntimeError("FIREBASE_CREDENTIALS_JSON env var is missing")
 
-firebase_cred = credentials.Certificate(eval(firebase_json))
+firebase_cred = credentials.Certificate(json.loads(firebase_json))
 firebase_admin.initialize_app(firebase_cred, {
     'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
 })
@@ -115,11 +116,43 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
-    msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
-           'Если хочешь получить ещё рекомендацию — напиши "Еще".')
-    await update.message.reply_text(msg)
+    msg = f"{advice}\n{title}\n{url}"
+
+    keyboard = [
+        [
+            InlineKeyboardButton("Спасибо", callback_data="thanks"),
+            InlineKeyboardButton("Ещё", callback_data="more"),
+            InlineKeyboardButton("Уже играл", callback_data="played")
+        ]
+    ]
+    reply_markup = InlineKeyboardMarkup(keyboard)
+    await update.message.reply_text(msg, reply_markup=reply_markup)
     return ASKING_IF_WANT_NEW
+
+async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    user_id = update.effective_user.id
+    last_game = context.user_data.get('last_recommended_game')
+
+    if query.data == "thanks":
+        await query.message.reply_text(
+            "Рад помочь! Если хочешь оформить игру без комиссии, переходи по ссылке.\n"
+            "Выдача игр после оплаты занимает примерно 15 минут."
+        )
+        return ConversationHandler.END
+    elif query.data == "more":
+        return await send_advice(update, context)
+    elif query.data == "played":
+        if last_game:
+            add_game_mark(user_id, last_game, 'played_games')
+            await query.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?", reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("Да", callback_data="more"), InlineKeyboardButton("Нет", callback_data="no")]
+            ]))
+            return ASKING_IF_WANT_NEW
+        else:
+            await query.message.reply_text("Игра не найдена в последней рекомендации.")
+            return ConversationHandler.END
 
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -174,7 +207,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
-    # Обработка слова "пока"
     if text == 'пока':
         await update.message.reply_text(
             "До встречи! У нас можно не только арендовать игры, но и купить их навсегда по выгодным ценам.\n"
@@ -183,11 +215,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Обработка запроса "еще"
     if text == 'еще':
         return await send_advice(update, context)
 
-    # Вопросы про вход в аккаунт
     account_phrases = [
         "как войти в аккаунт",
         "как войти в акаунт",
@@ -201,35 +231,28 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         )
         return ConversationHandler.END
 
-    # Приветствия
     if text in ['привет', 'здравствуй', 'добрый день', 'доброе утро', 'добрый вечер']:
         return await greet(update, context)
 
-    # Запрос совета — вызываем отдельную функцию
     if text in advice_triggers:
         return await send_advice(update, context)
 
-    # Запрос списка пройденных игр (текстовые варианты)
     if text in passed_triggers:
         await passed_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка сыгранных игр
     if text in played_triggers:
         await played_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка неинтересных игр
     if text in not_interested_triggers:
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка новинок
     if text == 'новинки':
         await new_releases_command(update, context)
         return ConversationHandler.END
 
-    # Обработка пометки игр из текста без слэша
     mark_patterns = {
         'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
         'played_games': ['сыграл', 'уже играл', 'играл'],
@@ -244,7 +267,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
-                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
                 results = df[df['Title'].str.lower().str.startswith(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
@@ -254,7 +276,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
 
-    # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -263,7 +284,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             add_game_mark(user_id, last_game, 'played_games')
         else:
             add_game_mark(user_id, last_game, 'not_interested_games')
-        await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
+        await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?", reply_markup=InlineKeyboardMarkup([
+            [InlineKeyboardButton("Да", callback_data="more"), InlineKeyboardButton("Нет", callback_data="no")]
+        ]))
         return ASKING_IF_WANT_NEW
 
     if text in ['да', 'конечно', 'давай']:
@@ -281,7 +304,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
@@ -292,15 +314,14 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     return ConversationHandler.END
 
-
 if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         states={
-            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
-        },
+            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game),
+                                 CallbackQueryHandler(button_callback)],
         fallbacks=[]
     )
 
