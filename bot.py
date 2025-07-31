@@ -114,20 +114,12 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     advice = random.choice(advice_texts)
-context.user_data['last_recommended_game'] = title
-msg = (
-    f"{advice}\n"
-    f"{title}\n"
-    f"{url}\n\n"
-    'Если хочешь получить новую рекомендацию, напиши "Еще".\n\n'
-    '"Играл",\n'
-    '"Уже прошел",\n'
-    '"Неинтересно" — я это запомню и по команде "Пройденные" будет видна твоя библиотека.\n\n'
-    'Если игра подходит, напиши "Спасибо".\n\n'
-    'Если пора прощаться, напиши "Пока".'
-)
-await update.message.reply_text(msg)
-return ASKING_IF_WANT_NEW
+    context.user_data['last_recommended_game'] = title
+    msg = (f"{advice}\n{title}\n{url}\n\n"
+           'Если хочешь получить новую рекомендацию, напиши "Еще".\n'  'Или напиши "Играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видна твою библиотека.\n'
+           'Если подходит, напиши "Спасибо".')
+    await update.message.reply_text(msg)
+    return ASKING_IF_WANT_NEW
 
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
