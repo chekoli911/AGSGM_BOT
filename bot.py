@@ -244,7 +244,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
-                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
                 results = df[df['Title'].str.lower().str.startswith(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
@@ -263,7 +262,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             add_game_mark(user_id, last_game, 'played_games')
         else:
             add_game_mark(user_id, last_game, 'not_interested_games')
-        await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
         return await send_advice(update, context)
 
     if text in ['да', 'конечно', 'давай']:
@@ -281,7 +279,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
