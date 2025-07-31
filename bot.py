@@ -116,7 +116,7 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
+           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
            'Если хочешь получить ещё рекомендацию — напиши "Еще".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
@@ -237,7 +237,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             add_game_mark(user_id, last_game, 'not_interested_games')
             await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
             return await send_advice(update, context)
-        elif text == 'уже играл':
+        elif text in ['уже играл', 'играл']:
             add_game_mark(user_id, last_game, 'played_games')
             await update.message.reply_text("Отлично, отметил как сыгранную. Вот новая рекомендация:")
             return await send_advice(update, context)
