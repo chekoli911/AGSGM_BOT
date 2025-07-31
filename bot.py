@@ -229,6 +229,19 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await new_releases_command(update, context)
         return ConversationHandler.END
 
+    last_game = context.user_data.get('last_recommended_game')
+
+    # Обработка ответов на рекомендации
+    if last_game:
+        if text == 'неинтересно':
+            add_game_mark(user_id, last_game, 'not_interested_games')
+            await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
+            return await send_advice(update, context)
+        elif text == 'уже играл' or text == 'уже прошел':
+            add_game_mark(user_id, last_game, 'completed_games')
+            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
+            return await send_advice(update, context)
+
     # Обработка пометки игр из текста без слэша
     mark_patterns = {
         'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
@@ -253,24 +266,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 add_game_mark(user_id, results.iloc[0]['Title'], mark_type)
                 await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
-
-    # Ответы на рекомендации — переработаны с учётом новой логики
-    last_game = context.user_data.get('last_recommended_game')
-    if last_game:
-        if text == 'неинтересно':
-            add_game_mark(user_id, last_game, 'not_interested_games')
-            await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
-            return await send_advice(update, context)
-
-        if text == 'уже играл':
-            add_game_mark(user_id, last_game, 'completed_games')
-            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
-            return await send_advice(update, context)
-
-        if text == 'уже прошел':
-            add_game_mark(user_id, last_game, 'completed_games')
-            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
-            return await send_advice(update, context)
 
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
