@@ -254,17 +254,23 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
 
-    # Ответы на рекомендации
+    # Ответы на рекомендации — переработаны с учётом новой логики
     last_game = context.user_data.get('last_recommended_game')
-    if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
+    if last_game:
+        if text == 'неинтересно':
+            add_game_mark(user_id, last_game, 'not_interested_games')
+            await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
+            return await send_advice(update, context)
+
+        if text == 'уже играл':
+            add_game_mark(user_id, last_game, 'completed_games')
+            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
+            return await send_advice(update, context)
+
         if text == 'уже прошел':
             add_game_mark(user_id, last_game, 'completed_games')
-        elif text == 'уже играл':
-            add_game_mark(user_id, last_game, 'played_games')
-        else:
-            add_game_mark(user_id, last_game, 'not_interested_games')
-        await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
-        return ASKING_IF_WANT_NEW
+            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
+            return await send_advice(update, context)
 
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
