@@ -220,7 +220,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     # Запрос списка неинтересных игр
-    if text in not_interested_triggers:
+    # Добавляем проверку, чтобы не показывать список, если это ответ на рекомендацию
+    last_game = context.user_data.get('last_recommended_game')
+    if text in not_interested_triggers and not last_game:
         await not_interested_command(update, context)
         return ConversationHandler.END
 
@@ -229,15 +231,13 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await new_releases_command(update, context)
         return ConversationHandler.END
 
-    last_game = context.user_data.get('last_recommended_game')
-
     # Обработка ответов на рекомендации
     if last_game:
         if text == 'неинтересно':
             add_game_mark(user_id, last_game, 'not_interested_games')
             await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
             return await send_advice(update, context)
-        elif text == 'уже играл' or text == 'уже прошел':
+        elif text in ['уже играл', 'уже прошел']:
             add_game_mark(user_id, last_game, 'completed_games')
             await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
             return await send_advice(update, context)
