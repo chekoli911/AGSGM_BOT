@@ -220,7 +220,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     # Запрос списка неинтересных игр
-    # Добавляем проверку, чтобы не показывать список, если это ответ на рекомендацию
+    # Показываем список только если это не ответ на рекомендацию
     last_game = context.user_data.get('last_recommended_game')
     if text in not_interested_triggers and not last_game:
         await not_interested_command(update, context)
@@ -237,7 +237,11 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
             add_game_mark(user_id, last_game, 'not_interested_games')
             await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
             return await send_advice(update, context)
-        elif text in ['уже играл', 'уже прошел']:
+        elif text == 'уже играл':
+            add_game_mark(user_id, last_game, 'played_games')
+            await update.message.reply_text("Отлично, отметил как сыгранную. Вот новая рекомендация:")
+            return await send_advice(update, context)
+        elif text == 'уже прошел':
             add_game_mark(user_id, last_game, 'completed_games')
             await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
             return await send_advice(update, context)
@@ -257,7 +261,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
-                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
                 results = df[df['Title'].str.lower().str.startswith(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
