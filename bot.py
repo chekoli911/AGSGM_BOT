@@ -57,7 +57,6 @@ advice_triggers = [
 passed_triggers = ['пройденные', 'пройденное', 'пройдено', 'пройденные игры']
 played_triggers = ['уже играл', 'сыграл', 'played']
 not_interested_triggers = ['неинтересно', 'не интересно', 'неинтересные игры']
-my_games_triggers = ['мои игры']
 
 ASKING_IF_WANT_NEW = 1
 
@@ -117,8 +116,8 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если подходит, напиши "Спасибо". Если хочешь другой вариант, скажи "Уже играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
-           'Если хочешь получить ещё рекомендацию — напиши "Еще".')
+           'Если хочешь получить новую рекомендацию, напиши "Еще".\n'  'Или напиши "Играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видна твою библиотека.\n'
+           'Если подходит, напиши "Спасибо".')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
 
@@ -157,27 +156,6 @@ async def new_releases_command(update: Update, context: ContextTypes.DEFAULT_TYP
     messages = [f"{row['Title']}\n{row['Url']}" for _, row in last_25.iterrows()]
     for msg in messages:
         await update.message.reply_text(msg)
-
-async def my_games_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    completed = get_marked_games(user_id, 'completed_games')
-    played = get_marked_games(user_id, 'played_games')
-    not_interested = get_marked_games(user_id, 'not_interested_games')
-
-    parts = []
-    if completed:
-        parts.append("🎮 Пройденные игры:\n" + "\n".join(completed))
-    if played:
-        parts.append("🕹️ Игры, в которые вы играли:\n" + "\n".join(played))
-    if not_interested:
-        parts.append("🚫 Неинтересные игры:\n" + "\n".join(not_interested))
-
-    if parts:
-        response = "\n\n".join(parts)
-    else:
-        response = "Вы пока не отметили ни одной игры."
-
-    await update.message.reply_text(response)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -242,6 +220,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     # Запрос списка неинтересных игр
+    # Показываем список только если это не ответ на рекомендацию
     last_game = context.user_data.get('last_recommended_game')
     if text in not_interested_triggers and not last_game:
         await not_interested_command(update, context)
@@ -252,18 +231,13 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await new_releases_command(update, context)
         return ConversationHandler.END
 
-    # Запрос списка моих игр
-    if text in my_games_triggers:
-        await my_games_command(update, context)
-        return ConversationHandler.END
-
     # Обработка ответов на рекомендации
     if last_game:
         if text == 'неинтересно':
             add_game_mark(user_id, last_game, 'not_interested_games')
             await update.message.reply_text("Понял, отмечаю эту игру как неинтересную. Вот новая рекомендация:")
             return await send_advice(update, context)
-        elif text == 'уже играл':
+        elif text in ['уже играл', 'играл']:
             add_game_mark(user_id, last_game, 'played_games')
             await update.message.reply_text("Отлично, отметил как сыгранную. Вот новая рекомендация:")
             return await send_advice(update, context)
@@ -287,7 +261,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
-                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
                 results = df[df['Title'].str.lower().str.startswith(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
