@@ -220,14 +220,14 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     # Запрос списка неинтересных игр
-    # Показываем список только если НЕ в контексте рекомендации (last_recommended_game == None)
     last_game = context.user_data.get('last_recommended_game')
     if text in not_interested_triggers:
         if last_game is None:
+            # Показываем список неинтересных только если не в контексте рекомендации
             await not_interested_command(update, context)
             return ConversationHandler.END
         else:
-            # В контексте рекомендации "Неинтересно" — помечаем и выдаём новую рекомендацию
+            # Если в контексте рекомендации, помечаем и даём новую рекомендацию
             add_game_mark(user_id, last_game, 'not_interested_games')
             await update.message.reply_text("Хорошо, отметил эту игру как неинтересную. Вот новая рекомендация:")
             return await send_advice(update, context)
@@ -252,6 +252,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                     await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
                     return ConversationHandler.END
 
+                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
                 results = df[df['Title'].str.lower().str.startswith(game_title)]
                 if results.empty:
                     await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
