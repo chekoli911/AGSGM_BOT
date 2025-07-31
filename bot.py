@@ -156,7 +156,7 @@ async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
     return await send_advice(update, context)
 
 async def new_releases_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    last_25 = df.tail(25).iloc[::-1]
+    last_25 = df.tail(25)
     messages = [f"{row['Title']}\n{row['Url']}" for _, row in last_25.iterrows()]
     for msg in messages:
         await update.message.reply_text(msg)
