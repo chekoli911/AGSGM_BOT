@@ -125,9 +125,9 @@ msg = (
     '"Неинтересно" — я это запомню и по команде "Пройденные" будет видна твоя библиотека.\n\n'
     'Если игра подходит, напиши "Спасибо".\n\n'
     'Если пора прощаться, напиши "Пока".'
-    )
-    await update.message.reply_text(msg)
-    return ASKING_IF_WANT_NEW
+)
+await update.message.reply_text(msg)
+return ASKING_IF_WANT_NEW
 
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
