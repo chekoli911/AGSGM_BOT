@@ -16,7 +16,6 @@ import re
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
-# Инициализация Firebase
 firebase_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
 if not firebase_json:
     raise RuntimeError("FIREBASE_CREDENTIALS_JSON env var is missing")
@@ -26,7 +25,6 @@ firebase_admin.initialize_app(firebase_cred, {
     'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
 })
 
-# Загрузка Excel с игрой
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
@@ -96,13 +94,6 @@ async def notify_admin(app, text: str):
     admin_chat_id = -1002773793511
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
-async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    user_id = update.effective_user.id
-    logging.info(f"Команда /start от пользователя {user_id}")
-    await update.message.reply_text(
-        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
-    )
-
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
@@ -159,6 +150,19 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
 
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
+
+async def new_releases_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    last_25 = df.tail(25).iloc[::-1]
+    messages = [f"{row['Title']}\n{row['Url']}" for _, row in last_25.iterrows()]
+    for msg in messages:
+        await update.message.reply_text(msg)
+
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    logging.info(f"Команда /start от пользователя {user_id}")
+    await update.message.reply_text(
+        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
+    )
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -220,6 +224,36 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
         return ConversationHandler.END
 
+    # Запрос списка новинок
+    if text == 'новинки':
+        await new_releases_command(update, context)
+        return ConversationHandler.END
+
+    # Обработка пометки игр из текста без слэша
+    mark_patterns = {
+        'completed_games': ['пройдено', 'пройденные', 'пройденное', 'пройден'],
+        'played_games': ['сыграл', 'уже играл', 'играл'],
+        'not_interested_games': ['неинтересно', 'не интересно', 'не интересна', 'не интересные']
+    }
+
+    for mark_type, keywords in mark_patterns.items():
+        for keyword in keywords:
+            if text.startswith(keyword):
+                game_title = text[len(keyword):].strip()
+                if not game_title:
+                    await update.message.reply_text(f"Пожалуйста, укажи название игры после слова '{keyword}'.")
+                    return ConversationHandler.END
+
+                # Используем частичное совпадение с названием игры (игра начинается с введённого текста)
+                results = df[df['Title'].str.lower().str.startswith(game_title)]
+                if results.empty:
+                    await update.message.reply_text("Игра не найдена в базе. Проверь правильность написания.")
+                    return ConversationHandler.END
+
+                add_game_mark(user_id, results.iloc[0]['Title'], mark_type)
+                await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
+                return ConversationHandler.END
+
     # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
@@ -247,7 +281,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию (поиск подстроки в названии)
+    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
@@ -257,6 +291,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"{row['Title']}\n{row['Url']}")
 
     return ConversationHandler.END
+
 
 if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
@@ -276,6 +311,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('played', played_command))
     app.add_handler(CommandHandler('notinterested', not_interested_command))
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
+    app.add_handler(CommandHandler('newreleases', new_releases_command))
     app.add_handler(conv_handler)
 
     logging.info("Бот запущен...")
