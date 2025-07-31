@@ -16,6 +16,7 @@ import re
 
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
+# Инициализация Firebase
 firebase_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
 if not firebase_json:
     raise RuntimeError("FIREBASE_CREDENTIALS_JSON env var is missing")
@@ -25,6 +26,7 @@ firebase_admin.initialize_app(firebase_cred, {
     'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
 })
 
+# Загрузка Excel с игрой
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
@@ -94,6 +96,13 @@ async def notify_admin(app, text: str):
     admin_chat_id = -1002773793511
     await app.bot.send_message(chat_id=admin_chat_id, text=text)
 
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    logging.info(f"Команда /start от пользователя {user_id}")
+    await update.message.reply_text(
+        "Привет! Напиши название игры или её часть, и я пришлю ссылку на сайт с этой игрой."
+    )
+
 async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
     logging.info(f"Пользователь {update.effective_user.id} поздоровался")
     await update.message.reply_text(
@@ -161,18 +170,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     log_user_query(user_id, username, raw_text.lower())
     await notify_admin(context.application, f"Пользователь {user_id} (@{username}) написал запрос: {raw_text}")
 
-    # Обработка слова "конкурс"
-    if 'конкурс' in text:
-        await update.message.reply_photo(
-            photo='https://optim.tildacdn.com/stor3930-6666-4337-a363-333035613536/-/format/webp/25164285.png',
-            caption=(
-                "Сейчас мы разыгрываем игру Clair Obscur: Expedition 33 на PS5 в формате П3 и ты уже начал принимать участие, "
-                "победителя выберем из тех кто подписан на @StorePSGMresale, @StorePSGM и @ArenaPSGMrent . "
-                "Итоги узнаем 14 августа в 20:00."
-            )
-        )
-        return ConversationHandler.END
-
     # Обработка слова "пока"
     if text == 'пока':
         await update.message.reply_text(
@@ -223,7 +220,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
         return ConversationHandler.END
 
-    # Ответы на рекомендации (пометки)
+    # Ответы на рекомендации
     last_game = context.user_data.get('last_recommended_game')
     if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
         if text == 'уже прошел':
@@ -235,7 +232,6 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
         return ASKING_IF_WANT_NEW
 
-    # Продолжение работы с рекомендациями
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
         return await send_advice(update, context)
@@ -251,7 +247,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
-    # Поиск игр по названию (частичный поиск)
+    # Поиск игр по названию (поиск подстроки в названии)
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
