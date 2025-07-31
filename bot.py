@@ -220,17 +220,9 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return ConversationHandler.END
 
     # Запрос списка неинтересных игр
-    last_game = context.user_data.get('last_recommended_game')
     if text in not_interested_triggers:
-        if last_game is None:
-            # Показываем список неинтересных только если не в контексте рекомендации
-            await not_interested_command(update, context)
-            return ConversationHandler.END
-        else:
-            # Если в контексте рекомендации, помечаем и даём новую рекомендацию
-            add_game_mark(user_id, last_game, 'not_interested_games')
-            await update.message.reply_text("Хорошо, отметил эту игру как неинтересную. Вот новая рекомендация:")
-            return await send_advice(update, context)
+        await not_interested_command(update, context)
+        return ConversationHandler.END
 
     # Запрос списка новинок
     if text == 'новинки':
@@ -262,16 +254,17 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 await update.message.reply_text(f"Игра '{results.iloc[0]['Title']}' отмечена как {mark_type.replace('_', ' ')}.")
                 return ConversationHandler.END
 
-    # Ответы на рекомендации для "Уже играл" и "Уже прошел"
-    if last_game is not None:
-        if text in ['уже играл']:
-            add_game_mark(user_id, last_game, 'played_games')
-            await update.message.reply_text("Хорошо, отметил эту игру как сыгранную. Вот новая рекомендация:")
-            return await send_advice(update, context)
-        elif text in ['уже прошел']:
+    # Ответы на рекомендации
+    last_game = context.user_data.get('last_recommended_game')
+    if text in ['уже прошел', 'уже играл', 'неинтересно'] and last_game:
+        if text == 'уже прошел':
             add_game_mark(user_id, last_game, 'completed_games')
-            await update.message.reply_text("Отлично, отметил как пройденную. Вот новая рекомендация:")
-            return await send_advice(update, context)
+        elif text == 'уже играл':
+            add_game_mark(user_id, last_game, 'played_games')
+        else:
+            add_game_mark(user_id, last_game, 'not_interested_games')
+        await update.message.reply_text("Хорошо, понял. Хочешь новую рекомендацию?")
+        return await send_advice(update, context)
 
     if text in ['да', 'конечно', 'давай']:
         context.user_data['last_recommended_game'] = None
@@ -288,6 +281,7 @@ async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text("Отлично. Спасибо, что написал. Я буду здесь, если понадоблюсь.")
         return ConversationHandler.END
 
+    # Поиск игр по названию
     results = df[df['Title'].str.lower().str.contains(text, na=False)]
     if results.empty:
         await update.message.reply_text("Игра не найдена, попробуй другое название.")
