@@ -116,7 +116,7 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
     msg = (f"{advice}\n{title}\n{url}\n\n"
-           '".Если хочешь получить новую рекомендацию,напиши "Еще" Или напиши "Играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
+           'Если хочешь получить новую рекомендацию,напиши "Еще"\n'  'Или напиши "Играл", "Уже прошел" или "Неинтересно" — я это запомню и по команде "Пройденные" будет видно твою библиотеку.\n'
            'Если подходит, напиши "Спасибо.')
     await update.message.reply_text(msg)
     return ASKING_IF_WANT_NEW
