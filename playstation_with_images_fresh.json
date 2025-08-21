@@ -1,0 +1,1946 @@
+[
+  {
+    "name": "Кратос",
+    "game": "God of War",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 440,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0251_%D0%9A%D1%80%D0%B0%D1%82%D0%BE%D1%81%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1rv5j5nfv28d7ektj5aa4xs.png"
+  },
+  {
+    "name": "Элли",
+    "game": "The Last of Us",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2625,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0254_%D0%AD%D0%BB%D0%BB%D0%B8%20%D0%B2%20%D1%84%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1rvaaphehm877evefnyfkzj.png"
+  },
+  {
+    "name": "Джоэл",
+    "game": "The Last of Us",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 534,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1728_%D0%94%D0%B6%D0%BE%D1%8D%D0%BB%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1qtw4gkfsyrkqeq4n52t2xt.png"
+  },
+  {
+    "name": "Спайро",
+    "game": "Spyro the Dragon",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3934,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1724_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%A1%D0%BF%D0%B0%D0%B9%D1%80%D0%BE_simple_compose_01k1qtqk81er59txv9v0179j6a.png"
+  },
+  {
+    "name": "Кот",
+    "game": "Stray",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4246,
+    "coins": 7,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250803_1728_Кот%20в%20стиле%20аниме_simple_compose_01k1qtycvyf05tg1xms13g6hdg.png"
+  },
+  {
+    "name": "Джин Сакаи",
+    "game": "Ghost of Tsushima",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1050,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_0334_%D0%94%D0%B6%D0%B8%D0%BD%20%D0%A1%D0%B0%D0%BA%D0%B0%D0%B9%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1rxken1eykb60nds520azp4.png"
+  },
+  {
+    "name": "Охотник",
+    "game": "Bloodborne",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 227,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0336_%D0%9E%D1%85%D0%BE%D1%82%D0%BD%D0%B8%D0%BA%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1rxq1e6ebvv1vew87w33emr.png"
+  },
+  {
+    "name": "Астробот",
+    "game": "Astro’s Playroom",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 588,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0359_%D0%90%D1%81%D1%82%D1%80%D0%BE%D0%B1%D0%BE%D1%82_%20%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D0%9A%D0%B0%D1%80%D1%82%D0%B0_simple_compose_01k1rz2795f3wtrsn2sgzq9h22.png"
+  },
+  {
+    "name": "Нейтан Дрейк",
+    "game": "Uncharted",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2995,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0432_%D0%9D%D0%B5%D0%B9%D1%82%D0%B0%D0%BD%20%D0%94%D1%80%D0%B5%D0%B9%D0%BA%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1s0xydwe088grs86mde21pn.png"
+  },
+  {
+    "name": "Клэнк",
+    "game": "Ratchet & Clank",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 535,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0219_%D0%9A%D0%BB%D1%8D%D0%BD%D0%BA%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1xy48vrfza9ewjhg6k49nae.png"
+  },
+  {
+    "name": "Рэчет",
+    "game": "Ratchet & Clank",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 130,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0533_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%A0%D1%8D%D1%87%D0%B5%D1%82_simple_compose_01k1s4dpmzfrpvz5d3899tb5wz.png"
+  },
+  {
+    "name": "Лара Крофт",
+    "game": "Tomb Raider",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 646,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_0732_%D0%9B%D0%B0%D1%80%D0%B0%20%D0%9A%D1%80%D0%BE%D1%84%D1%82%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1prvs3be8b9mxx3n9swe54z.png"
+  },
+  {
+    "name": "Снейк",
+    "game": "Metal Gear Solid",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1236,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0548_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%A1%D0%BD%D0%B5%D0%B9%D0%BA_simple_compose_01k1s588x9f72b5s84335vj59m.png"
+  },
+  {
+    "name": "Клоуд Страйф",
+    "game": "Final Fantasy VII",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4511,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0553_%D0%9A%D0%BB%D0%BE%D1%83%D0%B4%20%D0%A1%D1%82%D1%80%D0%B0%D0%B9%D1%84%20%D0%BA%D0%B0%D1%80%D1%82%D0%B8%D0%BD%D0%B0_simple_compose_01k1s5jad8etqsk7a2fabvxadx.png"
+  },
+  {
+    "name": "Эйлой",
+    "game": "Horizon Zero Dawn",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 282,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0559_%D0%AD%D0%B9%D0%BB%D0%BE%D0%B9%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1s5xx1we2988adqq4wbhq78.png"
+  },
+  {
+    "name": "Дракула",
+    "game": "Castlevania",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 326,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0634_%D0%94%D1%80%D0%B0%D0%BA%D1%83%D0%BB%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1s7xzm8fjys85fmravhqm17.png"
+  },
+  {
+    "name": "Казума Кирю",
+    "game": "Yakuza",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 161,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0655_%D0%9A%D0%B0%D0%B7%D1%83%D0%BC%D0%B0%20%D0%9A%D0%B8%D1%80%D1%8E_%20%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D0%9A%D0%B0%D1%80%D1%82%D0%B0_simple_compose_01k1s92zzzewfsffnangarexj3.png"
+  },
+  {
+    "name": "Горо Мадзима",
+    "game": "Yakuza",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 104,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0702_%D0%93%D0%BE%D1%80%D0%BE%20%D0%9C%D0%B0%D0%B4%D0%B7%D0%B8%D0%BC%D0%B0%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1s9fv9qe789s7m7p3zre0g0.png"
+  },
+  {
+    "name": "Леон Кеннеди",
+    "game": "Resident Evil",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1182,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0708_%D0%9B%D0%B5%D0%BE%D0%BD%20%D0%9A%D0%B5%D0%BD%D0%BD%D0%B5%D0%B4%D0%B8%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1s9wkzxekgazygcj4pj04s7.png"
+  },
+  {
+    "name": "Клэр Редфилд",
+    "game": "Resident Evil",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 235,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0715_%D0%9A%D0%BB%D1%8D%D1%80%20%D0%A0%D0%B5%D0%B4%D1%84%D0%B8%D0%BB%D0%B4%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sa9dqffgqt2w83ex5t877q.png"
+  },
+  {
+    "name": "Крис Редфилд",
+    "game": "Resident Evil",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2751,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0723_%D0%9A%D1%80%D0%B8%D1%81%20%D0%A0%D0%B5%D0%B4%D1%84%D0%B8%D0%BB%D0%B4%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sap8h9frjtwjc2r8zs4yp2.png"
+  },
+  {
+    "name": "Джилл Валентайн",
+    "game": "Resident Evil",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 300,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0729_%D0%94%D0%B6%D0%B8%D0%BB%D0%BB%20%D0%92%D0%B0%D0%BB%D0%B5%D0%BD%D1%82%D0%B0%D0%B9%D0%BD%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sb34x4e9ra2eas7f85d2r7.png"
+  },
+  {
+    "name": "Геральт",
+    "game": "The Witcher 3",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3132,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0736_%D0%93%D0%B5%D1%80%D0%B0%D0%BB%D1%8C%D1%82%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sbfwrce2d86y1y69nr06va.png"
+  },
+  {
+    "name": "Цири",
+    "game": "The Witcher 3",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 211,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0743_%D0%A6%D0%B8%D1%80%D0%B8%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sbwq25efj9kx0md9jjeaf8.png"
+  },
+  {
+    "name": "Йеннифэр",
+    "game": "The Witcher 3",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2982,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0750_%D0%99%D0%B5%D0%BD%D0%BD%D0%B8%D1%84%D1%8D%D1%80%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9A%D0%B0%D1%80%D1%82%D0%B0_simple_compose_01k1sc9hd4fywsdv6856tfgb43.png"
+  },
+  {
+    "name": "Данте",
+    "game": "Devil May Cry",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 518,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0758_%D0%94%D0%B0%D0%BD%D1%82%D0%B5%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1scpcwze1yb92x511aqetat.png"
+  },
+  {
+    "name": "Верджил",
+    "game": "Devil May Cry",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 216,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0804_%D0%92%D0%B5%D1%80%D0%B4%D0%B6%D0%B8%D0%BB%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1sd3599f22t3yczmza3790d.png"
+  },
+  {
+    "name": "Сора",
+    "game": "Kingdom Hearts",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 518,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0812_%D0%A1%D0%BE%D1%80%D0%B0%20%D0%B2%20%D1%84%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1sdg32cfaatasnpj2jheqbv.png"
+  },
+  {
+    "name": "Сэкиро",
+    "game": "Sekiro: Shadows Die Twice",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1145,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0819_%D0%A1%D1%8D%D0%BA%D0%B8%D1%80%D0%BE_%20%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B9%D0%BD%D0%B0%D1%8F%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1sdwsfpf2bvysmghh66gtp8.png"
+  },
+  {
+    "name": "Эцио Аудиторе",
+    "game": "Assassin’s Creed II",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 410,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_0826_%D0%AD%D1%86%D0%B8%D0%BE%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1se9n4gfp6t0x48p5b9v9j1.png"
+  },
+  {
+    "name": "Альтаир",
+    "game": "Assassin’s Creed",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2139,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0832_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%BD%D1%8B%D0%B9%20%D0%90%D0%BB%D1%8C%D1%82%D0%B0%D0%B8%D1%80_simple_compose_01k1sepe8gea2tc96m0nxrab9v.png"
+  },
+  {
+    "name": "Кассандра",
+    "game": "Assassin’s Creed Odyssey",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3968,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0840_%D0%9A%D0%B0%D1%81%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%B0%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1sf387hfavsbd407mq2dsfm.png"
+  },
+  {
+    "name": "Эйвор",
+    "game": "Assassin’s Creed Valhalla",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 465,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0846_%D0%AD%D0%B9%D0%B2%D0%BE%D1%80%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sfg333e4xsqsbw1vssd7za.png"
+  },
+  {
+    "name": "Хитман",
+    "game": "Hitman",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 172,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_0746_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%A5%D0%B8%D1%82%D0%BC%D0%B0%D0%BD_simple_compose_01k1pskdg8fxatat7554m6x8cw.png"
+  },
+  {
+    "name": "Макс Пейн",
+    "game": "Max Payne",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 241,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_0900_Макс%20Пейн%20Аниме-Карточка_simple_compose_01k1sg9q0qeg995x1z4tae2czh.png"
+  },
+  {
+    "name": "Тревор",
+    "game": "GTA V",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 506,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0908_%D0%A2%D1%80%D0%B5%D0%B2%D0%BE%D1%80%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sgph52fpss3sv53ryv7k9n.png"
+  },
+  {
+    "name": "Майкл",
+    "game": "GTA V",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4621,
+    "coins": 7,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0915_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%9C%D0%B0%D0%B9%D0%BA%D0%BB%20GTA%20V_simple_compose_01k1sh3b65e4w8krxtfp8fxc8m.png"
+  },
+  {
+    "name": "Франклин",
+    "game": "GTA V",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2555,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0922_%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%BB%D0%B8%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1shg9s7f6fvwf3ck099rkg4.png"
+  },
+  {
+    "name": "Саб-Зиро",
+    "game": "Mortal Kombat",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 589,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0929_%D0%A1%D0%B0%D0%B1-%D0%97%D0%B8%D1%80%D0%BE_%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%92%D0%BE%D0%B8%D0%BD_simple_compose_01k1shwz7rem69rtsr44z14pw2.png"
+  },
+  {
+    "name": "Скорпион",
+    "game": "Mortal Kombat",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2688,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0936_%D0%A1%D0%BA%D0%BE%D1%80%D0%BF%D0%B8%D0%BE%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sj9sgbf25vkheg9n0176vs.png"
+  },
+  {
+    "name": "Рейден",
+    "game": "Mortal Kombat",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2427,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0942_%D0%A0%D0%B5%D0%B9%D0%B4%D0%B5%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sjpknjen5arx8y9n0kt3y0.png"
+  },
+  {
+    "name": "Синдел",
+    "game": "Mortal Kombat",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1709,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0949_%D0%A1%D0%B8%D0%BD%D0%B4%D0%B5%D0%BB%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1sk3e5be2c86pc1czvzrkcg.png"
+  },
+  {
+    "name": "Китана",
+    "game": "Mortal Kombat",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 202,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_0731_%D0%9A%D0%B8%D1%82%D0%B0%D0%BD%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1prs9wtehx9k1ky8k4x8pgb.png"
+  },
+  {
+    "name": "Актриса",
+    "game": "Heavy Rain",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1891,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1003_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%90%D0%BA%D1%82%D1%80%D0%B8%D1%81%D0%B0%20%D0%B2%20Heavy%20Rain_simple_compose_01k1skx3y3fwkb6y5wchpzz508.png"
+  },
+  {
+    "name": "Итан Марс",
+    "game": "Heavy Rain",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 278,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1010_%D0%98%D1%82%D0%B0%D0%BD%20%D0%9C%D0%B0%D1%80%D1%81%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sm9xedfyzs4j47qzq5y2jc.png"
+  },
+  {
+    "name": "Jin Kazama",
+    "game": "Tekken",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1614,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1017_Fantasy%20Jin%20Kazama_simple_compose_01k1smpq2qfeatrsy7a16tyeng.png"
+  },
+  {
+    "name": "Kazuya Mishima",
+    "game": "Tekken",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 273,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1025_Kazuya%20Epic%20Illustration_simple_compose_01k1sn3k4beqh88btrf38rk4xy.png"
+  },
+  {
+    "name": "Heihachi Mishima",
+    "game": "Tekken",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2336,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1031_Heihachi%20Fantasy%20Card_simple_compose_01k1sngarwea9v0apbcp818h3p.png"
+  },
+  {
+    "name": "Сэм Портер",
+    "game": "Death Stranding",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 222,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1039_%D0%A1%D1%8D%D0%BC%20%D0%9F%D0%BE%D1%80%D1%82%D0%B5%D1%80%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1snx6phfayaec8mn5rrgzjp.png"
+  },
+  {
+    "name": "Джоди Холмс",
+    "game": "Beyond: Two Souls",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 679,
+    "coins": 3,
+    "image": "https://github.com/chekoli911/tg_card_images/blob/main/20250804_1052_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%94%D0%B6%D0%BE%D0%B4%D0%B8%20%D0%B2%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1sppv1getk8vr8bkptctc8t.png?raw=true"
+  },
+  {
+    "name": "Коул",
+    "game": "inFAMOUS",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 589,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0235_%D0%9A%D0%BE%D1%83%D0%BB%20%D0%9C%D0%B0%D0%BA%D0%B3%D1%80%D0%B0%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1xz130efj2rxw2xvz59qps6.png"
+  },
+  {
+    "name": "Делсин",
+    "game": "inFAMOUS: Second Son",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2948,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1617_%D0%94%D0%B5%D0%BB%D1%81%D0%B8%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1qpvms6eg19ef9emfg2szad.png"
+  },
+  {
+    "name": "Sackboy",
+    "game": "LittleBigPlanet",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 823,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1113_Sackboy%20Fantasy%20Adventure_simple_compose_01k1sqx9vhe0parppdn30wv2bs.png"
+  },
+  {
+    "name": "Атреус",
+    "game": "God of War",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 813,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1121_%D0%90%D1%82%D1%80%D0%B5%D1%83%D1%81%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1sra2zsfjg96kt7nns9vzrv.png"
+  },
+  {
+    "name": "Норман Джейден",
+    "game": "Heavy Rain",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1063,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1617_%D0%9D%D0%BE%D1%80%D0%BC%D0%B0%D0%BD%20%D0%94%D0%B6%D0%B5%D0%B9%D0%B4%D0%B5%D0%BD%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1qpw998eh3s05jhnybkj809.png"
+  },
+  {
+    "name": "Крис Хаксли",
+    "game": "Until Dawn",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1412,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1134_%D0%9A%D1%80%D0%B8%D1%81%20%D0%A5%D0%B0%D0%BA%D1%81%D0%BB%D0%B8%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1ss3pkteer99853arrjv13k.png"
+  },
+  {
+    "name": "Джош Вашингтон",
+    "game": "Until Dawn",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 399,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1141_%D0%94%D0%B6%D0%BE%D1%88%20%D0%92%D0%B0%D1%88%D0%B8%D0%BD%D0%B3%D1%82%D0%BE%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1ssgga3ezgsh1nj8yh85mf8.png"
+  },
+  {
+    "name": "Аби",
+    "game": "The Last of Us Part II",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 182,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1148_Фэнтези%20Аби_simple_compose_01k1ssxbbjf2j8nhyfa8zxx1w1.png"
+  },
+  {
+    "name": "Томми",
+    "game": "The Last of Us",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1098,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1717_%D0%A2%D0%BE%D0%BC%D0%BC%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1qt9r9dfktaztf4f1dvavt1.png"
+  },
+  {
+    "name": "Марлен",
+    "game": "The Last of Us",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3835,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1203_%D0%9C%D0%90%D0%A0%D0%9B%D0%95%D0%9D%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1stq0r1evtb37e74c0pdftq.png"
+  },
+  {
+    "name": "Дэвид",
+    "game": "The Last of Us",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1741,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1210_%D0%94%D1%8D%D0%B2%D0%B8%D0%B4%20%D0%B2%20%D1%84%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1sv3s6rf00b7vn1rp3dctg8.png"
+  },
+  {
+    "name": "Зевс",
+    "game": "God of War II",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2311,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1216_%D0%97%D0%B5%D0%B2%D1%81%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1svgk9sf2a9szehgqz2f1vy.png"
+  },
+  {
+    "name": "Геракл",
+    "game": "God of War III",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2560,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1224_%D0%93%D0%B5%D1%80%D0%B0%D0%BA%D0%BB_%20%D0%91%D0%BE%D0%B3%20%D0%B2%D0%BE%D0%B9%D0%BD%D1%8B_simple_compose_01k1svxjw2f3wvnjv3advcxyme.png"
+  },
+  {
+    "name": "Синдри",
+    "game": "God of War Ragnarok",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 237,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1231_%D0%A1%D0%B8%D0%BD%D0%B4%D1%80%D0%B8%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1swa7pceazv9yn4kqq4az0d.png"
+  },
+  {
+    "name": "Брок",
+    "game": "God of War Ragnarok",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 271,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1238_%D0%91%D1%80%D0%BE%D0%BA%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B8%D0%B7%D0%B0%D1%86%D0%B8%D0%B8%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1swq1yzej2v9pqzfr5nnkwc.png"
+  },
+  {
+    "name": "Леди Мария",
+    "game": "Bloodborne",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1935,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1245_%D0%9B%D0%B5%D0%B4%D0%B8%20%D0%9C%D0%B0%D1%80%D0%B8%D1%8F%20Fantasy-%D1%81%D1%82%D0%B8%D0%BB%D1%8C_simple_compose_01k1sx3wg4f098smxqw7zhc6h9.png"
+  },
+  {
+    "name": "Герман",
+    "game": "Bloodborne",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2687,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1252_%D0%93%D0%B5%D1%80%D0%BC%D0%B0%D0%BD%20%D0%B8%D0%B7%20Bloodborne_simple_compose_01k1sxgnrrfw99kvphavte167y.png"
+  },
+  {
+    "name": "Тринити",
+    "game": "The Matrix: Path of Neo",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4710,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1300_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%A2%D1%80%D0%B8%D0%BD%D0%B8%D1%82%D0%B8_simple_compose_01k1sxxgv9fxjajzak304bga8r.png"
+  },
+  {
+    "name": "Нео",
+    "game": "The Matrix: Path of Neo",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4526,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1305_%D0%9D%D0%B5%D0%BE%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1syak5qedcscn64vnj8jgak.png"
+  },
+  {
+    "name": "Лю Кан",
+    "game": "Mortal Kombat",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1948,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1313_%D0%9B%D1%8E%20%D0%9A%D0%B0%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1syq4v0eses7q1dgvb51etz.png"
+  },
+  {
+    "name": "Эш",
+    "game": "Evil Dead",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1603,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1432_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%AD%D1%88%D0%BB%D0%B8%20%D0%B8%D0%B7%20Resident%20Evil_simple_compose_01k1wnmj8je9cabv3dxsrtz1cg.png"
+  },
+  {
+    "name": "Том",
+    "game": "Syphon Filter",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2639,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1717_%D0%A2%D0%BE%D0%BC%D0%BC%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1qt9r9dfktaztf4f1dvavt1.png"
+  },
+  {
+    "name": "Гейб Логан",
+    "game": "Syphon Filter",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4787,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1334_%D0%93%D0%B5%D0%B9%D0%B1%20%D0%9B%D0%BE%D0%B3%D0%B0%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1szxjvmf0s8724sdy958s09.png"
+  },
+  {
+    "name": "Серафина",
+    "game": "Forspoken",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 839,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1341_%D0%A1%D0%B5%D1%80%D0%B0%D1%84%D0%B8%D0%BD%D0%B0%20%D0%B2%20%D1%81%D0%BA%D0%B0%D0%B7%D0%BE%D1%87%D0%BD%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t0acd3fbt8mmg30p339x0t.png"
+  },
+  {
+    "name": "Фрей",
+    "game": "Forspoken",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3453,
+    "coins": 7,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1348_%D0%A4%D1%80%D0%B5%D0%B9%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1t0q7qjeycvc1hr2d8nsajj.png"
+  },
+  {
+    "name": "Элой",
+    "game": "Horizon Forbidden West",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1226,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_0559_%D0%AD%D0%B9%D0%BB%D0%BE%D0%B9%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1s5xx1we2988adqq4wbhq78.png"
+  },
+  {
+    "name": "Сан",
+    "game": "Ghostwire: Tokyo",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 235,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1402_Сан%20из%20Ghostwire_%20Tokyo_simple_compose_01k1t1gv1df4rrpj9fe7kpdvfz.png"
+  },
+  {
+    "name": "Люк",
+    "game": "Detroit: Become Human",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 156,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1313_%D0%9B%D1%8E%20%D0%9A%D0%B0%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1syq4v0eses7q1dgvb51etz.png"
+  },
+  {
+    "name": "Кара",
+    "game": "Detroit: Become Human",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1719,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_0745_%D0%9A%D0%B0%D1%80%D0%B0%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1psm69hfpd9ca665b5gdksb.png"
+  },
+  {
+    "name": "Коннор",
+    "game": "Detroit: Become Human",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 467,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2123_%D0%A1%D0%B0%D1%80%D0%B0%20%D0%9A%D0%BE%D0%BD%D0%BD%D0%BE%D1%80%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1ttrcfxfwescqejv6jq73a2.png"
+  },
+  {
+    "name": "Маркус",
+    "game": "Detroit: Become Human",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3247,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1430_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9C%D0%B0%D1%80%D0%BA%D1%83%D1%81%20%D0%B8%D0%B7%20DBH_simple_compose_01k1t344kaebbtgj0ps5rg0b06.png"
+  },
+  {
+    "name": "Джессика",
+    "game": "Until Dawn",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 143,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1437_%D0%94%D0%B6%D0%B5%D1%81%D1%81%D0%B8%D0%BA%D0%B0%20%D0%B2%20%D1%84%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t3gzc0ehradve9xdcjfnfs.png"
+  },
+  {
+    "name": "Эмили",
+    "game": "Until Dawn",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 402,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1444_%D0%AD%D0%BC%D0%B8%D0%BB%D0%B8%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1t3xr7jeq2936jan5xhmr0b.png"
+  },
+  {
+    "name": "Мэтт",
+    "game": "Until Dawn",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 367,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1451_%D0%9C%D1%8D%D1%82%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t4amaeejns01njrk2k7atn.png"
+  },
+  {
+    "name": "Сэм",
+    "game": "Until Dawn",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 202,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1039_%D0%A1%D1%8D%D0%BC%20%D0%9F%D0%BE%D1%80%D1%82%D0%B5%D1%80%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1snx6phfayaec8mn5rrgzjp.png"
+  },
+  {
+    "name": "Натан Прескотт",
+    "game": "Life is Strange",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1473,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1503_%D0%9D%D0%B0%D1%82%D0%B0%D0%BD%20%D0%9F%D1%80%D0%B5%D1%81%D0%BA%D0%BE%D1%82%D1%82%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t4yqe4fnm9vg86fyg5zs34.png"
+  },
+  {
+    "name": "Макс",
+    "game": "Life is Strange",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 460,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1505_Макс%20в%20фэнтези%20стиле_simple_compose_01k1t546y5e738jbmfm4j3xc74.png"
+  },
+  {
+    "name": "Хлоя",
+    "game": "Life is Strange",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2042,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1508_%D0%A5%D0%BB%D0%BE%D1%8F_%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1t59pq4etdb5q71e2vwz3xb.png"
+  },
+  {
+    "name": "Рэйчел",
+    "game": "Life is Strange: Before the Storm",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4217,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1511_%D0%A0%D1%8D%D0%B9%D1%87%D0%B5%D0%BB%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1t5f7psfsjbmftxzzbfn6wf.png"
+  },
+  {
+    "name": "Серафим",
+    "game": "Call of Duty: Vanguard",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3497,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1514_%D0%A1%D0%B5%D1%80%D0%B0%D1%84%D0%B8%D0%BC%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t5mq9vez79qsbewk99yz6e.png"
+  },
+  {
+    "name": "Капитан Прайс",
+    "game": "Call of Duty: Modern Warfare",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3300,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1517_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%BA%D0%B0%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%20%D0%9F%D1%80%D0%B0%D0%B9%D1%81_simple_compose_01k1t5t60vfb4sshgks5b4k3jv.png"
+  },
+  {
+    "name": "Гоуст",
+    "game": "Call of Duty: Modern Warfare",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1559,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1523_%D0%93%D0%BE%D1%83%D1%81%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t655t5fvk8vj57679d2s9x.png"
+  },
+  {
+    "name": "Соуп",
+    "game": "Call of Duty: Modern Warfare",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2802,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1526_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5-%D0%BA%D0%B0%D1%80%D1%82%D0%B0%20%D0%A1%D0%BE%D1%83%D0%BF%D0%B0_simple_compose_01k1t6ap26fv5rryddks6xr5pj.png"
+  },
+  {
+    "name": "Алекс Мэйсон",
+    "game": "Call of Duty: Black Ops",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 886,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1529_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%20%D0%9C%D1%8D%D0%B9%D1%81%D0%BE%D0%BD%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1t6g6dneh1sn11j6zvyhbev.png"
+  },
+  {
+    "name": "Виктор Резнов",
+    "game": "Call of Duty: World at War",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 166,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1532_%D0%92%D0%B8%D0%BA%D1%82%D0%BE%D1%80%20%D0%A0%D0%B5%D0%B7%D0%BD%D0%BE%D0%B2%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t6npave68b5jvt8nh90hh1.png"
+  },
+  {
+    "name": "Кратос (юный)",
+    "game": "God of War: Ghost of Sparta",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 269,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1535_%D0%AE%D0%BD%D1%8B%D0%B9%20%D0%9A%D1%80%D0%B0%D1%82%D0%BE%D1%81%20%D0%B2%20%D0%9F%D0%BE%D0%B4%D0%B2%D0%B8%D0%B3%D0%B5_simple_compose_01k1t6v5eqeb4rfqer86k3szc2.png"
+  },
+  {
+    "name": "Морган",
+    "game": "Prey",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 346,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1538_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9C%D0%BE%D1%80%D0%B3%D0%B0%D0%BD%20%D0%B8%D0%B7%20Prey_simple_compose_01k1t70mqafmwsxhh1277f4nx2.png"
+  },
+  {
+    "name": "Фейт",
+    "game": "Mirror's Edge",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3158,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1541_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%A4%D0%B5%D0%B9%D1%82%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t764s2f9c8aak4z25fxwsn.png"
+  },
+  {
+    "name": "Драугр",
+    "game": "God of War",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1446,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1544_%D0%94%D1%80%D0%B0%D1%83%D0%B3%D1%80%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t7bmgzfefrxvm9b5455zxj.png"
+  },
+  {
+    "name": "Гоблин",
+    "game": "Knack",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 470,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1547_%D0%93%D0%BE%D0%B1%D0%BB%D0%B8%D0%BD%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t7h530ffytmx5j7ztjzv6x.png"
+  },
+  {
+    "name": "Кнэк",
+    "game": "Knack",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1222,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1550_%D0%9A%D0%BD%D1%8D%D0%BA%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t7pns1ekaapvc0pgagv3rk.png"
+  },
+  {
+    "name": "Дикон Сент-Джон",
+    "game": "Days Gone",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 169,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1553_%D0%94%D0%B8%D0%BA%D0%BE%D0%BD%20%D0%A1%D0%B5%D0%BD%D1%82-%D0%94%D0%B6%D0%BE%D0%BD%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t7w3qce9evs7j168gcgfdy.png"
+  },
+  {
+    "name": "Бу",
+    "game": "Days Gone",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 399,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2250_%D0%A0%D1%8E%20%D0%A5%D0%B0%D1%8F%D0%B1%D1%83%D1%81%D0%B0%20%D0%B2%20%D0%B1%D0%BE%D1%8E_simple_compose_01k1tzqrc7e1ev8jgaqr5byfhd.png"
+  },
+  {
+    "name": "Сара",
+    "game": "Days Gone",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 201,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2123_%D0%A1%D0%B0%D1%80%D0%B0%20%D0%9A%D0%BE%D0%BD%D0%BD%D0%BE%D1%80%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1ttrcfxfwescqejv6jq73a2.png"
+  },
+  {
+    "name": "Селена",
+    "game": "Returnal",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1925,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1602_%D0%A1%D0%B5%D0%BB%D0%B5%D0%BD%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1t8cjyger2s8132t0tahvyh.png"
+  },
+  {
+    "name": "Эхо",
+    "game": "Returnal",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 997,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1605_%D0%AD%D1%85%D0%BE%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1t8j2yzehnr6phj4hr9rbxe.png"
+  },
+  {
+    "name": "Коул",
+    "game": "inFAMOUS",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2389,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0235_%D0%9A%D0%BE%D1%83%D0%BB%20%D0%9C%D0%B0%D0%BA%D0%B3%D1%80%D0%B0%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1xz130efj2rxw2xvz59qps6.png"
+  },
+  {
+    "name": "Алекс Мерсер",
+    "game": "Prototype",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4007,
+    "coins": 7,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1611_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%20%D0%9C%D0%B5%D1%80%D1%81%D0%B5%D1%80%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1t8x2x4ebp9f8btgzregw1p.png"
+  },
+  {
+    "name": "Джеймс Хеллер",
+    "game": "Prototype 2",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 376,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1614_%D0%94%D0%B6%D0%B5%D0%B9%D0%BC%D1%81%20%D0%A5%D0%B5%D0%BB%D0%BB%D0%B5%D1%80%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1t92hz1e8cvnekj7p0jw5sa.png"
+  },
+  {
+    "name": "Хелга",
+    "game": "Killzone",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 709,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1617_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A5%D0%B5%D0%BB%D0%B3%D0%B0_simple_compose_01k1t980tke15a6t5zwdd3chdq.png"
+  },
+  {
+    "name": "Рико Веласкес",
+    "game": "Killzone",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 891,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1620_%D0%A0%D0%B8%D0%BA%D0%BE%20%D0%92%D0%B5%D0%BB%D0%B0%D1%81%D0%BA%D0%B5%D1%81%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1t9dh0vebsvk7gasw0fvbmv.png"
+  },
+  {
+    "name": "Сев",
+    "game": "Killzone 2",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2230,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1623_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A1%D0%B5%D0%B2%20%D0%B2%20%D0%B1%D0%BE%D1%8E_simple_compose_01k1t9k224eaeatydznmyvez9x.png"
+  },
+  {
+    "name": "Иса",
+    "game": "Killzone 3",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 744,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1559_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A1%D0%B0%D1%80%D0%B0%20%D0%B8%D0%B7%20Days%20Gone_simple_compose_01k1t8736bejt9z7aspc9fcy2t.png"
+  },
+  {
+    "name": "Капитан Нарвиль",
+    "game": "Killzone 3",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 502,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1629_%D0%9A%D0%B0%D0%BF%D0%B8%D1%82%D0%B0%D0%BD%20%D0%9D%D0%B0%D1%80%D0%B2%D0%B8%D0%BB%D1%8C%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1t9y3rqf1atwk1g4f5yfa4m.png"
+  },
+  {
+    "name": "Фарош",
+    "game": "Demon’s Souls",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4407,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1632_%D0%A4%D0%B0%D1%80%D0%BE%D1%88_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%9F%D0%BE%D1%80%D1%82%D1%80%D0%B5%D1%82_simple_compose_01k1ta3gdge528j4g5s2vznjmt.png"
+  },
+  {
+    "name": "Бьорр",
+    "game": "Demon’s Souls",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4459,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1639_Бьорр%20Демоновых%20Душ_simple_compose_01k1tag80yfhcs7crb1wqbc191.png"
+  },
+  {
+    "name": "Астрея",
+    "game": "Demon’s Souls",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1661,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1653_%D0%90%D1%81%D1%82%D1%80%D0%B5%D1%8F_%20%D0%94%D0%B5%D0%BC%D0%BE%D0%BD%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%B5%20%D0%92%D0%B4%D0%BE%D1%85%D0%BD%D0%BE%D0%B2%D0%B5%D0%BD%D0%B8%D0%B5_simple_compose_01k1tbb61sfqjv86em32eqgedy.png"
+  },
+  {
+    "name": "Мейден ин Блэк",
+    "game": "Demon’s Souls",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 160,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1656_%D0%9C%D0%B5%D0%B9%D0%B4%D0%B5%D0%BD%20%D0%B8%D0%BD%20%D0%91%D0%BB%D1%8D%D0%BA%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1tbfe7femks49hbr0x4nmke.png"
+  },
+  {
+    "name": "Хантер",
+    "game": "Monster Hunter: World",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 706,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1700_%D0%A5%D0%B0%D0%BD%D1%82%D0%B5%D1%80%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tbmy9yf6gs6xv8wcts0kw8.png"
+  },
+  {
+    "name": "Палико",
+    "game": "Monster Hunter: World",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2153,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1705_%D0%9F%D0%B0%D0%BB%D0%B8%D0%BA%D0%BE%20%D0%B8%20%D0%94%D0%B0%D0%BD_%20%D0%92%D0%BE%D0%BB%D1%88%D0%B5%D0%B1%D0%BD%D1%8B%D0%B9%20%D0%9C%D0%B8%D1%80_simple_compose_01k1tbzy3pfdrrs947xg415ahw.png"
+  },
+  {
+    "name": "Дан",
+    "game": "MediEvil",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1478,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1705_%D0%9F%D0%B0%D0%BB%D0%B8%D0%BA%D0%BE%20%D0%B8%20%D0%94%D0%B0%D0%BD_%20%D0%92%D0%BE%D0%BB%D1%88%D0%B5%D0%B1%D0%BD%D1%8B%D0%B9%20%D0%9C%D0%B8%D1%80_simple_compose_01k1tbzy3pfdrrs947xg415ahw.png"
+  },
+  {
+    "name": "Крош",
+    "game": "LittleBigPlanet",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 505,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1708_%D0%9A%D1%80%D0%BE%D1%88%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tc5g8je2dt99fhe4x37mtw.png"
+  },
+  {
+    "name": "Рекс",
+    "game": "Toy Story 3",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 416,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1711_%D0%A0%D0%B5%D0%BA%D1%81%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tcay1xez4vgbhpdnmw655c.png"
+  },
+  {
+    "name": "Вуди",
+    "game": "Toy Story 3",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 285,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1714_%D0%92%D1%83%D0%B4%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tcgdkcf3ers5gr45pd27nd.png"
+  },
+  {
+    "name": "Тигра",
+    "game": "Winnie the Pooh’s Rumbly Tumbly Adventure",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 299,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1720_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%A2%D0%B8%D0%B3%D1%80%D0%B0_simple_compose_01k1tcvd66fw4afdc3m3nv4jfp.png"
+  },
+  {
+    "name": "Бильбо",
+    "game": "The Hobbit",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1612,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1723_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%91%D0%B8%D0%BB%D1%8C%D0%B1%D0%BE%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1td0wrbfdwtt1dhzy6chyqj.png"
+  },
+  {
+    "name": "Гэндальф",
+    "game": "The Lord of the Rings",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1597,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1726_%D0%93%D1%8D%D0%BD%D0%B4%D0%B0%D0%BB%D1%8C%D1%84_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9A%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BA%D0%B0_simple_compose_01k1td6ca3e1asrj3a1g0m4bz2.png"
+  },
+  {
+    "name": "Фродо",
+    "game": "The Lord of the Rings",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4443,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1729_%D0%A4%D1%80%D0%BE%D0%B4%D0%BE%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tdbwfwfn0r98v7vj7qxem4.png"
+  },
+  {
+    "name": "Арагорн",
+    "game": "The Lord of the Rings",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 542,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1732_%D0%90%D1%80%D0%B0%D0%B3%D0%BE%D1%80%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tdhc0yf3jb6dasjjgnh4np.png"
+  },
+  {
+    "name": "Сэм",
+    "game": "The Lord of the Rings",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 365,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1735_Фэнтези%20Сэм%20в%20аниме_simple_compose_01k1tdpvzmepev48azvgywk30a.png"
+  },
+  {
+    "name": "Кратос-Отец",
+    "game": "God of War",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3367,
+    "coins": 7,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1738_%D0%9A%D1%80%D0%B0%D1%82%D0%BE%D1%81%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tdwct3es5aqf0enm18p689.png"
+  },
+  {
+    "name": "Леди Димитреску",
+    "game": "Resident Evil Village",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 537,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1741_%D0%9B%D0%B5%D0%B4%D0%B8%20%D0%94%D0%B8%D0%BC%D0%B8%D1%82%D1%80%D0%B5%D1%81%D0%BA%D1%83%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1te1vcfe2nrhfwm4xw9abd9.png"
+  },
+  {
+    "name": "Итан Уинтерс",
+    "game": "Resident Evil Village",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3996,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_1745_%D0%98%D1%82%D0%B0%D0%BD%20%D0%A3%D0%B8%D0%BD%D1%82%D0%B5%D1%80%D1%81%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5-%D0%A1%D1%82%D0%B8%D0%BB%D1%8C_simple_compose_01k1te7b36e41tpshd2dkb3x96.png"
+  },
+  {
+    "name": "Роуз",
+    "game": "Resident Evil Village",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2820,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0223_%D0%A0%D0%BE%D1%83%D0%B7%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1xybt64e5bagr937q5j3aj9.png"
+  },
+  {
+    "name": "Герцог",
+    "game": "Resident Evil Village",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1967,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2037_%D0%93%D0%B5%D1%80%D1%86%D0%BE%D0%B3%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tr2r05feas7jztkabthev3.png"
+  },
+  {
+    "name": "Джон",
+    "game": "Red Dead Redemption 2",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1886,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2041_%D0%90%D1%80%D1%82%20%D0%94%D0%B6%D0%BE%D0%BD%20%D0%B8%20%D0%90%D1%80%D1%82%D1%83%D1%80_simple_compose_01k1trbghgfvdts03pmzztrzyd.png"
+  },
+  {
+    "name": "Артур",
+    "game": "Red Dead Redemption 2",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 199,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0227_%D0%90%D1%80%D1%82%D1%83%D1%80_%20%D0%92%D0%BE%D0%BB%D1%88%D0%B5%D0%B1%D0%BD%D0%B0%D1%8F%20%D0%9A%D0%B0%D1%80%D1%82%D0%B0_simple_compose_01k1xykmnce0h9n8mv5vk1696j.png"
+  },
+  {
+    "name": "Датч",
+    "game": "Red Dead Redemption 2",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 881,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2044_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%94%D0%B0%D1%82%D1%87%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1trh1t7fwc9djx5vytr9rwd.png"
+  },
+  {
+    "name": "Хавьер",
+    "game": "Red Dead Redemption 2",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 413,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2047_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5-%D0%BA%D0%B0%D1%80%D1%82%D0%B0%20%D0%A5%D0%B0%D0%B2%D1%8C%D0%B5%D1%80%D0%B0_simple_compose_01k1trpf09fg7rthkcwcbxkbmx.png"
+  },
+  {
+    "name": "Абигейл",
+    "game": "Red Dead Redemption 2",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 306,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2050_%D0%90%D0%B1%D0%B8%D0%B3%D0%B5%D0%B9%D0%BB%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1trvzp5ev2snmddbyddezv5.png"
+  },
+  {
+    "name": "Клементина",
+    "game": "The Walking Dead",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4961,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2053_%D0%9A%D0%BB%D0%B5%D0%BC%D0%B5%D0%BD%D1%82%D0%B8%D0%BD%D0%B0%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1ts1fb2fs6vmbq1krw02scd.png"
+  },
+  {
+    "name": "Ли",
+    "game": "The Walking Dead",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2270,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0922_%D0%A4%D1%80%D0%B0%D0%BD%D0%BA%D0%BB%D0%B8%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1shg9s7f6fvwf3ck099rkg4.png"
+  },
+  {
+    "name": "Джейн",
+    "game": "The Walking Dead",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4175,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2059_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%94%D0%B6%D0%B5%D0%B9%D0%BD%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tscedsfb4af3eppaa46646.png"
+  },
+  {
+    "name": "Кенни",
+    "game": "The Walking Dead",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1468,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2103_%D0%9A%D0%B5%D0%BD%D0%BD%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tshya7epyrx10mc4pmsxk8.png"
+  },
+  {
+    "name": "Алекс Хантер",
+    "game": "FIFA 18",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 139,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2105_%D0%90%D0%BB%D0%B5%D0%BA%D1%81%20%D0%A5%D0%B0%D0%BD%D1%82%D0%B5%D1%80%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1tsqddde81sz6crkc1drb7w.png"
+  },
+  {
+    "name": "Рикардо",
+    "game": "Alien: Isolation",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 590,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2108_%D0%A0%D0%B8%D0%BA%D0%B0%D1%80%D0%B4%D0%BE%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tswy32frf90vywn9pxdaps.png"
+  },
+  {
+    "name": "Андроид Ворк",
+    "game": "Alien: Isolation",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 309,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2111_%D0%90%D0%BD%D0%B4%D1%80%D0%BE%D0%B8%D0%B4%20%D0%92%D0%BE%D1%80%D0%BA%20%D0%B2%20%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B8_simple_compose_01k1tt2gqpfdtr7vyhkc4k3d5z.png"
+  },
+  {
+    "name": "Эллен Рипли",
+    "game": "Alien: Isolation",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4910,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2115_%D0%AD%D0%BB%D0%BB%D0%B5%D0%BD%20%D0%A0%D0%B8%D0%BF%D0%BB%D0%B8%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tt7xzwfyzrhcna0kkmayph.png"
+  },
+  {
+    "name": "Терминатор",
+    "game": "Terminator: Resistance",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 390,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2117_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%A2%D0%B5%D1%80%D0%BC%D0%B8%D0%BD%D0%B0%D1%82%D0%BE%D1%80_simple_compose_01k1ttddm8ex0tp41j52cyxyc6.png"
+  },
+  {
+    "name": "Джон Коннор",
+    "game": "Terminator: Resistance",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3354,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2120_%D0%94%D0%B6%D0%BE%D0%BD%20%D0%9A%D0%BE%D0%BD%D0%BD%D0%BE%D1%80_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1ttjymye21smveh8camrwvz.png"
+  },
+  {
+    "name": "Сара Коннор",
+    "game": "Terminator: Resistance",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1513,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2123_%D0%A1%D0%B0%D1%80%D0%B0%20%D0%9A%D0%BE%D0%BD%D0%BD%D0%BE%D1%80%20%D0%90%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1ttrcfxfwescqejv6jq73a2.png"
+  },
+  {
+    "name": "Тодд",
+    "game": "Detroit: Become Human",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2016,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2126_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A2%D0%BE%D0%B4%D0%B4%20%D0%B8%D0%B7%20%D0%94%D0%B5%D1%82%D1%80%D0%BE%D0%B9%D1%82%D0%B0_simple_compose_01k1ttxx9cewzv7chhjn7w1n6g.png"
+  },
+  {
+    "name": "Амано",
+    "game": "Final Fantasy",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 268,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2129_%D0%90%D0%BC%D0%B0%D0%BD%D0%BE%20%D0%B2%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A1%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tv3bq7feday5h7kgbeam3f.png"
+  },
+  {
+    "name": "Тифа",
+    "game": "Final Fantasy VII",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 393,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2132_%D0%A2%D0%B8%D1%84%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tv8wxcf8v9ey5g567k54ax.png"
+  },
+  {
+    "name": "Баррет",
+    "game": "Final Fantasy VII",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4168,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2135_%D0%91%D0%B0%D1%80%D1%80%D0%B5%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tvecakfhwsgdh78m8tdy74.png"
+  },
+  {
+    "name": "Сефирот",
+    "game": "Final Fantasy VII",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1667,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2138_%D0%A1%D0%B5%D1%84%D0%B8%D1%80%D0%BE%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1tvkvx4f3nrg823yzx51j3a.png"
+  },
+  {
+    "name": "Нэйтан Хейл",
+    "game": "Resistance",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2348,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2141_%D0%9D%D1%8D%D0%B9%D1%82%D0%B0%D0%BD%20%D0%A5%D0%B5%D0%B9%D0%BB%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tvsb3qfdgvhtdz0k0brr42.png"
+  },
+  {
+    "name": "Капелли",
+    "game": "Resistance 3",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3340,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2146_%D0%9A%D0%B0%D0%BF%D0%B5%D0%BB%D0%BB%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1tvyv91f3vbzb471hq16tef.png"
+  },
+  {
+    "name": "Хантер",
+    "game": "Bloodborne",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 360,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_1252_Герман%20из%20Bloodborne_simple_compose_01k1sxgnrrfw99kvphavte167y.png"
+  },
+  {
+    "name": "Морфей",
+    "game": "The Matrix: Path of Neo",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4319,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0231_%D0%9C%D0%BE%D1%80%D1%84%D0%B5%D0%B9%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1xytkqhfj4825vby76g7wmv.png"
+  },
+  {
+    "name": "Тревор Бельмонт",
+    "game": "Castlevania",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2126,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0307_%D0%A2%D1%80%D0%B5%D0%B2%D0%BE%D1%80%20%D0%91%D0%B5%D0%BB%D1%8C%D0%BC%D0%BE%D0%BD%D1%82%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1y0w7x9fc2t5e6kchyat2zr.png"
+  },
+  {
+    "name": "Артемис",
+    "game": "God of War",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 390,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250806_0305_Артемис%20из%20God%20of%20War_simple_compose_01k1y0ry7vekgtevtgqzx1htq8.png"
+  },
+  {
+    "name": "Арес",
+    "game": "God of War",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3995,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2208_%D0%90%D1%80%D1%82%D0%B5%D0%BC%D0%B8%D1%81%20%D0%B8%20%D0%90%D1%80%D0%B5%D1%81_simple_compose_01k1txb075ftmvbhfxgtz6bxp2.png"
+  },
+  {
+    "name": "Локи",
+    "game": "Marvel’s Avengers",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 430,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0259_%D0%9B%D0%BE%D0%BA%D0%B8%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1y0d6jrfh3r8nxp3qqygdp8.png"
+  },
+  {
+    "name": "Питер Квилл",
+    "game": "Guardians of the Galaxy",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 912,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2229_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%9F%D0%B8%D1%82%D0%B5%D1%80%20%D0%9A%D0%B2%D0%B8%D0%BB%D0%BB_simple_compose_01k1tyhdqdevhr0ra15fehewvh.png"
+  },
+  {
+    "name": "Ракета",
+    "game": "Guardians of the Galaxy",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 136,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_0737_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%A0%D0%B0%D0%BA%D0%B5%D1%82%D0%B0_simple_compose_01k1ps418bfeqag8cegwpmgqq0.png"
+  },
+  {
+    "name": "Грут",
+    "game": "Guardians of the Galaxy",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1587,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0257_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B8%D0%B9%20%D0%93%D1%80%D1%83%D1%82%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1y091kced5rj5z0ktwjy8pf.png"
+  },
+  {
+    "name": "Гамора",
+    "game": "Guardians of the Galaxy",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 293,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2241_%D0%93%D0%B0%D0%BC%D0%BE%D1%80%D0%B0%20%D0%B8%20%D0%94%D1%80%D0%B0%D0%BA%D1%81%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1tz7q7me66rc1we3q6jbkv3.png"
+  },
+  {
+    "name": "Дракс",
+    "game": "Guardians of the Galaxy",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2695,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0247_%D0%94%D1%80%D0%B0%D0%BA%D1%81%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1xzqk28eqyvrx5x5jqfg3z3.png"
+  },
+  {
+    "name": "Хитоми",
+    "game": "Dead or Alive",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 585,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2244_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A5%D0%B8%D1%82%D0%BE%D0%BC%D0%B8_simple_compose_01k1tzcscxe3hvxqq6y9x824eh.png"
+  },
+  {
+    "name": "Касуми",
+    "game": "Dead or Alive",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 114,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2247_%D0%9A%D0%B0%D1%81%D1%83%D0%BC%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1tzj8wfe74sc06d99mwp4tk.png"
+  },
+  {
+    "name": "Рю Хаябуса",
+    "game": "Ninja Gaiden",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2042,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2250_%D0%A0%D1%8E%20%D0%A5%D0%B0%D1%8F%D0%B1%D1%83%D1%81%D0%B0%20%D0%B2%20%D0%B1%D0%BE%D1%8E_simple_compose_01k1tzqrc7e1ev8jgaqr5byfhd.png"
+  },
+  {
+    "name": "Кратос-молодой",
+    "game": "God of War: Ascension",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2157,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_2259_%D0%9A%D1%80%D0%B0%D1%82%D0%BE%D1%81%20%D0%B8%20%D0%92%D0%B5%D0%B3%D0%B0_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1v08hf5ec3ara9nqfrzjtna.png"
+  },
+  {
+    "name": "Вега",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 347,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250817_2035_Фэнтези%20Вега_simple_compose_01k2w76rgsewtasdph20mvry2a.png"
+  },
+  {
+    "name": "Рю",
+    "game": "Street Fighter",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4010,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_0655_%D0%9A%D0%B0%D0%B7%D1%83%D0%BC%D0%B0%20%D0%9A%D0%B8%D1%80%D1%8E_%20%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%B0%D1%8F%20%D0%9A%D0%B0%D1%80%D1%82%D0%B0_simple_compose_01k1s92zzzewfsffnangarexj3.png"
+  },
+  {
+    "name": "Кен",
+    "game": "Street Fighter",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 273,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250817_2038_Фэнтезийный%20Кен%20в%20бою_simple_compose_01k2w7cg0nexc8af3bwvnpdeze.png"
+  },
+  {
+    "name": "Чунь Ли",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 359,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2308_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A7%D1%83%D0%BD%D1%8C%20%D0%9B%D0%B8_simple_compose_01k1v0rna8ekgsgm0nztes0evp.png"
+  },
+  {
+    "name": "Эдмон Хонда",
+    "game": "Street Fighter",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2860,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2311_%D0%AD%D0%B4%D0%BC%D0%BE%D0%BD%20%D0%A5%D0%BE%D0%BD%D0%B4%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1v0y75tf4ab1k8as3t0k5d7.png"
+  },
+  {
+    "name": "Байсон",
+    "game": "Street Fighter",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 203,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2314_%D0%91%D0%B0%D0%B9%D1%81%D0%BE%D0%BD%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1v13sfdfavs9qqjhr7eesdv.png"
+  },
+  {
+    "name": "Гайл",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 332,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2317_%D0%93%D0%B0%D0%B9%D0%BB%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1v197y0f3jbpgmm79pxdrw6.png"
+  },
+  {
+    "name": "Камми",
+    "game": "Street Fighter",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 246,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250817_2041_Камми%20в%20фэнтези%20стиле_simple_compose_01k2w7j1nmfjz9h4wr8q8rkv66.png"
+  },
+  {
+    "name": "Далсим",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 380,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2323_%D0%9A%D0%B0%D0%BC%D0%BC%D0%B8%20%D0%B8%20%D0%94%D0%B0%D0%BB%D1%81%D0%B8%D0%BC_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%91%D0%B8%D1%82%D0%B2%D0%B0_simple_compose_01k1v1m4tbfj0bk4jjrvzfa53s.png"
+  },
+  {
+    "name": "Бласка",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 536,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2326_%D0%91%D0%BB%D0%B0%D1%81%D0%BA%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1v1skg3frwv3pb49ask35e6.png"
+  },
+  {
+    "name": "Элейн",
+    "game": "The Banner Saga",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 590,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2329_%D0%AD%D0%BB%D0%B5%D0%B9%D0%BD%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D0%B8%D1%81%D1%82%D0%B8%D0%BA%D0%B5_simple_compose_01k1v1z4g9e1ks2krvp3kpg89j.png"
+  },
+  {
+    "name": "Фолк",
+    "game": "The Banner Saga",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 224,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2332_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%A4%D0%BE%D0%BB%D0%BA%20%D0%9A%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BA%D0%B0_simple_compose_01k1v24kc2fervn05p5n61fdy4.png"
+  },
+  {
+    "name": "Баннер",
+    "game": "The Banner Saga",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 201,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2335_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%B1%D0%B0%D0%BD%D0%BD%D0%B5%D1%80-%D0%B8%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1v2a4nqe0stfxha02sx6jg6.png"
+  },
+  {
+    "name": "Мишель",
+    "game": "Heavy Rain",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 553,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2338_%D0%9C%D0%B8%D1%88%D0%B5%D0%BB%D1%8C%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1v2fkx6f1aaxgsjwaa28gh0.png"
+  },
+  {
+    "name": "Девочка из Rain",
+    "game": "Rain",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 504,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250804_2343_%D0%94%D0%B5%D0%B2%D0%BE%D1%87%D0%BA%D0%B0%20%D0%B8%D0%B7%20Rain_simple_compose_01k1v2r4a7f5gbmz1aembhqhnm.png"
+  },
+  {
+    "name": "Мальчик из Rain",
+    "game": "Rain",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 170,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/refs/heads/main/20250804_2354_%D0%9C%D0%B0%D0%BB%D1%8C%D1%87%D0%B8%D0%BA%20%D0%BF%D0%BE%D0%B4%20%D0%B4%D0%BE%D0%B6%D0%B4%D1%91%D0%BC_simple_compose_01k1v3bqwcfdqbh57aj2knp40j.png"
+  },
+  {
+    "name": "Кот из Tokyo Jungle",
+    "game": "Tokyo Jungle",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 454,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0012_%D0%9A%D0%BE%D1%82%20%D0%B8%D0%B7%20Tokyo%20Jungle_simple_compose_01k1v4arkpfr49dw8nwf5b0g8k.png"
+  },
+  {
+    "name": "Пес",
+    "game": "Tokyo Jungle",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 239,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0015_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9F%D0%B5%D1%81%20%D0%A2%D0%BE%D0%BA%D0%B8%D0%BE_simple_compose_01k1v4k907evz9epwzv7q1rzrp.png"
+  },
+  {
+    "name": "Панда",
+    "game": "Tekken",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1649,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0020_%D0%9F%D0%B0%D0%BD%D0%B4%D0%B0%20%D0%B8%20%D0%90%D0%BA%D1%83%D0%BC%D0%B0_simple_compose_01k1v4wfphedwb1dg92qpne73f.png"
+  },
+  {
+    "name": "Акума",
+    "game": "Street Fighter",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 401,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0020_%D0%9F%D0%B0%D0%BD%D0%B4%D0%B0%20%D0%B8%20%D0%90%D0%BA%D1%83%D0%BC%D0%B0_simple_compose_01k1v4wfphedwb1dg92qpne73f.png"
+  },
+  {
+    "name": "Рейко",
+    "game": "Mortal Kombat 1",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 144,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0023_%D0%A0%D0%B5%D0%B9%D0%BA%D0%BE%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D1%81%D1%82%D0%B8%D0%BB%D1%8C_simple_compose_01k1v51z05f3t82zzmg8wtxneb.png"
+  },
+  {
+    "name": "Таня",
+    "game": "Mortal Kombat 1",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1025,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0026_%D0%A2%D0%B0%D0%BD%D1%8F%20%D0%B8%D0%B7%20Mortal%20Kombat_simple_compose_01k1v57fd1fphsg2ba624zgawd.png"
+  },
+  {
+    "name": "Шанг Цзун",
+    "game": "Mortal Kombat 1",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 1577,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0029_%D0%A8%D0%B0%D0%BD%D0%B3%20%D0%A6%D0%B7%D1%83%D0%BD_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%98%D0%BB%D0%BB%D1%8E%D1%81%D1%82%D1%80%D0%B0%D1%86%D0%B8%D1%8F_simple_compose_01k1v5czxdf5fvq271zrdnmc5z.png"
+  },
+  {
+    "name": "Ли-Мей",
+    "game": "Mortal Kombat 1",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 237,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0033_%D0%9B%D0%B8-%D0%9C%D0%B5%D0%B9%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1v5jg9qfv7tem6c8chcqx1b.png"
+  },
+  {
+    "name": "Хавик",
+    "game": "Mortal Kombat 1",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 550,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0035_%D0%A5%D0%B0%D0%B2%D0%B8%D0%BA_%20%D0%9A%D0%B0%D1%80%D1%82%D0%BE%D1%87%D0%BD%D1%8B%D0%B9%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8-%D0%92%D0%BE%D0%B9_simple_compose_01k1v5r2atfznaxepqq6p4cbs5.png"
+  },
+  {
+    "name": "Баррака",
+    "game": "Mortal Kombat",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1432,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0039_%D0%91%D0%B0%D1%80%D1%80%D0%B0%D0%BA%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1v5xk5ked0r4yqft16z00b0.png"
+  },
+  {
+    "name": "Джакс",
+    "game": "Mortal Kombat",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4521,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0041_%D0%94%D0%B6%D0%B0%D0%BA%D1%81%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1v62xzffwsvgcy228zvaeva.png"
+  },
+  {
+    "name": "Шао Кан",
+    "game": "Mortal Kombat",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 254,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0044_%D0%A4%D0%B0%D0%BD%D1%82%D0%B0%D0%B7%D0%B8%D0%B9%D0%BD%D1%8B%D0%B9%20%D0%A8%D0%B0%D0%BE%20%D0%9A%D0%B0%D0%BD_simple_compose_01k1v68fd0f8va7m2s1w4z01w1.png"
+  },
+  {
+    "name": "Шива",
+    "game": "Mortal Kombat",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 209,
+    "coins": 1,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0047_%D0%A8%D0%B8%D0%B2%D0%B0%20%D0%B8%D0%B7%20Mortal%20Kombat_simple_compose_01k1v6dxnje19ay2ejn61bvkg0.png"
+  },
+  {
+    "name": "Кано",
+    "game": "Mortal Kombat",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2465,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_0050_%D0%9A%D0%B0%D0%BD%D0%BE%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5-%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1v6kdnwfj1bgq90qs7pada1.png"
+  },
+  {
+    "name": "Джейд",
+    "game": "Mortal Kombat",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 491,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1410_%D0%94%D0%B6%D0%B5%D0%B9%D0%B4%20%D0%B2%20%D1%84%D0%B0%D0%BD%D1%82%D0%B0%D1%81%D1%82%D0%B8%D1%87%D0%B5%D1%81%D0%BA%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1wmcabnf3dr01zfp06sd5mk.png"
+  },
+  {
+    "name": "Милина",
+    "game": "Mortal Kombat",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 703,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250803_1718_%D0%9C%D0%B8%D0%BB%D0%B8%D0%BD%D0%B0%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1qtazrff7fvk897hq31wjzp.png"
+  },
+  {
+    "name": "Пина",
+    "game": "Viva Piñata",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2212,
+    "coins": 6,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1411_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9F%D0%B8%D0%BD%D0%B0_simple_compose_01k1wmg2ccewn9d02dn6fy71fd.png"
+  },
+  {
+    "name": "Гаррет",
+    "game": "Thief",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 3957,
+    "coins": 8,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1416_%D0%93%D0%B0%D1%80%D1%80%D0%B5%D1%82%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1wmrax0e8hb7k06tbq4esfp.png"
+  },
+  {
+    "name": "Коул Макграт",
+    "game": "inFAMOUS",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2549,
+    "coins": 4,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250806_0235_%D0%9A%D0%BE%D1%83%D0%BB%20%D0%9C%D0%B0%D0%BA%D0%B3%D1%80%D0%B0%D1%82%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1xz130efj2rxw2xvz59qps6.png"
+  },
+  {
+    "name": "Пэт",
+    "game": "Everybody's Golf",
+    "rarity": "Легендарная",
+    "rarity_icon": "🔴",
+    "points": 4437,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1420_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%9F%D1%8D%D1%82%20%D0%B2%20%D0%B3%D0%BE%D0%BB%D1%8C%D1%84%D0%B5_simple_compose_01k1wmyjveezkt1wrbxd9fhycx.png"
+  },
+  {
+    "name": "Билли",
+    "game": "Bully",
+    "rarity": "Редкая",
+    "rarity_icon": "🔵",
+    "points": 431,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1423_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5-%D0%91%D0%B8%D0%BB%D0%BB%D0%B8%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1wn42k6fgasrec7px4yyd9x.png"
+  },
+  {
+    "name": "Мона",
+    "game": "Max Payne",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1224,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1426_%D0%9C%D0%BE%D0%BD%D0%B0%20%D0%9C%D0%B0%D0%BA%D1%81%20%D0%9F%D0%B5%D0%B9%D0%BD_%20%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8_simple_compose_01k1wn9mtwfb08000629mv9fxp.png"
+  },
+  {
+    "name": "Дэймон",
+    "game": "Days Gone",
+    "rarity": "Сверхредкая",
+    "rarity_icon": "🟡",
+    "points": 2784,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1429_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%94%D1%8D%D0%B9%D0%BC%D0%BE%D0%BD%20%D0%B2%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5_simple_compose_01k1wnf28qevwr8vbn178rgajz.png"
+  },
+  {
+    "name": "Эшли",
+    "game": "Resident Evil 4",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1013,
+    "coins": 3,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1432_%D0%90%D0%BD%D0%B8%D0%BC%D0%B5%20%D0%AD%D1%88%D0%BB%D0%B8%20%D0%B8%D0%B7%20Resident%20Evil_simple_compose_01k1wnmj8je9cabv3dxsrtz1cg.png"
+  },
+  {
+    "name": "Лукас",
+    "game": "Resident Evil 7",
+    "rarity": "Эпическая",
+    "rarity_icon": "🟣",
+    "points": 1244,
+    "coins": 5,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1435_%D0%9B%D1%83%D0%BA%D0%B0%D1%81%20%D0%B2%20%D1%84%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%D0%B9%D0%BD%D0%BE%D0%BC%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1wnt0q0eqwbvj5y86ggeet6.png"
+  },
+  {
+    "name": "Эвелин",
+    "game": "Resident Evil 7",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 271,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1438_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%AD%D0%B2%D0%B5%D0%BB%D0%B8%D0%BD%20%D0%B2%20%D0%B0%D0%BD%D0%B8%D0%BC%D0%B5%20%D1%81%D1%82%D0%B8%D0%BB%D0%B5_simple_compose_01k1wnzhvcec989q81s9wa27pr.png"
+  },
+  {
+    "name": "Джек",
+    "game": "Resident Evil 7",
+    "rarity": "Обычная",
+    "rarity_icon": "🟢",
+    "points": 127,
+    "coins": 2,
+    "image": "https://raw.githubusercontent.com/chekoli911/tg_card_images/main/20250805_1441_%D0%A4%D1%8D%D0%BD%D1%82%D0%B5%D0%B7%D0%B8%20%D0%94%D0%B6%D0%B5%D0%BA_simple_compose_01k1wp50h5e3jar97pev63af71.png"
+  }
+]
