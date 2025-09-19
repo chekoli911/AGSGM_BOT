@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import requests
 from io import BytesIO
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
     MessageHandler, filters, ConversationHandler, CallbackQueryHandler
@@ -36,14 +36,15 @@ ASKING_IF_WANT_NEW = 1
 
 # Функции для создания клавиатур
 def get_main_keyboard():
+    return ReplyKeyboardMarkup([
+        [KeyboardButton("🆕 Новинки"), KeyboardButton("🎮 Во что поиграть?")],
+        [KeyboardButton("📚 Мои игры"), KeyboardButton("❓ Помощь")],
+        [KeyboardButton("⚙️ Функции бота"), KeyboardButton("🏠 Аренда")]
+    ], resize_keyboard=True, persistent=True)
+
+def get_search_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔍 Поиск игры", callback_data="search_game")],
-        [InlineKeyboardButton("🆕 Новинки", callback_data="new_releases")],
-        [InlineKeyboardButton("🎮 Во что поиграть?", callback_data="advice")],
-        [InlineKeyboardButton("📚 Мои игры", callback_data="library")],
-        [InlineKeyboardButton("🏠 Аренда", callback_data="rental")],
-        [InlineKeyboardButton("❓ Помощь", callback_data="help")],
-        [InlineKeyboardButton("⚙️ Функции бота", callback_data="functions")]
+        [InlineKeyboardButton("🔍 Поиск игры", callback_data="search_game")]
     ])
 
 def get_library_keyboard():
@@ -213,9 +214,9 @@ async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной пройденной игры."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+        await update.callback_query.edit_message_text(response)
     else:
-        await update.message.reply_text(response, reply_markup=get_library_keyboard())
+        await update.message.reply_text(response)
 
 async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -226,9 +227,9 @@ async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной игры как сыгранной."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+        await update.callback_query.edit_message_text(response)
     else:
-        await update.message.reply_text(response, reply_markup=get_library_keyboard())
+        await update.message.reply_text(response)
 
 async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -239,9 +240,9 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
         response = "Вы пока не отметили ни одной игры как неинтересную."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+        await update.callback_query.edit_message_text(response)
     else:
-        await update.message.reply_text(response, reply_markup=get_library_keyboard())
+        await update.message.reply_text(response)
 
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
@@ -271,6 +272,56 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Выбери действие или напиши любое название игры:",
         reply_markup=get_main_keyboard()
     )
+
+async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обработчик нажатий на закрепленные кнопки"""
+    text = update.message.text
+    user_id = update.effective_user.id
+    
+    if text == "🆕 Новинки":
+        await new_releases_command(update, context)
+    elif text == "🎮 Во что поиграть?":
+        context.user_data['last_recommended_game'] = None
+        await send_advice(update, context)
+    elif text == "📚 Мои игры":
+        await update.message.reply_text(
+            "📚 **Моя библиотека игр**\n\nВыбери категорию:",
+            reply_markup=get_library_keyboard()
+        )
+    elif text == "❓ Помощь":
+        await update.message.reply_text(
+            "❓ **Помощь:**\n\n"
+            "🎮 **Во что поиграть?** - получить персональную рекомендацию игры\n"
+            "🆕 **Новинки** - показать последние 25 игр\n"
+            "📚 **Мои игры** - посмотреть пройденные, сыгранные и неинтересные игры\n"
+            "🏠 **Аренда** - меню аренды игр\n"
+            "⚙️ **Функции бота** - описание всех возможностей\n\n"
+            "💡 **Советы по использованию:**\n"
+            "• Напиши название игры для поиска\n"
+            "• Используй кнопки для быстрой навигации\n"
+            "• Отмечай игры, чтобы получать более точные рекомендации\n\n"
+            "🔗 **Полезные ссылки:**\n"
+            "• Сайт: https://arenapsgm.ru/P2P3\n"
+            "• Группа: @StorePSGM"
+        )
+    elif text == "⚙️ Функции бота":
+        await update.message.reply_text(
+            "Привет! 👋\n"
+            "Я помогу найти игры для PlayStation: просто напиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n"
+            "Кроме того, я могу:\n"
+            "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть\n"
+            "📚 Хранить твою библиотеку пройденных и сыгранных игр, чтобы не советовать их повторно\n"
+            "🆕 Показывать последние новинки — их всегда можно арендовать у нас!\n\n"
+            "Выбери действие или напиши любое название игры:"
+        )
+    elif text == "🏠 Аренда":
+        await update.message.reply_text(
+            "🏠 **Аренда игр**\n\nВыбери действие:",
+            reply_markup=get_rental_keyboard()
+        )
+    else:
+        # Если это не кнопка, обрабатываем как поиск игры
+        await search_game(update, context)
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -547,8 +598,7 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await not_interested_command(update, context)
     elif data == "back_to_main":
         await query.edit_message_text(
-            "Главное меню:\n\nВыбери действие или напиши любое название игры:",
-            reply_markup=get_main_keyboard()
+            "Главное меню:\n\nВыбери действие или напиши любое название игры:"
         )
     elif data in ["played", "completed", "not_interested"] and context.user_data.get('last_recommended_game'):
         # Обработка действий с последней рекомендованной игрой
@@ -646,9 +696,9 @@ if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
-        entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
+        entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
         states={
-            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
+            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
         },
         fallbacks=[]
     )
