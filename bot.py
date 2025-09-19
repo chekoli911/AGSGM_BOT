@@ -590,34 +590,43 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "• Группа: @StorePSGM",
             reply_markup=get_main_keyboard()
         )
-    elif data == "completed" and not context.user_data.get('last_recommended_game'):
-        await passed_command(update, context)
-    elif data == "played" and not context.user_data.get('last_recommended_game'):
-        await played_command(update, context)
-    elif data == "not_interested" and not context.user_data.get('last_recommended_game'):
-        await not_interested_command(update, context)
+    elif data == "completed":
+        if context.user_data.get('last_recommended_game'):
+            # Обработка действия с последней рекомендованной игрой
+            last_game = context.user_data.get('last_recommended_game')
+            add_game_mark(user_id, last_game, 'completed_games')
+            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None
+            await send_advice(update, context)
+        else:
+            # Показать список пройденных игр
+            await passed_command(update, context)
+    elif data == "played":
+        if context.user_data.get('last_recommended_game'):
+            # Обработка действия с последней рекомендованной игрой
+            last_game = context.user_data.get('last_recommended_game')
+            add_game_mark(user_id, last_game, 'played_games')
+            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None
+            await send_advice(update, context)
+        else:
+            # Показать список сыгранных игр
+            await played_command(update, context)
+    elif data == "not_interested":
+        if context.user_data.get('last_recommended_game'):
+            # Обработка действия с последней рекомендованной игрой
+            last_game = context.user_data.get('last_recommended_game')
+            add_game_mark(user_id, last_game, 'not_interested_games')
+            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None
+            await send_advice(update, context)
+        else:
+            # Показать список неинтересных игр
+            await not_interested_command(update, context)
     elif data == "back_to_main":
         await query.edit_message_text(
             "Главное меню:\n\nВыбери действие или напиши любое название игры:"
         )
-    elif data in ["played", "completed", "not_interested"] and context.user_data.get('last_recommended_game'):
-        # Обработка действий с последней рекомендованной игрой
-        last_game = context.user_data.get('last_recommended_game')
-        if data == "played":
-            add_game_mark(user_id, last_game, 'played_games')
-            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
-            await send_advice(update, context)
-        elif data == "completed":
-            add_game_mark(user_id, last_game, 'completed_games')
-            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
-            await send_advice(update, context)
-        elif data == "not_interested":
-            add_game_mark(user_id, last_game, 'not_interested_games')
-            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
-            await send_advice(update, context)
     
     # Обработчики для аренды
     elif data == "rent_game":
