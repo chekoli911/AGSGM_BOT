@@ -18,13 +18,18 @@ import asyncio
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 firebase_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
-if not firebase_json:
-    raise RuntimeError("FIREBASE_CREDENTIALS_JSON env var is missing")
-
-firebase_cred = credentials.Certificate(eval(firebase_json))
-firebase_admin.initialize_app(firebase_cred, {
-    'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
-})
+if firebase_json:
+    try:
+        firebase_cred = credentials.Certificate(eval(firebase_json))
+        firebase_admin.initialize_app(firebase_cred, {
+            'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
+        })
+        logging.info("Firebase подключен успешно")
+    except Exception as e:
+        logging.error(f"Ошибка подключения к Firebase: {e}")
+        logging.info("Бот будет работать без Firebase")
+else:
+    logging.warning("FIREBASE_CREDENTIALS_JSON не установлен, бот будет работать без Firebase")
 
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
@@ -702,7 +707,10 @@ async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
 if __name__ == '__main__':
-    TOKEN = os.getenv('BOT_TOKEN')
+    TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
+    if TOKEN == 'YOUR_BOT_TOKEN_HERE':
+        logging.error("BOT_TOKEN не установлен! Установите переменную окружения BOT_TOKEN")
+        exit(1)
 
     conv_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
