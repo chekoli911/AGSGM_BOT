@@ -37,10 +37,13 @@ ASKING_IF_WANT_NEW = 1
 # Функции для создания клавиатур
 def get_main_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🎮 Дать совет", callback_data="advice")],
+        [InlineKeyboardButton("🔍 Поиск игры", callback_data="search_game")],
         [InlineKeyboardButton("🆕 Новинки", callback_data="new_releases")],
-        [InlineKeyboardButton("📚 Моя библиотека", callback_data="library")],
-        [InlineKeyboardButton("❓ Помощь", callback_data="help")]
+        [InlineKeyboardButton("🎮 Во что поиграть?", callback_data="advice")],
+        [InlineKeyboardButton("📚 Мои игры", callback_data="library")],
+        [InlineKeyboardButton("🏠 Аренда", callback_data="rental")],
+        [InlineKeyboardButton("❓ Помощь", callback_data="help")],
+        [InlineKeyboardButton("⚙️ Функции бота", callback_data="functions")]
     ])
 
 def get_library_keyboard():
@@ -64,6 +67,35 @@ def get_new_advice_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔄 Еще совет", callback_data="advice")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_rental_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎮 Арендовать игру", callback_data="rent_game")],
+        [InlineKeyboardButton("✅ Завершить аренду", callback_data="end_rental")],
+        [InlineKeyboardButton("🔐 Получить код 2FA", callback_data="get_2fa")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_end_rental_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("⏰ Закончился срок", callback_data="rental_expired")],
+        [InlineKeyboardButton("📤 Сдать игру досрочно", callback_data="early_return")],
+        [InlineKeyboardButton("💳 Продлить игру со скидкой", callback_data="extend_rental")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="rental")]
+    ])
+
+def get_console_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎮 У меня PS4", callback_data="ps4_guide")],
+        [InlineKeyboardButton("🎮 У меня PS5", callback_data="ps5_guide")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="end_rental")]
+    ])
+
+def get_early_return_confirm_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("✅ Понял(а)", callback_data="early_return_confirm")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="end_rental")]
     ])
 
 advice_texts = [
@@ -461,15 +493,36 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     data = query.data
     
-    if data == "advice":
+    if data == "search_game":
+        await query.edit_message_text(
+            "🔍 **Поиск игры**\n\nНапиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n\nПримеры:\n• God of War\n• FIFA\n• Spider-Man",
+            reply_markup=get_main_keyboard()
+        )
+    elif data == "advice":
         context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
         await send_advice(update, context)
     elif data == "new_releases":
         await new_releases_command(update, context)
     elif data == "library":
         await query.edit_message_text(
-            "📚 Твоя библиотека игр:\n\nВыбери категорию:",
+            "📚 **Моя библиотека игр**\n\nВыбери категорию:",
             reply_markup=get_library_keyboard()
+        )
+    elif data == "rental":
+        await query.edit_message_text(
+            "🏠 **Аренда игр**\n\nВыбери действие:",
+            reply_markup=get_rental_keyboard()
+        )
+    elif data == "functions":
+        await query.edit_message_text(
+            "Привет! 👋\n"
+            "Я помогу найти игры для PlayStation: просто напиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n"
+            "Кроме того, я могу:\n"
+            "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть\n"
+            "📚 Хранить твою библиотеку пройденных и сыгранных игр, чтобы не советовать их повторно\n"
+            "🆕 Показывать последние новинки — их всегда можно арендовать у нас!\n\n"
+            "Выбери действие или напиши любое название игры:",
+            reply_markup=get_main_keyboard()
         )
     elif data == "help":
         await query.edit_message_text(
@@ -515,6 +568,76 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
             context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
             await send_advice(update, context)
+    
+    # Обработчики для аренды
+    elif data == "rent_game":
+        await query.edit_message_text(
+            "🎮 **Арендовать игру**\n\n"
+            "Напиши название игры или её часть и я пришлю ссылку на аренду. "
+            "Перейдя по ссылке выбери срок и позицию, после оплаты я передам чек админу и он всё пришлёт.\n\n"
+            "Также все игры представлены на https://arenapsgm.ru/",
+            reply_markup=get_rental_keyboard()
+        )
+    elif data == "end_rental":
+        await query.edit_message_text(
+            "✅ **Завершить аренду**\n\nВыбери вариант:",
+            reply_markup=get_end_rental_keyboard()
+        )
+    elif data == "get_2fa":
+        await query.edit_message_text(
+            "🔐 **Получить код 2FA**\n\n"
+            "Сейчас я это делать не умею, но скоро научусь! Спроси код у @ArenaPSGMadmin",
+            reply_markup=get_rental_keyboard()
+        )
+    elif data == "rental_expired":
+        await query.edit_message_text(
+            "📌 **Важно!** Если при деактивации или выключении общего доступа вы видите QR-код и запрос на вход в сеть – это значит, что консоль или аккаунт были офлайн.\n\n"
+            "✅ В таком случае сначала подключитесь к интернету и войдите в аккаунт, а потом повторите процедуру деактивации.\n"
+            "❌ Просто удалить аккаунт с консоли недостаточно – это может привести к проблемам с системой и консолью!\n\n"
+            "**Как правильно сдать игру?**",
+            reply_markup=get_console_keyboard()
+        )
+    elif data == "early_return":
+        await query.edit_message_text(
+            "📤 **Сдать игру досрочно**\n\n"
+            "За досрочную сдачу аккаунта как правило полагается скидка на следующую игру около 30%\n"
+            "• Скидка активна в течение недели\n"
+            "• Скидка не действует на позиции дешевле 290₽\n"
+            "• Скидка идёт от 14 дней\n"
+            "• Скидка не действует на скидку и на новинки первые 2-3 месяца\n\n"
+            "Промокод на скидку за досрочную сдачу проси у @ArenaPSGMadmin",
+            reply_markup=get_early_return_confirm_keyboard()
+        )
+    elif data == "early_return_confirm":
+        await query.edit_message_text(
+            "**Как правильно сдать игру?**",
+            reply_markup=get_console_keyboard()
+        )
+    elif data == "extend_rental":
+        await query.edit_message_text(
+            "💳 **Продлить игру со скидкой**\n\n"
+            "Для продления игры со скидкой используй промокод: `ARENALOVE`\n\n"
+            "Напиши название или часть из названия игры, которую нужно продлить:",
+            reply_markup=get_rental_keyboard()
+        )
+    elif data == "ps4_guide":
+        await query.edit_message_text(
+            "🎮 **Инструкция для PS4:**\n\n"
+            "• Заходите в Настройки → Управление учетной записью → Активация как основная система PS4\n"
+            "• Нажимаете \"Деактивировать\"\n\n"
+            "После чего пришлите фото деактивации админу @ArenaPSGMadmin\n"
+            "За это уважение и респект 🫡",
+            reply_markup=get_console_keyboard()
+        )
+    elif data == "ps5_guide":
+        await query.edit_message_text(
+            "🎮 **Инструкция для PS5:**\n\n"
+            "• Заходите в Настройки → Пользователи и учётные записи → Другое → Общий доступ к консоли и офлайн-игра\n"
+            "• Нажимаете \"Отключить\"\n\n"
+            "После чего пришлите фото выключения общего доступа админу @ArenaPSGMadmin\n"
+            "За это уважение и респект 🫡",
+            reply_markup=get_console_keyboard()
+        )
 
 async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
