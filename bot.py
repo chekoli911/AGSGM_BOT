@@ -3,10 +3,10 @@ import logging
 import pandas as pd
 import requests
 from io import BytesIO
-from telegram import Update
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
-    MessageHandler, filters, ConversationHandler
+    MessageHandler, filters, ConversationHandler, CallbackQueryHandler
 )
 import firebase_admin
 from firebase_admin import credentials, db
@@ -33,6 +33,38 @@ CHANNEL_CHAT_ID = -1002773793511  # ID канала для сообщений п
 ADMIN_IDS = {5381215134}  # Множество админов
 
 ASKING_IF_WANT_NEW = 1
+
+# Функции для создания клавиатур
+def get_main_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎮 Дать совет", callback_data="advice")],
+        [InlineKeyboardButton("🆕 Новинки", callback_data="new_releases")],
+        [InlineKeyboardButton("📚 Моя библиотека", callback_data="library")],
+        [InlineKeyboardButton("❓ Помощь", callback_data="help")]
+    ])
+
+def get_library_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("✅ Пройденные игры", callback_data="completed")],
+        [InlineKeyboardButton("🎯 Сыгранные игры", callback_data="played")],
+        [InlineKeyboardButton("❌ Неинтересные игры", callback_data="not_interested")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_advice_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔄 Еще совет", callback_data="advice")],
+        [InlineKeyboardButton("✅ Уже играл", callback_data="played")],
+        [InlineKeyboardButton("🏆 Уже прошел", callback_data="completed")],
+        [InlineKeyboardButton("❌ Неинтересно", callback_data="not_interested")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_new_advice_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔄 Еще совет", callback_data="advice")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
 
 advice_texts = [
     "Вот отличный вариант для твоего досуга:",
@@ -109,10 +141,11 @@ async def greet(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Привет! 👋\n"
         "Я помогу найти игры для PlayStation: просто напиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n"
         "Кроме того, я могу:\n"
-        "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть — просто напиши «Совет» или «Во что поиграть?»\n"
+        "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть\n"
         "📚 Хранить твою библиотеку пройденных и сыгранных игр, чтобы не советовать их повторно\n"
         "🆕 Показывать последние новинки — их всегда можно арендовать у нас!\n\n"
-        "Пиши любое название или запрос — я помогу подобрать игру!"
+        "Выбери действие или напиши любое название игры:",
+        reply_markup=get_main_keyboard()
     )
 
 async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -123,47 +156,60 @@ async def send_advice(update: Update, context: ContextTypes.DEFAULT_TYPE):
     completed_games = set(get_marked_games(user_id, 'completed_games'))
     title, url = pick_random_game(exclude_titles=completed_games)
     if not title:
-        await update.message.reply_text("Все игры из базы у вас уже пройдены!")
+        if update.callback_query:
+            await update.callback_query.edit_message_text("Все игры из базы у вас уже пройдены!", reply_markup=get_main_keyboard())
+        else:
+            await update.message.reply_text("Все игры из базы у вас уже пройдены!")
         return ConversationHandler.END
 
     advice = random.choice(advice_texts)
     context.user_data['last_recommended_game'] = title
-    msg = (f"{advice}\n{title}\n{url}\n\n"
-           'Если хочешь получить новую рекомендацию, напиши "Еще".\n\n'
-           '"Играл",\n'
-           '"Уже прошел",\n'
-           '"Неинтересно" — я это запомню и по команде "Пройденные" будет видна твоя библиотека.\n\n'
-           'Если подходит, напиши "Спасибо".\n\n'
-           'Если пора прощаться, напиши "Пока".')
-    await update.message.reply_text(msg)
+    msg = f"{advice}\n{title}\n{url}\n\nЧто думаешь об этой игре?"
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text(msg, reply_markup=get_advice_keyboard())
+    else:
+        await update.message.reply_text(msg, reply_markup=get_advice_keyboard())
     return ASKING_IF_WANT_NEW
 
 async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     completed = get_marked_games(user_id, 'completed_games')
     if completed:
-        response = "Вот список ваших пройденных игр:\n" + "\n".join(completed)
+        response = "✅ **Пройденные игры:**\n\n" + "\n".join(f"• {game}" for game in completed)
     else:
         response = "Вы пока не отметили ни одной пройденной игры."
-    await update.message.reply_text(response)
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+    else:
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     played = get_marked_games(user_id, 'played_games')
     if played:
-        response = "Вот список игр, в которые вы уже играли:\n" + "\n".join(played)
+        response = "🎯 **Сыгранные игры:**\n\n" + "\n".join(f"• {game}" for game in played)
     else:
         response = "Вы пока не отметили ни одной игры как сыгранной."
-    await update.message.reply_text(response)
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+    else:
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     not_interested = get_marked_games(user_id, 'not_interested_games')
     if not_interested:
-        response = "Вот список игр, которые вы отметили как неинтересные:\n" + "\n".join(not_interested)
+        response = "❌ **Неинтересные игры:**\n\n" + "\n".join(f"• {game}" for game in not_interested)
     else:
         response = "Вы пока не отметили ни одной игры как неинтересную."
-    await update.message.reply_text(response)
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
+    else:
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
@@ -171,8 +217,14 @@ async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE)
 async def new_releases_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     last_25 = df.tail(25)
     messages = [f"{row['Title']}\n{row['Url']}" for _, row in last_25.iterrows()]
-    for msg in messages:
-        await update.message.reply_text(msg)
+    
+    if update.callback_query:
+        await update.callback_query.edit_message_text("🆕 **Последние новинки:**\n\nОтправляю список...")
+        for msg in messages:
+            await update.callback_query.message.reply_text(msg)
+    else:
+        for msg in messages:
+            await update.message.reply_text(msg)
 
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -181,10 +233,11 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Привет! 👋\n"
         "Я помогу найти игры для PlayStation: просто напиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n"
         "Кроме того, я могу:\n"
-        "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть — просто напиши «Совет» или «Во что поиграть?»\n"
+        "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть\n"
         "📚 Хранить твою библиотеку пройденных и сыгранных игр, чтобы не советовать их повторно\n"
-        "🆕 Показывать последние новинки — их всегда можно арендовать у нас! Просто напиши «Новинки»\n\n"
-        "Пиши любое название или запрос — я помогу подобрать игру!"
+        "🆕 Показывать последние новинки — их всегда можно арендовать у нас!\n\n"
+        "Выбери действие или напиши любое название игры:",
+        reply_markup=get_main_keyboard()
     )
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -400,6 +453,69 @@ async def scheduled_messages_worker(app):
             logging.error(f"Ошибка в воркере отложенных сообщений: {e}")
             await asyncio.sleep(30)
 
+# Обработчик callback'ов для кнопок
+async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    query = update.callback_query
+    await query.answer()
+    
+    user_id = update.effective_user.id
+    data = query.data
+    
+    if data == "advice":
+        context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+        await send_advice(update, context)
+    elif data == "new_releases":
+        await new_releases_command(update, context)
+    elif data == "library":
+        await query.edit_message_text(
+            "📚 Твоя библиотека игр:\n\nВыбери категорию:",
+            reply_markup=get_library_keyboard()
+        )
+    elif data == "help":
+        await query.edit_message_text(
+            "❓ Помощь:\n\n"
+            "🎮 **Дать совет** - получить персональную рекомендацию игры\n"
+            "🆕 **Новинки** - показать последние 25 игр\n"
+            "📚 **Моя библиотека** - посмотреть пройденные, сыгранные и неинтересные игры\n\n"
+            "💡 **Советы по использованию:**\n"
+            "• Напиши название игры для поиска\n"
+            "• Используй кнопки для быстрой навигации\n"
+            "• Отмечай игры, чтобы получать более точные рекомендации\n\n"
+            "🔗 **Полезные ссылки:**\n"
+            "• Сайт: https://arenapsgm.ru/P2P3\n"
+            "• Группа: @StorePSGM",
+            reply_markup=get_main_keyboard()
+        )
+    elif data == "completed" and not context.user_data.get('last_recommended_game'):
+        await passed_command(update, context)
+    elif data == "played" and not context.user_data.get('last_recommended_game'):
+        await played_command(update, context)
+    elif data == "not_interested" and not context.user_data.get('last_recommended_game'):
+        await not_interested_command(update, context)
+    elif data == "back_to_main":
+        await query.edit_message_text(
+            "Главное меню:\n\nВыбери действие или напиши любое название игры:",
+            reply_markup=get_main_keyboard()
+        )
+    elif data in ["played", "completed", "not_interested"] and context.user_data.get('last_recommended_game'):
+        # Обработка действий с последней рекомендованной игрой
+        last_game = context.user_data.get('last_recommended_game')
+        if data == "played":
+            add_game_mark(user_id, last_game, 'played_games')
+            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
+        elif data == "completed":
+            add_game_mark(user_id, last_game, 'completed_games')
+            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
+        elif data == "not_interested":
+            add_game_mark(user_id, last_game, 'not_interested_games')
+            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
+
 async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
@@ -425,6 +541,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('newreleases', new_releases_command))
     app.add_handler(CommandHandler('sendto', sendto_command))
     app.add_handler(CommandHandler('schedule', schedule_command))
+    app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(conv_handler)
 
     app.post_init = on_startup
