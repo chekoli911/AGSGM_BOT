@@ -522,7 +522,8 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     args = context.args
     if len(args) < 2:
-        await update.message.reply_text("Использование: /sendto <user_id> <сообщение> [photo_url]")
+        await update.message.reply_text("Использование: /sendto <user_id> <сообщение> [photo_url] [кнопки]")
+        await update.message.reply_text("Примеры кнопок:\n• [Кнопка1|url1] [Кнопка2|url2]\n• [Кнопка1|callback1] [Кнопка2|callback2]")
         return
 
     try:
@@ -533,28 +534,62 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     message_text = " ".join(args[1:])
     photo_url = None
+    buttons = []
     
-    # Проверяем, есть ли URL в сообщении (может быть в любом месте)
+    # Сначала парсим кнопки в формате [Текст|URL] или [Текст|callback]
     import re
-    url_pattern = r'https?://[^\s]+'
-    url_match = re.search(url_pattern, message_text)
+    button_pattern = r'\[([^\]]+)\|([^\]]+)\]'
+    button_matches = re.findall(button_pattern, message_text)
     
-    if url_match:
-        photo_url = url_match.group(0)
-        # Убираем URL из текста сообщения
-        message_text = re.sub(url_pattern, '', message_text).strip()
-        # Убираем лишние пробелы
-        message_text = re.sub(r'\s+', ' ', message_text)
+    for button_text, button_data in button_matches:
+        if button_data.startswith('http'):
+            # URL кнопка
+            buttons.append(InlineKeyboardButton(button_text, url=button_data))
+        else:
+            # Callback кнопка
+            buttons.append(InlineKeyboardButton(button_text, callback_data=button_data))
+    
+    # Убираем кнопки из текста сообщения
+    message_text = re.sub(button_pattern, '', message_text).strip()
+    message_text = re.sub(r'\s+', ' ', message_text)
+    
+    # Теперь ищем URL фото (только если нет кнопок с URL)
+    if not any(button.url for button in buttons):
+        url_pattern = r'https?://[^\s]+'
+        url_match = re.search(url_pattern, message_text)
+        
+        if url_match:
+            photo_url = url_match.group(0)
+            # Убираем URL из текста сообщения
+            message_text = re.sub(url_pattern, '', message_text).strip()
+            # Убираем лишние пробелы
+            message_text = re.sub(r'\s+', ' ', message_text)
+    
+    # Создаем клавиатуру если есть кнопки
+    reply_markup = None
+    if buttons:
+        # Размещаем кнопки по одной в ряд
+        keyboard = [[button] for button in buttons]
+        reply_markup = InlineKeyboardMarkup(keyboard)
 
     try:
         if photo_url:
-            await context.application.bot.send_photo(chat_id=target_user_id, photo=photo_url, caption=message_text)
-            await update.message.reply_text(f"Сообщение с фото успешно отправлено пользователю {target_user_id}.")
-            await notify_admin(context.application, f"✅ Сообщение с фото отправлено пользователю {target_user_id} админом {user_id}.")
+            await context.application.bot.send_photo(
+                chat_id=target_user_id, 
+                photo=photo_url, 
+                caption=message_text,
+                reply_markup=reply_markup
+            )
+            await update.message.reply_text(f"Сообщение с фото и кнопками успешно отправлено пользователю {target_user_id}.")
+            await notify_admin(context.application, f"✅ Сообщение с фото и кнопками отправлено пользователю {target_user_id} админом {user_id}.")
         else:
-            await context.application.bot.send_message(chat_id=target_user_id, text=message_text)
-            await update.message.reply_text(f"Сообщение успешно отправлено пользователю {target_user_id}.")
-            await notify_admin(context.application, f"✅ Сообщение отправлено пользователю {target_user_id} админом {user_id}.")
+            await context.application.bot.send_message(
+                chat_id=target_user_id, 
+                text=message_text,
+                reply_markup=reply_markup
+            )
+            await update.message.reply_text(f"Сообщение с кнопками успешно отправлено пользователю {target_user_id}.")
+            await notify_admin(context.application, f"✅ Сообщение с кнопками отправлено пользователю {target_user_id} админом {user_id}.")
     except Exception as e:
         await update.message.reply_text(f"Ошибка при отправке сообщения: {e}")
 
