@@ -553,17 +553,24 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_text = re.sub(button_pattern, '', message_text).strip()
     message_text = re.sub(r'\s+', ' ', message_text)
     
-    # Теперь ищем URL фото (только если нет кнопок с URL)
-    if not any(button.url for button in buttons):
-        url_pattern = r'https?://[^\s]+'
-        url_match = re.search(url_pattern, message_text)
-        
-        if url_match:
-            photo_url = url_match.group(0)
-            # Убираем URL из текста сообщения
-            message_text = re.sub(url_pattern, '', message_text).strip()
-            # Убираем лишние пробелы
-            message_text = re.sub(r'\s+', ' ', message_text)
+    # Теперь ищем URL фото (ищем все URL и берем первый, который не является кнопкой)
+    url_pattern = r'https?://[^\s]+'
+    all_urls = re.findall(url_pattern, message_text)
+    
+    # Получаем URL кнопок
+    button_urls = [button.url for button in buttons if hasattr(button, 'url') and button.url]
+    
+    # Ищем URL фото (первый URL, который не является кнопкой)
+    for url in all_urls:
+        if url not in button_urls:
+            photo_url = url
+            break
+    
+    # Убираем URL фото из текста сообщения
+    if photo_url:
+        message_text = re.sub(re.escape(photo_url), '', message_text).strip()
+        # Убираем лишние пробелы
+        message_text = re.sub(r'\s+', ' ', message_text)
     
     # Создаем клавиатуру если есть кнопки
     reply_markup = None
