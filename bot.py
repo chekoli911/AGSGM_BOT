@@ -42,9 +42,10 @@ ASKING_IF_WANT_NEW = 1
 # Функции для создания клавиатур
 def get_main_keyboard():
     return ReplyKeyboardMarkup([
-        [KeyboardButton("🏠 Аренда"), KeyboardButton("🛒 Покупка"), KeyboardButton("📚 Мои игры")],
-        [KeyboardButton("🎮 Во что поиграть?"), KeyboardButton("⚙️ Функции бота")],
-        [KeyboardButton("🆕 Новинки"), KeyboardButton("❓ Помощь")]
+        [KeyboardButton("🏠 Аренда"), KeyboardButton("🛒 Покупка")],
+        [KeyboardButton("📚 Мои игры"), KeyboardButton("🎮 Во что поиграть?")],
+        [KeyboardButton("⚙️ Функции бота"), KeyboardButton("🆕 Новинки")],
+        [KeyboardButton("❓ Помощь")]
     ], resize_keyboard=True, is_persistent=True)
 
 def get_search_keyboard():
