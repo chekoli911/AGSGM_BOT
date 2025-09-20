@@ -42,9 +42,9 @@ ASKING_IF_WANT_NEW = 1
 # Функции для создания клавиатур
 def get_main_keyboard():
     return ReplyKeyboardMarkup([
-        [KeyboardButton("🆕 Новинки"), KeyboardButton("🎮 Во что поиграть?")],
-        [KeyboardButton("📚 Мои игры"), KeyboardButton("❓ Помощь")],
-        [KeyboardButton("⚙️ Функции бота"), KeyboardButton("🏠 Аренда")]
+        [KeyboardButton("🏠 Аренда"), KeyboardButton("📚 Мои игры")],
+        [KeyboardButton("🎮 Во что поиграть?"), KeyboardButton("⚙️ Функции бота")],
+        [KeyboardButton("🆕 Новинки"), KeyboardButton("❓ Помощь")]
     ], resize_keyboard=True, is_persistent=True)
 
 def get_search_keyboard():
@@ -63,9 +63,9 @@ def get_library_keyboard():
 def get_advice_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🔄 Еще совет", callback_data="advice")],
-        [InlineKeyboardButton("✅ Уже играл", callback_data="played")],
-        [InlineKeyboardButton("🏆 Уже прошел", callback_data="completed")],
-        [InlineKeyboardButton("❌ Неинтересно", callback_data="not_interested")],
+        [InlineKeyboardButton("✅ Уже играл", callback_data="advice_played")],
+        [InlineKeyboardButton("🏆 Уже прошел", callback_data="advice_completed")],
+        [InlineKeyboardButton("❌ Неинтересно", callback_data="advice_not_interested")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
     ])
 
@@ -596,42 +596,41 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             reply_markup=get_main_keyboard()
         )
     elif data == "completed":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'completed_games')
-            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список пройденных игр
-            await passed_command(update, context)
+        # Всегда показывать список пройденных игр (как /passed)
+        await passed_command(update, context)
     elif data == "played":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'played_games')
-            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список сыгранных игр
-            await played_command(update, context)
+        # Всегда показывать список сыгранных игр (как /played)
+        await played_command(update, context)
     elif data == "not_interested":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'not_interested_games')
-            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список неинтересных игр
-            await not_interested_command(update, context)
+        # Всегда показывать список неинтересных игр (как /notinterested)
+        await not_interested_command(update, context)
     elif data == "back_to_main":
         await query.edit_message_text(
             "Главное меню:\n\nВыбери действие или напиши любое название игры:"
         )
+    
+    # Обработчики для кнопок в режиме рекомендаций
+    elif data == "advice_played" and context.user_data.get('last_recommended_game'):
+        # Отметить игру как сыгранную и дать новую рекомендацию
+        last_game = context.user_data.get('last_recommended_game')
+        add_game_mark(user_id, last_game, 'played_games')
+        await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+        context.user_data['last_recommended_game'] = None
+        await send_advice(update, context)
+    elif data == "advice_completed" and context.user_data.get('last_recommended_game'):
+        # Отметить игру как пройденную и дать новую рекомендацию
+        last_game = context.user_data.get('last_recommended_game')
+        add_game_mark(user_id, last_game, 'completed_games')
+        await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+        context.user_data['last_recommended_game'] = None
+        await send_advice(update, context)
+    elif data == "advice_not_interested" and context.user_data.get('last_recommended_game'):
+        # Отметить игру как неинтересную и дать новую рекомендацию
+        last_game = context.user_data.get('last_recommended_game')
+        add_game_mark(user_id, last_game, 'not_interested_games')
+        await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+        context.user_data['last_recommended_game'] = None
+        await send_advice(update, context)
     
     # Обработчики для аренды
     elif data == "rent_game":
@@ -707,10 +706,7 @@ async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
 if __name__ == '__main__':
-    TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
-    if TOKEN == 'YOUR_BOT_TOKEN_HERE':
-        logging.error("BOT_TOKEN не установлен! Установите переменную окружения BOT_TOKEN")
-        exit(1)
+    TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
