@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import requests
 from io import BytesIO
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
     MessageHandler, filters, ConversationHandler, CallbackQueryHandler
@@ -18,18 +18,13 @@ import asyncio
 logging.basicConfig(level=logging.INFO, format='%(asctime)s %(levelname)s %(message)s')
 
 firebase_json = os.getenv('FIREBASE_CREDENTIALS_JSON')
-if firebase_json:
-    try:
-        firebase_cred = credentials.Certificate(eval(firebase_json))
-        firebase_admin.initialize_app(firebase_cred, {
-            'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
-        })
-        logging.info("Firebase подключен успешно")
-    except Exception as e:
-        logging.error(f"Ошибка подключения к Firebase: {e}")
-        logging.info("Бот будет работать без Firebase")
-else:
-    logging.warning("FIREBASE_CREDENTIALS_JSON не установлен, бот будет работать без Firebase")
+if not firebase_json:
+    raise RuntimeError("FIREBASE_CREDENTIALS_JSON env var is missing")
+
+firebase_cred = credentials.Certificate(eval(firebase_json))
+firebase_admin.initialize_app(firebase_cred, {
+    'databaseURL': 'https://ag-searh-default-rtdb.firebaseio.com/'
+})
 
 GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478-Vse_igri-202507290225_fixed.xlsx'
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
@@ -41,15 +36,14 @@ ASKING_IF_WANT_NEW = 1
 
 # Функции для создания клавиатур
 def get_main_keyboard():
-    return ReplyKeyboardMarkup([
-        [KeyboardButton("🆕 Новинки"), KeyboardButton("🎮 Во что поиграть?")],
-        [KeyboardButton("📚 Мои игры"), KeyboardButton("❓ Помощь")],
-        [KeyboardButton("⚙️ Функции бота"), KeyboardButton("🏠 Аренда")]
-    ], resize_keyboard=True, persistent=True)
-
-def get_search_keyboard():
     return InlineKeyboardMarkup([
-        [InlineKeyboardButton("🔍 Поиск игры", callback_data="search_game")]
+        [InlineKeyboardButton("🔍 Поиск игры", callback_data="search_game")],
+        [InlineKeyboardButton("🆕 Новинки", callback_data="new_releases")],
+        [InlineKeyboardButton("🎮 Во что поиграть?", callback_data="advice")],
+        [InlineKeyboardButton("📚 Мои игры", callback_data="library")],
+        [InlineKeyboardButton("🏠 Аренда", callback_data="rental")],
+        [InlineKeyboardButton("❓ Помощь", callback_data="help")],
+        [InlineKeyboardButton("⚙️ Функции бота", callback_data="functions")]
     ])
 
 def get_library_keyboard():
@@ -219,9 +213,9 @@ async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной пройденной игры."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -232,9 +226,9 @@ async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной игры как сыгранной."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -245,9 +239,9 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
         response = "Вы пока не отметили ни одной игры как неинтересную."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_library_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_library_keyboard())
 
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
@@ -277,56 +271,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "Выбери действие или напиши любое название игры:",
         reply_markup=get_main_keyboard()
     )
-
-async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    """Обработчик нажатий на закрепленные кнопки"""
-    text = update.message.text
-    user_id = update.effective_user.id
-    
-    if text == "🆕 Новинки":
-        await new_releases_command(update, context)
-    elif text == "🎮 Во что поиграть?":
-        context.user_data['last_recommended_game'] = None
-        await send_advice(update, context)
-    elif text == "📚 Мои игры":
-        await update.message.reply_text(
-            "📚 **Моя библиотека игр**\n\nВыбери категорию:",
-            reply_markup=get_library_keyboard()
-        )
-    elif text == "❓ Помощь":
-        await update.message.reply_text(
-            "❓ **Помощь:**\n\n"
-            "🎮 **Во что поиграть?** - получить персональную рекомендацию игры\n"
-            "🆕 **Новинки** - показать последние 25 игр\n"
-            "📚 **Мои игры** - посмотреть пройденные, сыгранные и неинтересные игры\n"
-            "🏠 **Аренда** - меню аренды игр\n"
-            "⚙️ **Функции бота** - описание всех возможностей\n\n"
-            "💡 **Советы по использованию:**\n"
-            "• Напиши название игры для поиска\n"
-            "• Используй кнопки для быстрой навигации\n"
-            "• Отмечай игры, чтобы получать более точные рекомендации\n\n"
-            "🔗 **Полезные ссылки:**\n"
-            "• Сайт: https://arenapsgm.ru/P2P3\n"
-            "• Группа: @StorePSGM"
-        )
-    elif text == "⚙️ Функции бота":
-        await update.message.reply_text(
-            "Привет! 👋\n"
-            "Я помогу найти игры для PlayStation: просто напиши название игры или её часть, и я пришлю ссылку на аренду или покупку.\n"
-            "Кроме того, я могу:\n"
-            "🎮 Посоветовать интересные игры, если не знаешь, во что поиграть\n"
-            "📚 Хранить твою библиотеку пройденных и сыгранных игр, чтобы не советовать их повторно\n"
-            "🆕 Показывать последние новинки — их всегда можно арендовать у нас!\n\n"
-            "Выбери действие или напиши любое название игры:"
-        )
-    elif text == "🏠 Аренда":
-        await update.message.reply_text(
-            "🏠 **Аренда игр**\n\nВыбери действие:",
-            reply_markup=get_rental_keyboard()
-        )
-    else:
-        # Если это не кнопка, обрабатываем как поиск игры
-        await search_game(update, context)
 
 async def search_game(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -595,43 +539,35 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "• Группа: @StorePSGM",
             reply_markup=get_main_keyboard()
         )
-    elif data == "completed":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'completed_games')
-            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список пройденных игр
-            await passed_command(update, context)
-    elif data == "played":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'played_games')
-            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список сыгранных игр
-            await played_command(update, context)
-    elif data == "not_interested":
-        if context.user_data.get('last_recommended_game'):
-            # Обработка действия с последней рекомендованной игрой
-            last_game = context.user_data.get('last_recommended_game')
-            add_game_mark(user_id, last_game, 'not_interested_games')
-            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
-            context.user_data['last_recommended_game'] = None
-            await send_advice(update, context)
-        else:
-            # Показать список неинтересных игр
-            await not_interested_command(update, context)
+    elif data == "completed" and not context.user_data.get('last_recommended_game'):
+        await passed_command(update, context)
+    elif data == "played" and not context.user_data.get('last_recommended_game'):
+        await played_command(update, context)
+    elif data == "not_interested" and not context.user_data.get('last_recommended_game'):
+        await not_interested_command(update, context)
     elif data == "back_to_main":
         await query.edit_message_text(
-            "Главное меню:\n\nВыбери действие или напиши любое название игры:"
+            "Главное меню:\n\nВыбери действие или напиши любое название игры:",
+            reply_markup=get_main_keyboard()
         )
+    elif data in ["played", "completed", "not_interested"] and context.user_data.get('last_recommended_game'):
+        # Обработка действий с последней рекомендованной игрой
+        last_game = context.user_data.get('last_recommended_game')
+        if data == "played":
+            add_game_mark(user_id, last_game, 'played_games')
+            await query.edit_message_text("Отлично, отметил как сыгранную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
+        elif data == "completed":
+            add_game_mark(user_id, last_game, 'completed_games')
+            await query.edit_message_text("Отлично, отметил как пройденную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
+        elif data == "not_interested":
+            add_game_mark(user_id, last_game, 'not_interested_games')
+            await query.edit_message_text("Понял, отмечаю как неинтересную. Вот новая рекомендация:", reply_markup=get_new_advice_keyboard())
+            context.user_data['last_recommended_game'] = None  # Сбрасываем для новой рекомендации
+            await send_advice(update, context)
     
     # Обработчики для аренды
     elif data == "rent_game":
@@ -707,15 +643,12 @@ async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
 if __name__ == '__main__':
-    TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
-    if TOKEN == 'YOUR_BOT_TOKEN_HERE':
-        logging.error("BOT_TOKEN не установлен! Установите переменную окружения BOT_TOKEN")
-        exit(1)
+    TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
-        entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
+        entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         states={
-            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
+            ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), search_game)],
         },
         fallbacks=[]
     )
