@@ -612,7 +612,7 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # --- Функции для обработки заказов ---
 def parse_order_info(text):
-    """Парсит информацию о заказе из пересланного сообщения"""
+    """Парсит информацию о заказе из пересланного сообщения (улучшенная версия)"""
     order_info = {}
     
     # Извлекаем номер заказа
@@ -620,40 +620,42 @@ def parse_order_info(text):
     if order_match:
         order_info['order_number'] = order_match.group(1)
     
-    # Извлекаем название игры
-    # Ищем от номера до цены с открывающей скобкой, включая двоеточие в названии
-    game_match = re.search(r'(\d+\.\s+.*?)(?=:\s*\d+\s*\()', text)
-    if game_match:
-        order_info['game_name'] = game_match.group(1).strip()
-        # Также извлекаем цену
-        price_match = re.search(r':\s*(\d+)\s*\(', text)
+    # Извлекаем название игры - берем до цены с цифрами (учитывая двоеточия в названии)
+    line_match = re.search(r'^\s*\d+\.\s*.*$', text, re.MULTILINE)
+    if line_match:
+        line = line_match.group(0)
+        # Ищем паттерн ": цифры (" для определения конца названия
+        price_match = re.search(r':\s*\d+\s*\(', line)
         if price_match:
-            order_info['price'] = price_match.group(1)
-    else:
-        # Альтернативный способ - ищем до слова "Платформа"
-        game_match_alt = re.search(r'(\d+\.\s+.*?)(?=\s*Платформа)', text)
-        if game_match_alt:
-            order_info['game_name'] = game_match_alt.group(1).strip()
+            # Берем все до цены, убираем номер в начале
+            title_part = line[:price_match.start()].strip()
+            title_part = re.sub(r'^\d+\.\s*', '', title_part)
+            order_info['game_name'] = title_part
+        else:
+            # Fallback: берем до первого двоеточия
+            title_part = line.split(':')[0].replace(r'^\s*\d+\.', '', count=1).strip()
+            order_info['game_name'] = title_part
+        
+        # Извлекаем платформу из той же строки
+        platform_match = re.search(r'Платформа\s*:\s*([^,\n]+)', line, re.IGNORECASE)
+        if platform_match:
+            order_info['platform'] = platform_match.group(1).strip()
+        
+        # Извлекаем позицию и дни
+        pos_match = re.search(r'(П[23])\s*(\d+)\s*дн', line, re.IGNORECASE)
+        if pos_match:
+            order_info['rental_type'] = pos_match.group(1).upper()
+            order_info['days'] = int(pos_match.group(2))
     
-    # Извлекаем платформу
-    platform_match = re.search(r'Платформа:\s+([^,]+)', text)
-    if platform_match:
-        order_info['platform'] = platform_match.group(1).strip()
+    # Извлекаем имя покупателя
+    name_match = re.search(r'\bName\s*:\s*([^\n\r]+)', text, re.IGNORECASE)
+    if name_match:
+        order_info['customer_name'] = name_match.group(1).strip()
     
-    # Извлекаем срок аренды
-    rental_match = re.search(r'Срок аренды[^:]*:\s+([^\s]+)', text)
-    if rental_match:
-        order_info['rental_type'] = rental_match.group(1).strip()
-    else:
-        # Альтернативный способ для "Покупка"
-        rental_match_alt = re.search(r'Покупка[^:]*:\s+([^\s]+)', text)
-        if rental_match_alt:
-            order_info['rental_type'] = rental_match_alt.group(1).strip()
-    
-    # Извлекаем количество дней
-    days_match = re.search(r'(\d+)\s+дн', text)
-    if days_match:
-        order_info['days'] = int(days_match.group(1))
+    # Извлекаем дату
+    date_match = re.search(r'\bDate\s*:\s*([^\n\r]+)', text, re.IGNORECASE)
+    if date_match:
+        order_info['order_date'] = date_match.group(1).strip()
     
     # Извлекаем промокод (если есть)
     promo_match = re.search(r'Промокод:\s+([^\n]+)', text)
@@ -665,111 +667,118 @@ def parse_order_info(text):
     if discount_match:
         order_info['discount'] = discount_match.group(1)
     
-    # Извлекаем имя покупателя
-    name_match = re.search(r'Name:\s+([^\n]+)', text)
-    if name_match:
-        order_info['customer_name'] = name_match.group(1).strip()
-    
     # Извлекаем ник в Telegram
     telegram_match = re.search(r'Ник_в_Telegram_или_Вконтакте:\s+([^\n]+)', text)
     if telegram_match:
         order_info['telegram_nick'] = telegram_match.group(1).strip()
     
-    # Извлекаем дату
-    date_match = re.search(r'Date:\s+([^\n]+)', text)
-    if date_match:
-        order_info['order_date'] = date_match.group(1).strip()
-    
     return order_info
 
 def parse_account_info(text):
-    """Парсит информацию об аккаунте"""
+    """Парсит информацию об аккаунте (улучшенная версия)"""
     account_info = {}
     
-    # Извлекаем номер аккаунта
-    account_match = re.search(r'Аккаунт:\s*(\d+)', text)
-    if account_match:
-        account_info['account_number'] = account_match.group(1)
+    if not text:
+        return account_info
     
-    # Извлекаем почту
-    email_match = re.search(r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})', text)
+    # Извлекаем номер аккаунта
+    acc_match = re.search(r'Аккаунт\s*:\s*(\S+)', text, re.IGNORECASE)
+    if acc_match:
+        account_info['account_number'] = acc_match.group(1)
+    
+    # Определяем платформу
+    if re.search(r'PS5', text, re.IGNORECASE):
+        account_info['platform'] = 'PS5'
+    elif re.search(r'PS4', text, re.IGNORECASE):
+        account_info['platform'] = 'PS4'
+    
+    # Извлекаем email
+    email_match = re.search(r'[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-zА-Яа-я]{2,}', text)
     if email_match:
-        account_info['email'] = email_match.group(1)
+        account_info['email'] = email_match.group(0)
+        
+        # Ищем пароль после email
+        after_email = text[email_match.end():]
+        lines_after = [s.strip() for s in after_email.split('\n') if s.strip()]
+        
+        # Ищем строку без пробелов, без @, длиной >= 4
+        for line in lines_after:
+            if not re.search(r'\s', line) and '@' not in line and len(line) >= 4:
+                account_info['password'] = line
+                break
+    else:
+        # Если email не найден, ищем пароль в конце
+        lines = [s.strip() for s in text.split('\n') if s.strip()]
+        for line in reversed(lines):
+            if not re.search(r'\s', line) and '@' not in line and len(line) >= 4:
+                account_info['password'] = line
+                break
     
     # Проверяем наличие активации
     if '✅ активация' in text or 'активация' in text:
         account_info['activation'] = '✅'
     
-    # Извлекаем пароль (обычно последняя строка или после email)
-    lines = text.split('\n')
-    for line in lines:
-        line = line.strip()
-        if line and not line.startswith('Аккаунт:') and not line.startswith('PS') and not line.startswith('(') and 'активация' not in line:
-            # Проверяем, есть ли в строке email
-            if '@' in line:
-                # Если в строке есть email, ищем пароль после него
-                parts = line.split('@')
-                if len(parts) > 1:
-                    email_part = parts[0] + '@' + parts[1].split()[0] if parts[1].split() else parts[0] + '@' + parts[1]
-                    remaining = line.replace(email_part, '').strip()
-                    if remaining and len(remaining) > 3:
-                        account_info['password'] = remaining
-                        break
-            else:
-                # Это может быть пароль
-                if len(line) > 3:  # Минимальная длина пароля
-                    account_info['password'] = line
-                    break
-    
     return account_info
 
-def calculate_end_date(start_date_str, days):
-    """Вычисляет дату окончания аренды"""
+def parse_russian_date(date_str):
+    """Парсит русскую дату в формате dd.mm.yyyy"""
     try:
-        # Парсим дату заказа (формат: 19.09.2025)
-        start_date = datetime.strptime(start_date_str, "%d.%m.%Y")
+        match = re.search(r'(\d{1,2})[.\/-](\d{1,2})[.\/-](\d{4})', date_str)
+        if match:
+            day, month, year = int(match.group(1)), int(match.group(2)), int(match.group(3))
+            return datetime(year, month, day)
+    except:
+        pass
+    return None
+
+def calculate_end_date(start_date_str, days):
+    """Вычисляет дату окончания аренды (улучшенная версия)"""
+    try:
+        # Парсим дату заказа
+        start_date = parse_russian_date(start_date_str)
+        if not start_date:
+            # Если дата не найдена, используем текущую дату
+            start_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        
         end_date = start_date + timedelta(days=days)
         return end_date.strftime("%d.%m.%Y")
     except:
         return "неизвестно"
 
 def format_order_message(order_info, account_info):
-    """Форматирует финальное сообщение для админа"""
-    customer_name = order_info.get('customer_name', 'Неизвестно')
+    """Форматирует финальное сообщение для админа (улучшенная версия)"""
+    customer_name = order_info.get('customer_name', 'Клиент')
     
-    # Преобразуем имена
+    # Преобразуем имена (как в HTML версии)
     if customer_name == 'Алексей':
         customer_name = 'Леха'
     
-    # Если дата отсутствует, используем текущую дату
-    order_date = order_info.get('order_date', '')
-    if not order_date:
-        from datetime import datetime
-        order_date = datetime.now().strftime('%d.%m.%Y')
-    
-    end_date = calculate_end_date(order_date, order_info.get('days', 0))
-    game_name = order_info.get('game_name', 'Неизвестная игра')
-    platform = order_info.get('platform', 'Неизвестно')
-    rental_type = order_info.get('rental_type', 'Неизвестно')
-    account_number = account_info.get('account_number', 'Неизвестно')
-    email = account_info.get('email', 'Неизвестно')
-    password = account_info.get('password', 'Неизвестно')
-    activation = account_info.get('activation', '')
-    
-    # Улучшаем название игры
-    if 'Resident Evil Village' in game_name:
-        game_name = 'Resident Evil Village Gold Edition PS4 and PS5'
+    # Получаем данные
+    game_name = order_info.get('game_name', 'Игра')
+    platform = account_info.get('platform') or order_info.get('platform', 'PS5')
+    rental_type = order_info.get('rental_type', 'П3')
+    account_number = account_info.get('account_number', '')
+    email = account_info.get('email', '')
+    password = account_info.get('password', '')
     
     # Убираем номер из названия игры (например, "1. Dying Light" -> "Dying Light")
     game_name = re.sub(r'^\d+\.\s+', '', game_name)
     
-    # Формируем тип аренды с активацией
+    # Формируем тип аренды с активацией (✅ только для П3)
     rental_with_activation = rental_type
-    if activation:
-        rental_with_activation += f' {activation}'
+    if rental_type == 'П3' and account_info.get('activation'):
+        rental_with_activation += ' ✅'
+    
+    # Вычисляем дату окончания
+    order_date = order_info.get('order_date', '')
+    days = order_info.get('days', 14)
+    end_date = calculate_end_date(order_date, days)
+    
+    # Время выдачи (текущее время)
+    current_time = datetime.now().strftime('%H:%M')
     
     message = f"""Любимый клиент: {customer_name}
-Арендовал(а) до {end_date} г. в 16:28
+Арендовал(а) до {end_date} в {current_time}
 "{game_name}", {platform}, {rental_with_activation}
 Занят аккаунт №: {account_number}
 почта: {email}
