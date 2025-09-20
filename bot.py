@@ -35,7 +35,7 @@ GITHUB_RAW_URL = 'https://github.com/chekoli911/AGSGM_BOT/raw/main/store-8370478
 df = pd.read_excel(BytesIO(requests.get(GITHUB_RAW_URL).content), usecols=['Title', 'Url'])
 
 CHANNEL_CHAT_ID = -1002773793511  # ID канала для сообщений пользователей
-ADMIN_IDS = {5381215134}  # Множество админов
+ADMIN_IDS = {5381215134, 6280405854}  # Множество админов
 
 ASKING_IF_WANT_NEW = 1
 WAITING_FOR_ACCOUNT_DATA = 2
@@ -784,15 +784,16 @@ async def handle_forwarded_message(update: Update, context: ContextTypes.DEFAULT
     
     # Проверяем, что это админ
     if user_id not in ADMIN_IDS:
-        return
+        return ConversationHandler.END
     
     # Проверяем, что сообщение пересланное
     if not update.message.forward_from and not update.message.forward_from_chat:
-        return
+        return ConversationHandler.END
     
     message_text = update.message.text
     if not message_text:
-        return
+        await update.message.reply_text("Пересланное сообщение не содержит текста.")
+        return ConversationHandler.END
     
     # Проверяем, что это сообщение с заказом
     if 'Заказ №' in message_text and 'Информация о покупателе:' in message_text:
@@ -807,8 +808,9 @@ async def handle_forwarded_message(update: Update, context: ContextTypes.DEFAULT
         
         # Устанавливаем состояние ожидания данных аккаунта
         return WAITING_FOR_ACCOUNT_DATA
-    
-    return ConversationHandler.END
+    else:
+        await update.message.reply_text("Это не похоже на сообщение с заказом. Перешлите сообщение с заказом, содержащее 'Заказ №' и 'Информация о покупателе:'.")
+        return ConversationHandler.END
 
 # --- Обработчик данных аккаунта ---
 async def handle_account_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
@@ -831,6 +833,11 @@ async def handle_account_data(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     # Парсим данные аккаунта
     account_info = parse_account_info(message_text)
+    
+    # Проверяем, что удалось извлечь основные данные
+    if not account_info.get('account_number') or not account_info.get('email') or not account_info.get('password'):
+        await update.message.reply_text("Не удалось извлечь все необходимые данные аккаунта (номер, email, пароль). Попробуйте еще раз.")
+        return WAITING_FOR_ACCOUNT_DATA
     
     # Получаем информацию о заказе
     order_info = context.user_data['pending_order']
