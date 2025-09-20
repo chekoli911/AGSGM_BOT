@@ -45,7 +45,7 @@ def get_main_keyboard():
         [KeyboardButton("🆕 Новинки"), KeyboardButton("🎮 Во что поиграть?")],
         [KeyboardButton("📚 Мои игры"), KeyboardButton("❓ Помощь")],
         [KeyboardButton("⚙️ Функции бота"), KeyboardButton("🏠 Аренда")]
-    ], resize_keyboard=True, persistent=True)
+    ], resize_keyboard=True, is_persistent=True)
 
 def get_search_keyboard():
     return InlineKeyboardMarkup([
@@ -707,7 +707,10 @@ async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
 if __name__ == '__main__':
-    TOKEN = os.getenv('BOT_TOKEN')
+    TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
+    if TOKEN == 'YOUR_BOT_TOKEN_HERE':
+        logging.error("BOT_TOKEN не установлен! Установите переменную окружения BOT_TOKEN")
+        exit(1)
 
     conv_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
