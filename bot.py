@@ -852,7 +852,12 @@ async def handle_account_data(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     # Проверяем, что удалось извлечь основные данные
     if not account_info.get('account_number') or not account_info.get('email') or not account_info.get('password'):
-        await update.message.reply_text("Не удалось извлечь все необходимые данные аккаунта (номер, email, пароль). Попробуйте еще раз.")
+        await update.message.reply_text(
+            "Не удалось извлечь все необходимые данные аккаунта (номер, email, пароль). Попробуйте еще раз.",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("❌ Отмена", callback_data="cancel_order_parsing")]
+            ])
+        )
         return WAITING_FOR_ACCOUNT_DATA
     
     # Получаем информацию о заказе
@@ -1178,6 +1183,17 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 [InlineKeyboardButton("🔙 Назад", callback_data="buy_subscription")]
             ])
         )
+    elif data == "cancel_order_parsing":
+        # Отменяем парсинг заказа и возвращаемся к началу
+        if 'pending_order' in context.user_data:
+            del context.user_data['pending_order']
+        
+        await query.edit_message_text(
+            "❌ **Парсинг заказа отменен**\n\n"
+            "Бот перезагружен. Используйте команду /start для начала работы.",
+            reply_markup=get_main_keyboard()
+        )
+        return ConversationHandler.END
 
 async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
