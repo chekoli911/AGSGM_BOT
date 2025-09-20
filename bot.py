@@ -776,13 +776,10 @@ def parse_russian_date(date_str):
     return None
 
 def calculate_end_date(start_date_str, days):
-    """Вычисляет дату окончания аренды (улучшенная версия)"""
+    """Вычисляет дату окончания аренды (всегда от текущей даты)"""
     try:
-        # Парсим дату заказа
-        start_date = parse_russian_date(start_date_str)
-        if not start_date:
-            # Если дата не найдена, используем текущую дату
-            start_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
+        # Всегда используем текущую дату как дату начала аренды
+        start_date = datetime.now().replace(hour=0, minute=0, second=0, microsecond=0)
         
         end_date = start_date + timedelta(days=days)
         return end_date.strftime("%d.%m.%Y")
