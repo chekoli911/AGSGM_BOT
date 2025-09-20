@@ -534,15 +534,17 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message_text = " ".join(args[1:])
     photo_url = None
     
-    # Проверяем, есть ли URL в сообщении
-    if message_text.startswith('http'):
-        parts = message_text.split(' ', 1)
-        if len(parts) == 2:
-            photo_url = parts[0]
-            message_text = parts[1]
-        else:
-            photo_url = message_text
-            message_text = ""
+    # Проверяем, есть ли URL в сообщении (может быть в любом месте)
+    import re
+    url_pattern = r'https?://[^\s]+'
+    url_match = re.search(url_pattern, message_text)
+    
+    if url_match:
+        photo_url = url_match.group(0)
+        # Убираем URL из текста сообщения
+        message_text = re.sub(url_pattern, '', message_text).strip()
+        # Убираем лишние пробелы
+        message_text = re.sub(r'\s+', ' ', message_text)
 
     try:
         if photo_url:
