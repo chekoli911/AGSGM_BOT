@@ -609,21 +609,56 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     args = context.args
     if len(args) < 1:
-        await update.message.reply_text("Использование: /sendtoall <сообщение> [photo_url]")
+        await update.message.reply_text("Использование: /sendtoall <сообщение> [photo_url] [кнопки]")
+        await update.message.reply_text("Примеры кнопок:\n• [Кнопка1|url1] [Кнопка2|url2]\n• [Кнопка1|callback1] [Кнопка2|callback2]")
         return
 
     message_text = " ".join(args)
     photo_url = None
+    buttons = []
     
-    # Проверяем, есть ли URL в сообщении
-    if message_text.startswith('http'):
-        parts = message_text.split(' ', 1)
-        if len(parts) == 2:
-            photo_url = parts[0]
-            message_text = parts[1]
+    # Сначала парсим кнопки в формате [Текст|URL] или [Текст|callback]
+    import re
+    button_pattern = r'\[([^\]]+)\|([^\]]+)\]'
+    button_matches = re.findall(button_pattern, message_text)
+    
+    for button_text, button_data in button_matches:
+        if button_data.startswith('http'):
+            # URL кнопка
+            buttons.append(InlineKeyboardButton(button_text, url=button_data))
         else:
-            photo_url = message_text
-            message_text = ""
+            # Callback кнопка
+            buttons.append(InlineKeyboardButton(button_text, callback_data=button_data))
+    
+    # Убираем кнопки из текста сообщения
+    message_text = re.sub(button_pattern, '', message_text).strip()
+    message_text = re.sub(r'\s+', ' ', message_text)
+    
+    # Теперь ищем URL фото (ищем все URL и берем первый, который не является кнопкой)
+    url_pattern = r'https?://[^\s]+'
+    all_urls = re.findall(url_pattern, message_text)
+    
+    # Получаем URL кнопок
+    button_urls = [button.url for button in buttons if hasattr(button, 'url') and button.url]
+    
+    # Ищем URL фото (первый URL, который не является кнопкой)
+    for url in all_urls:
+        if url not in button_urls:
+            photo_url = url
+            break
+    
+    # Убираем URL фото из текста сообщения
+    if photo_url:
+        message_text = re.sub(re.escape(photo_url), '', message_text).strip()
+        # Убираем лишние пробелы
+        message_text = re.sub(r'\s+', ' ', message_text)
+    
+    # Создаем клавиатуру если есть кнопки
+    reply_markup = None
+    if buttons:
+        # Размещаем кнопки по одной в ряд
+        keyboard = [[button] for button in buttons]
+        reply_markup = InlineKeyboardMarkup(keyboard)
 
     try:
         # Получаем список всех пользователей из Firebase
@@ -637,23 +672,186 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         sent_count = 0
         failed_count = 0
         
+        # Сохраняем информацию о рассылке для возможности удаления
+        broadcast_info = {
+            'admin_id': user_id,
+            'timestamp': int(time.time()),
+            'message_text': message_text,
+            'photo_url': photo_url,
+            'has_buttons': bool(buttons),
+            'sent_to': []
+        }
+        
         for user_id_key in users.keys():
             try:
                 target_user_id = int(user_id_key)
                 if photo_url:
-                    await context.application.bot.send_photo(chat_id=target_user_id, photo=photo_url, caption=message_text)
+                    sent_message = await context.application.bot.send_photo(
+                        chat_id=target_user_id, 
+                        photo=photo_url, 
+                        caption=message_text,
+                        reply_markup=reply_markup
+                    )
                 else:
-                    await context.application.bot.send_message(chat_id=target_user_id, text=message_text)
+                    sent_message = await context.application.bot.send_message(
+                        chat_id=target_user_id, 
+                        text=message_text,
+                        reply_markup=reply_markup
+                    )
+                
+                # Сохраняем информацию о сообщении для возможности удаления
+                broadcast_info['sent_to'].append({
+                    'user_id': target_user_id,
+                    'message_id': sent_message.message_id,
+                    'chat_id': target_user_id
+                })
+                
                 sent_count += 1
             except Exception as e:
                 failed_count += 1
                 logging.error(f"Ошибка отправки сообщения пользователю {user_id_key}: {e}")
+        
+        # Сохраняем информацию о рассылке в Firebase
+        try:
+            ref = db.reference('broadcasts')
+            broadcast_id = ref.push(broadcast_info)
+            broadcast_info['id'] = broadcast_id.key
+            logging.info(f"Информация о рассылке сохранена: {broadcast_id.key}")
+        except Exception as e:
+            logging.error(f"Ошибка сохранения информации о рассылке: {e}")
 
-        await update.message.reply_text(f"Сообщение отправлено {sent_count} пользователям. Ошибок: {failed_count}.")
+        # Формируем сообщение о результате
+        result_message = f"Сообщение отправлено {sent_count} пользователям. Ошибок: {failed_count}."
+        if photo_url and buttons:
+            result_message = f"Сообщение с фото и кнопками отправлено {sent_count} пользователям. Ошибок: {failed_count}."
+        elif photo_url:
+            result_message = f"Сообщение с фото отправлено {sent_count} пользователям. Ошибок: {failed_count}."
+        elif buttons:
+            result_message = f"Сообщение с кнопками отправлено {sent_count} пользователям. Ошибок: {failed_count}."
+
+        await update.message.reply_text(result_message)
         await notify_admin(context.application, f"✅ Массовая рассылка выполнена админом {user_id}. Отправлено: {sent_count}, ошибок: {failed_count}.")
         
     except Exception as e:
         await update.message.reply_text(f"Ошибка при массовой рассылке: {e}")
+
+# --- Команда /deletebroadcast ---
+async def deletebroadcast_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Удаляет рассылку по ID"""
+    user_id = update.effective_user.id
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("У тебя нет прав для этой команды.")
+        return
+
+    args = context.args
+    if len(args) < 1:
+        await update.message.reply_text("Использование: /deletebroadcast <broadcast_id>")
+        await update.message.reply_text("Для просмотра списка рассылок используйте /listbroadcasts")
+        return
+
+    broadcast_id = args[0]
+
+    try:
+        # Получаем информацию о рассылке из Firebase
+        ref = db.reference(f'broadcasts/{broadcast_id}')
+        broadcast_info = ref.get()
+
+        if not broadcast_info:
+            await update.message.reply_text(f"Рассылка с ID {broadcast_id} не найдена.")
+            return
+
+        # Проверяем, что это админ, который создал рассылку
+        if broadcast_info.get('admin_id') != user_id:
+            await update.message.reply_text("Ты можешь удалять только свои рассылки.")
+            return
+
+        # Удаляем сообщения у всех пользователей
+        deleted_count = 0
+        failed_count = 0
+
+        for message_info in broadcast_info.get('sent_to', []):
+            try:
+                await context.application.bot.delete_message(
+                    chat_id=message_info['chat_id'],
+                    message_id=message_info['message_id']
+                )
+                deleted_count += 1
+            except Exception as e:
+                failed_count += 1
+                logging.error(f"Ошибка удаления сообщения {message_info['message_id']} у пользователя {message_info['user_id']}: {e}")
+
+        # Удаляем информацию о рассылке из Firebase
+        ref.delete()
+
+        await update.message.reply_text(f"Рассылка удалена. Удалено сообщений: {deleted_count}, ошибок: {failed_count}.")
+        await notify_admin(context.application, f"🗑️ Рассылка {broadcast_id} удалена админом {user_id}. Удалено: {deleted_count}, ошибок: {failed_count}.")
+
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка при удалении рассылки: {e}")
+
+# --- Команда /listbroadcasts ---
+async def listbroadcasts_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Показывает список рассылок"""
+    user_id = update.effective_user.id
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("У тебя нет прав для этой команды.")
+        return
+
+    try:
+        # Получаем список рассылок из Firebase
+        ref = db.reference('broadcasts')
+        broadcasts = ref.get()
+
+        if not broadcasts:
+            await update.message.reply_text("Рассылок не найдено.")
+            return
+
+        # Фильтруем только рассылки текущего админа
+        admin_broadcasts = []
+        for broadcast_id, broadcast_info in broadcasts.items():
+            if broadcast_info.get('admin_id') == user_id:
+                admin_broadcasts.append((broadcast_id, broadcast_info))
+
+        if not admin_broadcasts:
+            await update.message.reply_text("У тебя нет рассылок.")
+            return
+
+        # Сортируем по времени (новые сверху)
+        admin_broadcasts.sort(key=lambda x: x[1].get('timestamp', 0), reverse=True)
+
+        # Формируем список
+        message = "📋 **Твои рассылки:**\n\n"
+        for i, (broadcast_id, broadcast_info) in enumerate(admin_broadcasts[:10]):  # Показываем только последние 10
+            timestamp = broadcast_info.get('timestamp', 0)
+            from datetime import datetime
+            date_str = datetime.fromtimestamp(timestamp).strftime('%d.%m.%Y %H:%M')
+            
+            message_text = broadcast_info.get('message_text', '')[:50]
+            if len(broadcast_info.get('message_text', '')) > 50:
+                message_text += "..."
+            
+            sent_count = len(broadcast_info.get('sent_to', []))
+            has_photo = bool(broadcast_info.get('photo_url'))
+            has_buttons = broadcast_info.get('has_buttons', False)
+            
+            message += f"**{i+1}.** `{broadcast_id}`\n"
+            message += f"📅 {date_str}\n"
+            message += f"📝 {message_text}\n"
+            message += f"👥 {sent_count} пользователей"
+            if has_photo:
+                message += " 📸"
+            if has_buttons:
+                message += " 🔘"
+            message += "\n\n"
+
+        message += "💡 **Использование:**\n"
+        message += "• `/deletebroadcast <ID>` - удалить рассылку\n"
+        message += "• `/listbroadcasts` - обновить список"
+
+        await update.message.reply_text(message)
+
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка при получении списка рассылок: {e}")
 
 # --- Функции для обработки заказов ---
 def save_rental_to_firebase(rental_text):
@@ -1307,6 +1505,8 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('newreleases', new_releases_command))
     app.add_handler(CommandHandler('sendto', sendto_command))
     app.add_handler(CommandHandler('sendtoall', sendtoall_command))
+    app.add_handler(CommandHandler('deletebroadcast', deletebroadcast_command))
+    app.add_handler(CommandHandler('listbroadcasts', listbroadcasts_command))
     app.add_handler(CommandHandler('schedule', schedule_command))
     app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(conv_handler)
