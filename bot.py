@@ -3,7 +3,7 @@ import logging
 import pandas as pd
 import requests
 from io import BytesIO
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, ReplyKeyboardMarkup, KeyboardButton, InputMediaPhoto
 from telegram.ext import (
     ApplicationBuilder, CommandHandler, ContextTypes,
     MessageHandler, filters, ConversationHandler, CallbackQueryHandler
@@ -101,6 +101,7 @@ def get_rental_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🎮 Арендовать игру", callback_data="rent_game")],
         [InlineKeyboardButton("🎯 Арендовать PS Plus", callback_data="rent_ps_plus")],
+        [InlineKeyboardButton("✅ Продлить аренду профиля", callback_data="extend_rental_profile")],
         [InlineKeyboardButton("✅ Завершить аренду", callback_data="end_rental")],
         [InlineKeyboardButton("🔐 Получить код 2FA", callback_data="get_2fa")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
@@ -350,12 +351,15 @@ async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE
             "🎮 **Во что поиграть?** - получить персональную рекомендацию игры\n"
             "🆕 **Новинки** - показать последние 25 игр\n"
             "📚 **Мои игры** - посмотреть пройденные, сыгранные и неинтересные игры\n"
-            "🏠 **Аренда** - меню аренды игр\n"
+            "🏠 **Аренда** - аренда игр, PS Plus, продление аренды\n"
+            "🛒 **Покупка** - купить игры и подписки навсегда\n"
             "⚙️ **Функции бота** - описание всех возможностей\n\n"
             "💡 **Советы по использованию:**\n"
             "• Напиши название игры для поиска\n"
             "• Используй кнопки для быстрой навигации\n"
-            "• Отмечай игры, чтобы получать более точные рекомендации\n\n"
+            "• Отмечай игры, чтобы получать более точные рекомендации\n"
+            "• В разделе 'Аренда' можно продлить игру промокодом ARENALOVE\n"
+            "• В разделе 'Покупка' можно купить игры дешевле или навсегда\n\n"
             "🔗 **Полезные ссылки:**\n"
             "• Купить навсегда: https://arenapsgm.ru/P2P3\n"
             "• Группа покупки: @StorePSGM\n"
@@ -516,7 +520,7 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
     args = context.args
     if len(args) < 2:
-        await update.message.reply_text("Использование: /sendto <user_id> <сообщение>")
+        await update.message.reply_text("Использование: /sendto <user_id> <сообщение> [photo_url]")
         return
 
     try:
@@ -526,12 +530,84 @@ async def sendto_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     message_text = " ".join(args[1:])
+    photo_url = None
+    
+    # Проверяем, есть ли URL в сообщении
+    if message_text.startswith('http'):
+        parts = message_text.split(' ', 1)
+        if len(parts) == 2:
+            photo_url = parts[0]
+            message_text = parts[1]
+        else:
+            photo_url = message_text
+            message_text = ""
+
     try:
-        await context.application.bot.send_message(chat_id=target_user_id, text=message_text)
-        await update.message.reply_text(f"Сообщение успешно отправлено пользователю {target_user_id}.")
-        await notify_admin(context.application, f"✅ Сообщение отправлено пользователю {target_user_id} админом {user_id}.")
+        if photo_url:
+            await context.application.bot.send_photo(chat_id=target_user_id, photo=photo_url, caption=message_text)
+            await update.message.reply_text(f"Сообщение с фото успешно отправлено пользователю {target_user_id}.")
+            await notify_admin(context.application, f"✅ Сообщение с фото отправлено пользователю {target_user_id} админом {user_id}.")
+        else:
+            await context.application.bot.send_message(chat_id=target_user_id, text=message_text)
+            await update.message.reply_text(f"Сообщение успешно отправлено пользователю {target_user_id}.")
+            await notify_admin(context.application, f"✅ Сообщение отправлено пользователю {target_user_id} админом {user_id}.")
     except Exception as e:
         await update.message.reply_text(f"Ошибка при отправке сообщения: {e}")
+
+# --- Команда /sendtoall ---
+async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    user_id = update.effective_user.id
+    if user_id not in ADMIN_IDS:
+        await update.message.reply_text("У тебя нет прав для этой команды.")
+        return
+
+    args = context.args
+    if len(args) < 1:
+        await update.message.reply_text("Использование: /sendtoall <сообщение> [photo_url]")
+        return
+
+    message_text = " ".join(args)
+    photo_url = None
+    
+    # Проверяем, есть ли URL в сообщении
+    if message_text.startswith('http'):
+        parts = message_text.split(' ', 1)
+        if len(parts) == 2:
+            photo_url = parts[0]
+            message_text = parts[1]
+        else:
+            photo_url = message_text
+            message_text = ""
+
+    try:
+        # Получаем список всех пользователей из Firebase
+        ref = db.reference('users')
+        users = ref.get()
+        
+        if not users:
+            await update.message.reply_text("Пользователи не найдены в базе данных.")
+            return
+
+        sent_count = 0
+        failed_count = 0
+        
+        for user_id_key in users.keys():
+            try:
+                target_user_id = int(user_id_key)
+                if photo_url:
+                    await context.application.bot.send_photo(chat_id=target_user_id, photo=photo_url, caption=message_text)
+                else:
+                    await context.application.bot.send_message(chat_id=target_user_id, text=message_text)
+                sent_count += 1
+            except Exception as e:
+                failed_count += 1
+                logging.error(f"Ошибка отправки сообщения пользователю {user_id_key}: {e}")
+
+        await update.message.reply_text(f"Сообщение отправлено {sent_count} пользователям. Ошибок: {failed_count}.")
+        await notify_admin(context.application, f"✅ Массовая рассылка выполнена админом {user_id}. Отправлено: {sent_count}, ошибок: {failed_count}.")
+        
+    except Exception as e:
+        await update.message.reply_text(f"Ошибка при массовой рассылке: {e}")
 
 # --- Команда /schedule ---
 def convert_utc3_to_unix_timestamp(date_str: str) -> int:
@@ -708,6 +784,13 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 [InlineKeyboardButton("🔙 Назад", callback_data="rental")]
             ])
         )
+    elif data == "extend_rental_profile":
+        await query.edit_message_text(
+            "✅ **Продлить аренду профиля**\n\n"
+            "Для продления аренды используй промокод: `ARENALOVE`\n\n"
+            "Напиши название или часть из названия игры, которую нужно продлить:",
+            reply_markup=get_rental_keyboard()
+        )
     elif data == "end_rental":
         await query.edit_message_text(
             "✅ **Завершить аренду**\n\nВыбери вариант:",
@@ -860,6 +943,7 @@ if __name__ == '__main__':
     app.add_handler(CommandHandler('whattoplay', whattoplay_command))
     app.add_handler(CommandHandler('newreleases', new_releases_command))
     app.add_handler(CommandHandler('sendto', sendto_command))
+    app.add_handler(CommandHandler('sendtoall', sendtoall_command))
     app.add_handler(CommandHandler('schedule', schedule_command))
     app.add_handler(CallbackQueryHandler(button_callback))
     app.add_handler(conv_handler)
