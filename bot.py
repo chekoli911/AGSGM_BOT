@@ -1180,8 +1180,8 @@ if __name__ == '__main__':
 
     conv_handler = ConversationHandler(
         entry_points=[
-            MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press),
-            MessageHandler(filters.FORWARDED, handle_forwarded_message)
+            MessageHandler(filters.FORWARDED, handle_forwarded_message),
+            MessageHandler(filters.TEXT & (~filters.COMMAND) & (~filters.FORWARDED), handle_button_press)
         ],
         states={
             ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
