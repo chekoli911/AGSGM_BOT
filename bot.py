@@ -681,10 +681,15 @@ def parse_account_info(text):
     if not text:
         return account_info
     
-    # Извлекаем номер аккаунта
+    # Извлекаем номер аккаунта (поддерживаем "Аккаунт:" и "Лот")
     acc_match = re.search(r'Аккаунт\s*:\s*(\S+)', text, re.IGNORECASE)
     if acc_match:
         account_info['account_number'] = acc_match.group(1)
+    else:
+        # Ищем формат "Лот X" или "ЛОТ X"
+        lot_match = re.search(r'Л[Оо]т\s*(\d+)', text, re.IGNORECASE)
+        if lot_match:
+            account_info['account_number'] = f"ЛОТ {lot_match.group(1)}"
     
     # Определяем платформу
     if re.search(r'PS5', text, re.IGNORECASE):
@@ -766,16 +771,18 @@ def format_order_message(order_info, account_info):
     
     # Формируем тип аренды с активацией (✅ только для П3)
     rental_with_activation = rental_type
-    if rental_type == 'П3' and account_info.get('activation'):
-        rental_with_activation += ' ✅'
+    if rental_type == 'П3':
+        # Для П3 всегда показываем активацию, если не указано иное
+        if not account_info.get('activation') or account_info.get('activation') == '✅':
+            rental_with_activation += ' ✅'
     
     # Вычисляем дату окончания
     order_date = order_info.get('order_date', '')
-    days = order_info.get('days', 14)
+    days = order_info.get('days', 7)  # По умолчанию 7 дней
     end_date = calculate_end_date(order_date, days)
     
-    # Время выдачи (текущее время)
-    current_time = datetime.now().strftime('%H:%M')
+    # Время выдачи (текущее время + 3 часа)
+    current_time = (datetime.now() + timedelta(hours=3)).strftime('%H:%M')
     
     message = f"""Любимый клиент: {customer_name}
 Арендовал(а) до {end_date} в {current_time}
