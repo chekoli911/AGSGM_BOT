@@ -42,7 +42,7 @@ ASKING_IF_WANT_NEW = 1
 # Функции для создания клавиатур
 def get_main_keyboard():
     return ReplyKeyboardMarkup([
-        [KeyboardButton("🏠 Аренда"), KeyboardButton("📚 Мои игры")],
+        [KeyboardButton("🏠 Аренда"), KeyboardButton("🛒 Покупка"), KeyboardButton("📚 Мои игры")],
         [KeyboardButton("🎮 Во что поиграть?"), KeyboardButton("⚙️ Функции бота")],
         [KeyboardButton("🆕 Новинки"), KeyboardButton("❓ Помощь")]
     ], resize_keyboard=True, is_persistent=True)
@@ -57,6 +57,27 @@ def get_library_keyboard():
         [InlineKeyboardButton("✅ Пройденные игры", callback_data="completed")],
         [InlineKeyboardButton("🎯 Сыгранные игры", callback_data="played")],
         [InlineKeyboardButton("❌ Неинтересные игры", callback_data="not_interested")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_completed_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎯 Сыгранные игры", callback_data="played")],
+        [InlineKeyboardButton("❌ Неинтересные игры", callback_data="not_interested")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_played_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("✅ Пройденные игры", callback_data="completed")],
+        [InlineKeyboardButton("❌ Неинтересные игры", callback_data="not_interested")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_not_interested_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎯 Сыгранные игры", callback_data="played")],
+        [InlineKeyboardButton("✅ Пройденные игры", callback_data="completed")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
     ])
 
@@ -78,9 +99,38 @@ def get_new_advice_keyboard():
 def get_rental_keyboard():
     return InlineKeyboardMarkup([
         [InlineKeyboardButton("🎮 Арендовать игру", callback_data="rent_game")],
+        [InlineKeyboardButton("🎯 Арендовать PS Plus", callback_data="rent_ps_plus")],
         [InlineKeyboardButton("✅ Завершить аренду", callback_data="end_rental")],
         [InlineKeyboardButton("🔐 Получить код 2FA", callback_data="get_2fa")],
         [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_purchase_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎮 Купить игры", callback_data="buy_games")],
+        [InlineKeyboardButton("📱 Купить Подписку", callback_data="buy_subscription")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="back_to_main")]
+    ])
+
+def get_buy_games_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("💰 Купить дешевле", callback_data="buy_cheaper")],
+        [InlineKeyboardButton("💎 Полная покупка", callback_data="buy_full")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="purchase")]
+    ])
+
+def get_buy_full_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🔥 Распродажа", callback_data="buy_sale")],
+        [InlineKeyboardButton("🎯 Игра вне распродажи", callback_data="buy_outside_sale")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="buy_games")]
+    ])
+
+def get_buy_subscription_keyboard():
+    return InlineKeyboardMarkup([
+        [InlineKeyboardButton("🎮 Купить PS Plus", callback_data="buy_ps_plus")],
+        [InlineKeyboardButton("🎯 Купить EA Play", callback_data="buy_ea_play")],
+        [InlineKeyboardButton("🔙 Назад", callback_data="purchase")]
     ])
 
 def get_end_rental_keyboard():
@@ -219,9 +269,9 @@ async def passed_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной пройденной игры."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_completed_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_completed_keyboard())
 
 async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -232,9 +282,9 @@ async def played_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         response = "Вы пока не отметили ни одной игры как сыгранной."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_played_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_played_keyboard())
 
 async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
@@ -245,9 +295,9 @@ async def not_interested_command(update: Update, context: ContextTypes.DEFAULT_T
         response = "Вы пока не отметили ни одной игры как неинтересную."
     
     if update.callback_query:
-        await update.callback_query.edit_message_text(response)
+        await update.callback_query.edit_message_text(response, reply_markup=get_not_interested_keyboard())
     else:
-        await update.message.reply_text(response)
+        await update.message.reply_text(response, reply_markup=get_not_interested_keyboard())
 
 async def whattoplay_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     return await send_advice(update, context)
@@ -306,8 +356,10 @@ async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE
             "• Используй кнопки для быстрой навигации\n"
             "• Отмечай игры, чтобы получать более точные рекомендации\n\n"
             "🔗 **Полезные ссылки:**\n"
-            "• Сайт: https://arenapsgm.ru/P2P3\n"
-            "• Группа: @StorePSGM"
+            "• Купить навсегда: https://arenapsgm.ru/P2P3\n"
+            "• Группа покупки: @StorePSGM\n"
+            "• Группа аренды: @ArenaPSGMrent\n"
+            "• По вопросам: @ArenaPSGMadmin"
         )
     elif text == "⚙️ Функции бота":
         await update.message.reply_text(
@@ -323,6 +375,11 @@ async def handle_button_press(update: Update, context: ContextTypes.DEFAULT_TYPE
         await update.message.reply_text(
             "🏠 **Аренда игр**\n\nВыбери действие:",
             reply_markup=get_rental_keyboard()
+        )
+    elif text == "🛒 Покупка":
+        await update.message.reply_text(
+            "🛒 **Покупка игр**\n\nВыбери категорию:",
+            reply_markup=get_purchase_keyboard()
         )
     else:
         # Если это не кнопка, обрабатываем как поиск игры
@@ -641,6 +698,15 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "Также все игры представлены на https://arenapsgm.ru/",
             reply_markup=get_rental_keyboard()
         )
+    elif data == "rent_ps_plus":
+        await query.edit_message_text(
+            "🎯 **Арендовать PS Plus**\n\n"
+            "Переходи по ссылке для аренды PS Plus:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🎮 Арендовать PS Plus", url="https://arenapsgm.ru/playstationplus/tproduct/199915107972-arenda-ps-plus-ps4ps5")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="rental")]
+            ])
+        )
     elif data == "end_rental":
         await query.edit_message_text(
             "✅ **Завершить аренду**\n\nВыбери вариант:",
@@ -700,6 +766,73 @@ async def button_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "После чего пришлите фото выключения общего доступа админу @ArenaPSGMadmin\n"
             "За это уважение и респект 🫡",
             reply_markup=get_console_keyboard()
+        )
+    
+    # Обработчики для покупки
+    elif data == "purchase":
+        await query.edit_message_text(
+            "🛒 **Покупка игр**\n\nВыбери категорию:",
+            reply_markup=get_purchase_keyboard()
+        )
+    elif data == "buy_games":
+        await query.edit_message_text(
+            "🎮 **Купить игры**\n\nВыбери вариант:",
+            reply_markup=get_buy_games_keyboard()
+        )
+    elif data == "buy_cheaper":
+        await query.edit_message_text(
+            "💰 **Купить дешевле**\n\n"
+            "Переходи по ссылке для покупки игр по выгодным ценам:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("💰 Купить дешевле", url="https://arenapsgm.ru/P2P3")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="buy_games")]
+            ])
+        )
+    elif data == "buy_full":
+        await query.edit_message_text(
+            "💎 **Полная покупка**\n\nВыбери варианты:",
+            reply_markup=get_buy_full_keyboard()
+        )
+    elif data == "buy_sale":
+        await query.edit_message_text(
+            "🔥 **Распродажа**\n\n"
+            "Переходи по ссылке для покупки игр со скидками:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🔥 Распродажа", url="https://arenapsgm.ru/whattobuysale")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="buy_full")]
+            ])
+        )
+    elif data == "buy_outside_sale":
+        await query.edit_message_text(
+            "🎯 **Игра вне распродажи**\n\n"
+            "Для уточнения стоимости игры, которой нет в распродаже, свяжитесь с администратором:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("💬 Связаться с админом", url="https://t.me/ArenaPSGMadmin")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="buy_full")]
+            ])
+        )
+    elif data == "buy_subscription":
+        await query.edit_message_text(
+            "📱 **Купить Подписку**\n\nВыбери подписку:",
+            reply_markup=get_buy_subscription_keyboard()
+        )
+    elif data == "buy_ps_plus":
+        await query.edit_message_text(
+            "🎮 **Купить PS Plus**\n\n"
+            "Переходи по ссылке для покупки PS Plus:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🎮 Купить PS Plus", url="https://arenapsgm.ru/playstationplus")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="buy_subscription")]
+            ])
+        )
+    elif data == "buy_ea_play":
+        await query.edit_message_text(
+            "🎯 **Купить EA Play**\n\n"
+            "Переходи по ссылке для покупки EA Play:",
+            reply_markup=InlineKeyboardMarkup([
+                [InlineKeyboardButton("🎯 Купить EA Play", url="https://arenapsgm.ru/eaplay")],
+                [InlineKeyboardButton("🔙 Назад", callback_data="buy_subscription")]
+            ])
         )
 
 async def on_startup(app):
