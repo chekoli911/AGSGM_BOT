@@ -613,19 +613,43 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
 # --- Функции для обработки заказов ---
 def save_rental_to_firebase(rental_text):
-    """Сохраняет результат аренды в Firebase"""
+    """Сохраняет результат аренды в Firebase через HTTP API (как в HTML)"""
     try:
-        if firebase_json:
-            ref = db.reference('rentals')
-            ref.push({
-                'text': rental_text,
-                'timestamp': int(time.time() * 1000)  # timestamp в миллисекундах
-            })
-            logging.info("Результат аренды сохранен в Firebase")
+        # URL вашей Firebase Realtime Database из HTML
+        firebase_url = "https://arenarental-8eb7f-default-rtdb.firebaseio.com"
+        
+        # Данные для сохранения (точно как в HTML)
+        data = {
+            'text': rental_text,
+            'timestamp': int(time.time() * 1000)  # timestamp в миллисекундах
+        }
+        
+        # Отправляем POST запрос в Firebase
+        response = requests.post(
+            f"{firebase_url}/rentals.json",
+            json=data,
+            headers={'Content-Type': 'application/json'}
+        )
+        
+        if response.status_code == 200:
+            logging.info("Результат аренды сохранен в Firebase (arenarental-8eb7f)")
+            logging.info(f"Firebase ответ: {response.json()}")
         else:
-            logging.warning("Firebase не настроен, результат не сохранен")
+            logging.error(f"Ошибка Firebase API: {response.status_code} - {response.text}")
+            
     except Exception as e:
         logging.error(f"Ошибка сохранения в Firebase: {e}")
+        # Fallback: попробуем использовать существующую конфигурацию
+        try:
+            if firebase_json:
+                ref = db.reference('rentals')
+                ref.push({
+                    'text': rental_text,
+                    'timestamp': int(time.time() * 1000)
+                })
+                logging.info("Результат сохранен через fallback конфигурацию")
+        except Exception as e2:
+            logging.error(f"Fallback также не сработал: {e2}")
 def parse_order_info(text):
     """Парсит информацию о заказе из пересланного сообщения (улучшенная версия)"""
     order_info = {}
