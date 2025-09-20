@@ -1,5 +1,6 @@
 import os
 import logging
+import time
 import pandas as pd
 import requests
 from io import BytesIO
@@ -611,6 +612,20 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await update.message.reply_text(f"Ошибка при массовой рассылке: {e}")
 
 # --- Функции для обработки заказов ---
+def save_rental_to_firebase(rental_text):
+    """Сохраняет результат аренды в Firebase"""
+    try:
+        if firebase_json:
+            ref = db.reference('rentals')
+            ref.push({
+                'text': rental_text,
+                'timestamp': int(time.time() * 1000)  # timestamp в миллисекундах
+            })
+            logging.info("Результат аренды сохранен в Firebase")
+        else:
+            logging.warning("Firebase не настроен, результат не сохранен")
+    except Exception as e:
+        logging.error(f"Ошибка сохранения в Firebase: {e}")
 def parse_order_info(text):
     """Парсит информацию о заказе из пересланного сообщения (улучшенная версия)"""
     order_info = {}
@@ -868,10 +883,13 @@ async def handle_account_data(update: Update, context: ContextTypes.DEFAULT_TYPE
     
     # Отправляем админу
     await update.message.reply_text(final_message)
-    
+
+    # Сохраняем результат в Firebase
+    save_rental_to_firebase(final_message)
+
     # Очищаем данные
     del context.user_data['pending_order']
-    
+
     return ConversationHandler.END
 
 # --- Команда /schedule ---
