@@ -38,6 +38,7 @@ CHANNEL_CHAT_ID = -1002773793511  # ID канала для сообщений п
 ADMIN_IDS = {5381215134}  # Множество админов
 
 ASKING_IF_WANT_NEW = 1
+WAITING_FOR_ACCOUNT_DATA = 2
 
 # Функции для создания клавиатур
 def get_main_keyboard():
@@ -609,6 +610,242 @@ async def sendtoall_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     except Exception as e:
         await update.message.reply_text(f"Ошибка при массовой рассылке: {e}")
 
+# --- Функции для обработки заказов ---
+def parse_order_info(text):
+    """Парсит информацию о заказе из пересланного сообщения"""
+    order_info = {}
+    
+    # Извлекаем номер заказа
+    order_match = re.search(r'Заказ №(\d+)', text)
+    if order_match:
+        order_info['order_number'] = order_match.group(1)
+    
+    # Извлекаем название игры
+    # Ищем от номера до цены с открывающей скобкой, включая двоеточие в названии
+    game_match = re.search(r'(\d+\.\s+.*?)(?=:\s*\d+\s*\()', text)
+    if game_match:
+        order_info['game_name'] = game_match.group(1).strip()
+        # Также извлекаем цену
+        price_match = re.search(r':\s*(\d+)\s*\(', text)
+        if price_match:
+            order_info['price'] = price_match.group(1)
+    else:
+        # Альтернативный способ - ищем до слова "Платформа"
+        game_match_alt = re.search(r'(\d+\.\s+.*?)(?=\s*Платформа)', text)
+        if game_match_alt:
+            order_info['game_name'] = game_match_alt.group(1).strip()
+    
+    # Извлекаем платформу
+    platform_match = re.search(r'Платформа:\s+([^,]+)', text)
+    if platform_match:
+        order_info['platform'] = platform_match.group(1).strip()
+    
+    # Извлекаем срок аренды
+    rental_match = re.search(r'Срок аренды[^:]*:\s+([^\s]+)', text)
+    if rental_match:
+        order_info['rental_type'] = rental_match.group(1).strip()
+    else:
+        # Альтернативный способ для "Покупка"
+        rental_match_alt = re.search(r'Покупка[^:]*:\s+([^\s]+)', text)
+        if rental_match_alt:
+            order_info['rental_type'] = rental_match_alt.group(1).strip()
+    
+    # Извлекаем количество дней
+    days_match = re.search(r'(\d+)\s+дн', text)
+    if days_match:
+        order_info['days'] = int(days_match.group(1))
+    
+    # Извлекаем промокод (если есть)
+    promo_match = re.search(r'Промокод:\s+([^\n]+)', text)
+    if promo_match:
+        order_info['promo_code'] = promo_match.group(1).strip()
+    
+    # Извлекаем скидку (если есть)
+    discount_match = re.search(r'Скидка:\s+(\d+)', text)
+    if discount_match:
+        order_info['discount'] = discount_match.group(1)
+    
+    # Извлекаем имя покупателя
+    name_match = re.search(r'Name:\s+([^\n]+)', text)
+    if name_match:
+        order_info['customer_name'] = name_match.group(1).strip()
+    
+    # Извлекаем ник в Telegram
+    telegram_match = re.search(r'Ник_в_Telegram_или_Вконтакте:\s+([^\n]+)', text)
+    if telegram_match:
+        order_info['telegram_nick'] = telegram_match.group(1).strip()
+    
+    # Извлекаем дату
+    date_match = re.search(r'Date:\s+([^\n]+)', text)
+    if date_match:
+        order_info['order_date'] = date_match.group(1).strip()
+    
+    return order_info
+
+def parse_account_info(text):
+    """Парсит информацию об аккаунте"""
+    account_info = {}
+    
+    # Извлекаем номер аккаунта
+    account_match = re.search(r'Аккаунт:\s*(\d+)', text)
+    if account_match:
+        account_info['account_number'] = account_match.group(1)
+    
+    # Извлекаем почту
+    email_match = re.search(r'([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})', text)
+    if email_match:
+        account_info['email'] = email_match.group(1)
+    
+    # Проверяем наличие активации
+    if '✅ активация' in text or 'активация' in text:
+        account_info['activation'] = '✅'
+    
+    # Извлекаем пароль (обычно последняя строка или после email)
+    lines = text.split('\n')
+    for line in lines:
+        line = line.strip()
+        if line and not line.startswith('Аккаунт:') and not line.startswith('PS') and not line.startswith('(') and 'активация' not in line:
+            # Проверяем, есть ли в строке email
+            if '@' in line:
+                # Если в строке есть email, ищем пароль после него
+                parts = line.split('@')
+                if len(parts) > 1:
+                    email_part = parts[0] + '@' + parts[1].split()[0] if parts[1].split() else parts[0] + '@' + parts[1]
+                    remaining = line.replace(email_part, '').strip()
+                    if remaining and len(remaining) > 3:
+                        account_info['password'] = remaining
+                        break
+            else:
+                # Это может быть пароль
+                if len(line) > 3:  # Минимальная длина пароля
+                    account_info['password'] = line
+                    break
+    
+    return account_info
+
+def calculate_end_date(start_date_str, days):
+    """Вычисляет дату окончания аренды"""
+    try:
+        # Парсим дату заказа (формат: 19.09.2025)
+        start_date = datetime.strptime(start_date_str, "%d.%m.%Y")
+        end_date = start_date + timedelta(days=days)
+        return end_date.strftime("%d.%m.%Y")
+    except:
+        return "неизвестно"
+
+def format_order_message(order_info, account_info):
+    """Форматирует финальное сообщение для админа"""
+    customer_name = order_info.get('customer_name', 'Неизвестно')
+    
+    # Преобразуем имена
+    if customer_name == 'Алексей':
+        customer_name = 'Леха'
+    
+    # Если дата отсутствует, используем текущую дату
+    order_date = order_info.get('order_date', '')
+    if not order_date:
+        from datetime import datetime
+        order_date = datetime.now().strftime('%d.%m.%Y')
+    
+    end_date = calculate_end_date(order_date, order_info.get('days', 0))
+    game_name = order_info.get('game_name', 'Неизвестная игра')
+    platform = order_info.get('platform', 'Неизвестно')
+    rental_type = order_info.get('rental_type', 'Неизвестно')
+    account_number = account_info.get('account_number', 'Неизвестно')
+    email = account_info.get('email', 'Неизвестно')
+    password = account_info.get('password', 'Неизвестно')
+    activation = account_info.get('activation', '')
+    
+    # Улучшаем название игры
+    if 'Resident Evil Village' in game_name:
+        game_name = 'Resident Evil Village Gold Edition PS4 and PS5'
+    
+    # Убираем номер из названия игры (например, "1. Dying Light" -> "Dying Light")
+    game_name = re.sub(r'^\d+\.\s+', '', game_name)
+    
+    # Формируем тип аренды с активацией
+    rental_with_activation = rental_type
+    if activation:
+        rental_with_activation += f' {activation}'
+    
+    message = f"""Любимый клиент: {customer_name}
+Арендовал(а) до {end_date} г. в 16:28
+"{game_name}", {platform}, {rental_with_activation}
+Занят аккаунт №: {account_number}
+почта: {email}
+пароль: {password}"""
+    
+    return message
+
+# --- Обработчик пересланных сообщений ---
+async def handle_forwarded_message(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обрабатывает пересланные сообщения с заказами"""
+    user_id = update.effective_user.id
+    
+    # Проверяем, что это админ
+    if user_id not in ADMIN_IDS:
+        return
+    
+    # Проверяем, что сообщение пересланное
+    if not update.message.forward_from and not update.message.forward_from_chat:
+        return
+    
+    message_text = update.message.text
+    if not message_text:
+        return
+    
+    # Проверяем, что это сообщение с заказом
+    if 'Заказ №' in message_text and 'Информация о покупателе:' in message_text:
+        # Парсим информацию о заказе
+        order_info = parse_order_info(message_text)
+        
+        # Сохраняем информацию о заказе в контексте пользователя
+        context.user_data['pending_order'] = order_info
+        
+        # Просим данные аккаунта
+        await update.message.reply_text("А теперь пришли мне данные аккаунта")
+        
+        # Устанавливаем состояние ожидания данных аккаунта
+        return WAITING_FOR_ACCOUNT_DATA
+    
+    return ConversationHandler.END
+
+# --- Обработчик данных аккаунта ---
+async def handle_account_data(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Обрабатывает данные аккаунта"""
+    user_id = update.effective_user.id
+    
+    # Проверяем, что это админ
+    if user_id not in ADMIN_IDS:
+        return ConversationHandler.END
+    
+    # Проверяем, что есть ожидающий заказ
+    if 'pending_order' not in context.user_data:
+        await update.message.reply_text("Нет ожидающего заказа. Перешлите сначала сообщение с заказом.")
+        return ConversationHandler.END
+    
+    message_text = update.message.text
+    if not message_text:
+        await update.message.reply_text("Пришлите текстовые данные аккаунта.")
+        return WAITING_FOR_ACCOUNT_DATA
+    
+    # Парсим данные аккаунта
+    account_info = parse_account_info(message_text)
+    
+    # Получаем информацию о заказе
+    order_info = context.user_data['pending_order']
+    
+    # Форматируем финальное сообщение
+    final_message = format_order_message(order_info, account_info)
+    
+    # Отправляем админу
+    await update.message.reply_text(final_message)
+    
+    # Очищаем данные
+    del context.user_data['pending_order']
+    
+    return ConversationHandler.END
+
 # --- Команда /schedule ---
 def convert_utc3_to_unix_timestamp(date_str: str) -> int:
     dt_naive = datetime.strptime(date_str, "%Y-%m-%d %H:%M")
@@ -926,9 +1163,13 @@ if __name__ == '__main__':
     TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
-        entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
+        entry_points=[
+            MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press),
+            MessageHandler(filters.FORWARDED, handle_forwarded_message)
+        ],
         states={
             ASKING_IF_WANT_NEW: [MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
+            WAITING_FOR_ACCOUNT_DATA: [MessageHandler(filters.TEXT & (~filters.COMMAND), handle_account_data)],
         },
         fallbacks=[]
     )
