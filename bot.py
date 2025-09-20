@@ -707,10 +707,7 @@ async def on_startup(app):
     app.create_task(scheduled_messages_worker(app))
 
 if __name__ == '__main__':
-    TOKEN = os.getenv('BOT_TOKEN', 'YOUR_BOT_TOKEN_HERE')
-    if TOKEN == 'YOUR_BOT_TOKEN_HERE':
-        logging.error("BOT_TOKEN не установлен! Установите переменную окружения BOT_TOKEN")
-        exit(1)
+    TOKEN = os.getenv('BOT_TOKEN')
 
     conv_handler = ConversationHandler(
         entry_points=[MessageHandler(filters.TEXT & (~filters.COMMAND), handle_button_press)],
